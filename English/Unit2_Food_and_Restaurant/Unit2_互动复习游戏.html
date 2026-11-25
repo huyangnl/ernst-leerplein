@@ -299,7 +299,7 @@
       max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 16px 20px 136px;
+      padding: 16px 20px 165px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -487,6 +487,16 @@
     .lesson-footer.ok .fb-title { color: #2b7000; }
     .lesson-footer.err .fb-title { color: #b91c1c; }
     .fb-detail { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+    .fb-why {
+      margin-top: 6px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.72);
+      border-left: 4px solid var(--red);
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+    .lesson-footer.ok .fb-why { border-left-color: var(--green); }
 
     /* Victory */
     .victory-box { text-align: center; padding: 16px 10px; }
@@ -635,143 +645,406 @@
         promptNl: "What ______ to have for lunch?", promptZh: "What ______ to have for lunch?",
         subNl: "De ober vraagt: Wat wil je hebben voor de lunch?", subZh: "服务员问你：午饭想吃什么？",
         options: ["would you like", "do you liking", "you would like", "likes you"], answer: "would you like",
-        explainNl: "Beleefd vragen: What would you like to ...? ('would' vóór 'you').",
-        explainZh: "礼貌问想要什么：What would you like to ...?（would 在 you 前）。" },
+        explainNl: "Beleefd vragen: What would you like to ...? ('would' staat vóór 'you').",
+        explainZh: "礼貌问想要什么：What would you like to ...?（would 在 you 前）。",
+        wrongNl: {
+          "do you liking": "'liking' bestaat hier niet na 'do', en bij bestellen gebruik je 'would like'.",
+          "you would like": "In een vraag staat 'would' vóór 'you' (would you like), niet andersom!",
+          "likes you": "'likes you' betekent 'vindt jou leuk' — dat klopt hier niet."
+        },
+        wrongZh: {
+          "do you liking": "do 后面不能接 liking，而且点餐想要要用 would like。",
+          "you would like": "这是问句，would 必须放在 you 前面（would you like）！",
+          "likes you": "likes you 是“喜欢你”的意思，语序和意思都不对。"
+        } },
       { id: "g1_2", group: "g1", type: "choice",
         promptNl: "______ a ham sandwich?", promptZh: "______ a ham sandwich?",
         subNl: "Vertaal: Wil je een broodje ham?", subZh: "翻译：你想要一个火腿三明治吗？",
         options: ["Would you like", "Do you would like", "Would like you", "Are you like"], answer: "Would you like",
         explainNl: "Iemand iets aanbieden: Would you like (to have) a ...?",
-        explainZh: "询问是否想要某物：Would you like (to have) a ...?" },
+        explainZh: "询问是否想要某物：Would you like (to have) a ...?",
+        wrongNl: {
+          "Do you would like": "'Do' en 'would' mogen nooit samen in één vraag!",
+          "Would like you": "'you' moet tussen 'Would' en 'like' staan: Would you like...",
+          "Are you like": "'Are you like' betekent 'lijk jij op' — gebruik 'Would you like' bij aanbieden."
+        },
+        wrongZh: {
+          "Do you would like": "Do 和 would 不能同时出现在同一个问句里！",
+          "Would like you": "you 必须夹在 Would 和 like 中间：Would you like...",
+          "Are you like": "Are you like 是“你像……吗”，点餐提供食物要用 Would you like。"
+        } },
       { id: "g1_3", group: "g1", type: "choice",
         promptNl: "Would you like a cup of tea? — ______, please.", promptZh: "Would you like a cup of tea? — ______, please.",
         subNl: "Antwoord beleefd: Ja, graag.", subZh: "礼貌回答：好的，请给我（Ja, graag.）",
         options: ["Yes", "Yeah want", "I do", "OK"], answer: "Yes",
-        explainNl: "Yes, please. = Ja, graag.", explainZh: "Yes, please. = Ja, graag." },
+        explainNl: "Yes, please. = Ja, graag. (vaste beleefde uitdrukking).",
+        explainZh: "Yes, please. = Ja, graag.（固定礼貌回答）。",
+        wrongNl: {
+          "Yeah want": "'Yeah want' is fout Engels en niet beleefd.",
+          "I do": "De vraag begint met 'Would you like', niet met 'Do you'.",
+          "OK": "In het boek leer je de vaste beleefde vorm: 'Yes, please.'"
+        },
+        wrongZh: {
+          "Yeah want": "Yeah want 不是地道英语，也不礼貌。",
+          "I do": "问句是 Would you like 开头，不是 Do you 开头，不能用 I do。",
+          "OK": "课本规定礼貌接受的固定搭配是 Yes, please。"
+        } },
       { id: "g1_4", group: "g1", type: "choice",
         promptNl: "Would you like some garlic sauce? — No, ______.", promptZh: "Would you like some garlic sauce? — No, ______.",
         subNl: "Antwoord beleefd: Nee, dank je wel.", subZh: "礼貌拒绝（Nee, dank je wel.）",
         options: ["thank you", "please", "I don't want", "I didn't"], answer: "thank you",
-        explainNl: "No, thank you. = Nee, dank je wel.", explainZh: "No, thank you. = Nee, dank je wel." },
+        explainNl: "No, thank you. = Nee, dank je wel.",
+        explainZh: "No, thank you. = Nee, dank je wel.",
+        wrongNl: {
+          "please": "'please' gebruik je bij 'Yes, please', niet bij 'No'.",
+          "I don't want": "Dat klinkt onbeleefd zonder uitleg; zeg gewoon 'No, thank you.'",
+          "I didn't": "'didn't' is verleden tijd (gisteren), maar je bestelt nu."
+        },
+        wrongZh: {
+          "please": "please 用在 Yes, please，不能用在 No 后面。",
+          "I don't want": "直接说不要太生硬，礼貌拒绝固定说 No, thank you。",
+          "I didn't": "didn't 是过去时（昨天），这里是在现在点餐。"
+        } },
       { id: "g1_5", group: "g1", type: "fill",
         promptNl: "I ______ like to have a salad.", promptZh: "I ______ like to have a salad.",
         subNl: "Ik wil graag een salade. (1 woord)", subZh: "我想要一份沙拉（填 1 个词）",
         answer: "would",
-        explainNl: "Bestellen: I would like (to have) ... / I'd like ...",
-        explainZh: "点餐固定说 I would like / I'd like。" },
+        explainNl: "Bestellen: I would like (to have) ... (= ik wil graag).",
+        explainZh: "点餐固定说 I would like (to have) ...。",
+        commonNl: {
+          "want": "'I want like' is fout! Gebruik 'would' vóór 'like' (I would like).",
+          "will": "In het Engels betekent 'will' toekomst, niet 'wil graag' — gebruik 'would'!",
+          "do": "'I do like' betekent 'ik vind echt lekker', niet 'ik wil graag bestellen'."
+        },
+        commonZh: {
+          "want": "不能写 I want like！礼貌说“想要”要用 I would like。",
+          "will": "英语的 will 是“将要”，不是荷兰语的 wil graag，这里必须用 would！",
+          "do": "I do like 是强调“我确实喜欢”，不是点餐“我想要”。"
+        } },
       { id: "g1_6", group: "g1", type: "choice",
         promptNl: "What would you like to drink? — ______ orange juice, please.", promptZh: "What would you like to drink? — ______ orange juice, please.",
         subNl: "Ik wil graag sinaasappelsap.", subZh: "请给我橙汁。",
         options: ["I'd like", "I liking", "I did like", "I am like"], answer: "I'd like",
-        explainNl: "I'd like = I would like (= ik wil graag).", explainZh: "I'd like 是 I would like 的缩写。" },
+        explainNl: "I'd like = I would like (= ik wil graag).",
+        explainZh: "I'd like 是 I would like 的缩写。",
+        wrongNl: {
+          "I liking": "Na 'I' kun je nooit zomaar 'liking' zonder werkwoord zetten.",
+          "I did like": "'did like' is verleden tijd (vond lekker), niet bestellen.",
+          "I am like": "'I am like' betekent 'ik ben zoals' — dat klopt niet."
+        },
+        wrongZh: {
+          "I liking": "I 后面不能直接接 liking，缺了助动词且意思不对。",
+          "I did like": "did like 是过去时，不是现在点饮料。",
+          "I am like": "I am like 是“我像……”，不是“我想要”。"
+        } },
       { id: "g1_7", group: "g1", type: "choice",
         promptNl: "Welke zin betekent: 'Ik wil graag een biefstuk bestellen'?", promptZh: "哪句话表示“现在点餐想要一份牛排”？",
         subNl: "Verschil tussen 'like' en 'would like'", subZh: "区分 like 和 would like",
         options: ["I would like a steak, please.", "I like steak.", "Did I like steak?", "I have steak for lunch."], answer: "I would like a steak, please.",
-        explainNl: "'I like' = vind ik lekker; 'I would like' = wil ik graag.",
-        explainZh: "I like 是平时喜欢；I would like 才是现在想要。" },
+        explainNl: "'I like' = vind ik lekker; 'I would like' = wil ik graag bestellen.",
+        explainZh: "I like 是平时喜欢；I would like 才是现在想点。",
+        wrongNl: {
+          "I like steak.": "'I like' betekent dat je biefstuk in het algemeen lekker vindt, niet dat je nu bestelt.",
+          "Did I like steak?": "Dat is een vraag over gisteren ('Vond ik biefstuk lekker?').",
+          "I have steak for lunch.": "Dat betekent 'Ik eet biefstuk als lunch', geen bestelling."
+        },
+        wrongZh: {
+          "I like steak.": "I like 只是说“我平时喜欢牛排”，不是点餐。",
+          "Did I like steak?": "这是过去时问句“我以前喜欢牛排吗？”。",
+          "I have steak for lunch.": "这是说“我午饭吃牛排”，不是点餐。"
+        } },
 
       // Grammatica 2: have (5)
       { id: "g2_1", group: "g2", type: "choice",
         promptNl: "What do you normally ______ for breakfast?", promptZh: "What do you normally ______ for breakfast?",
         subNl: "Welk werkwoord gebruik je bij breakfast / lunch?", subZh: "三餐前英语习惯用哪个动词？",
         options: ["have", "take", "do", "make"], answer: "have",
-        explainNl: "Grammatica 2: Bij breakfast/lunch gebruik je normaal 'have'!",
-        explainZh: "吃早/午/晚饭英语固定用 have！" },
+        explainNl: "Grammatica 2: Bij breakfast/lunch gebruik je in het Engels normaal 'have'!",
+        explainZh: "吃早/午/晚饭英语固定用 have！",
+        wrongNl: {
+          "take": "In het Engels zeg je niet 'take breakfast', maar 'have breakfast'.",
+          "do": "'do breakfast' bestaat niet; je gebruikt 'have'.",
+          "make": "'make breakfast' betekent 'ontbijt klaarmaken/koken', niet opeten!"
+        },
+        wrongZh: {
+          "take": "英语不说 take breakfast，吃早饭固定用 have。",
+          "do": "不说 do breakfast，吃三餐用 have。",
+          "make": "make breakfast 是“做早饭（下厨）”，不是“吃早饭”！"
+        } },
       { id: "g2_2", group: "g2", type: "fill",
         promptNl: "We only ______ a sandwich for lunch.", promptZh: "We only ______ a sandwich for lunch.",
         subNl: "Wij eten alleen een boterham voor de lunch. (1 woord)", subZh: "我们午饭只吃三明治（填 1 个词）",
         answer: "have",
-        explainNl: "have ... for lunch = iets eten voor de lunch.", explainZh: "have ... for lunch = 午饭吃……" },
+        explainNl: "have ... for lunch = iets eten voor de lunch.",
+        explainZh: "have ... for lunch = 午饭吃……",
+        commonNl: {
+          "eat": "In je boek (Grammatica 2) leer je dat je bij lunch/breakfast normaal 'have' gebruikt!",
+          "has": "Bij 'We' (meervoud) gebruik je 'have', nooit 'has'!"
+        },
+        commonZh: {
+          "eat": "按课本 Grammatica 2 规则，搭配 breakfast/lunch 习惯用 have，不直接用 eat！",
+          "has": "主语是 We（复数），要用原形 have，不能用 has！"
+        } },
       { id: "g2_3", group: "g2", type: "choice",
         promptNl: "Hoe zeg je 'ontbijten' in het Engels?", promptZh: "荷兰语 'ontbijten' 英语怎么说？",
         subNl: "Unit 2 Lesson 5", subZh: "Unit 2 Lesson 5 原文",
         options: ["to have breakfast", "to breakfast", "to do breakfast", "to make breakfast"], answer: "to have breakfast",
-        explainNl: "To have breakfast = ontbijten.", explainZh: "书上原句：To have breakfast = ontbijten。" },
+        explainNl: "In je boek staat: To have breakfast = ontbijten.",
+        explainZh: "书上原句：To have breakfast = ontbijten。",
+        wrongNl: {
+          "to breakfast": "'breakfast' is geen werkwoord in het Engels — er moet 'have' voor!",
+          "to do breakfast": "Bij maaltijden gebruik je 'have', niet 'do'.",
+          "to make breakfast": "'to make breakfast' betekent 'ontbijt klaarmaken', niet 'ontbijten'."
+        },
+        wrongZh: {
+          "to breakfast": "breakfast 是名词不能直接当动词用，前面必须加 have！",
+          "to do breakfast": "搭配三餐不用 do，要用 have。",
+          "to make breakfast": "make breakfast 是“做早饭”，不是“吃早饭（ontbijten）”。"
+        } },
       { id: "g2_4", group: "g2", type: "choice",
         promptNl: "What do you usually have ______ lunch?", promptZh: "What do you usually have ______ lunch?",
         subNl: "Welk voorzetsel hoort vóór lunch?", subZh: "三餐前用哪个介词？",
         options: ["for", "at", "in", "on"], answer: "for",
-        explainNl: "Vaste regel: have something FOR breakfast/lunch.", explainZh: "固定搭配：have ... FOR breakfast/lunch。" },
+        explainNl: "Vaste regel: have something FOR breakfast/lunch.",
+        explainZh: "固定搭配：have ... FOR breakfast/lunch。",
+        wrongNl: {
+          "at": "'at lunch' betekent 'tijdens de lunch' (wanneer), maar 'wat eet je als lunch' is altijd 'FOR lunch'!",
+          "in": "Je gebruikt nooit 'in lunch' in het Engels.",
+          "on": "Je gebruikt nooit 'on lunch' voor wat je eet."
+        },
+        wrongZh: {
+          "at": "表示“午饭吃什么”固定用 FOR lunch，不用 at。",
+          "in": "英语里没有 in lunch 这种搭配。",
+          "on": "三餐吃什么前面不用 on，固定用 for。"
+        } },
       { id: "g2_5", group: "g2", type: "fill",
         promptNl: "We ______ juice, tea and toast for breakfast.", promptZh: "We ______ juice, tea and toast for breakfast.",
         subNl: "Vul het werkwoord uit Grammatica 2 in (1 woord)", subZh: "填入 Grammatica 2 的核心动词（1 词）",
         answer: "have",
-        explainNl: "We have juice, tea and toast for breakfast.", explainZh: "课本原句：We have ... for breakfast." },
+        explainNl: "We have juice, tea and toast for breakfast.",
+        explainZh: "课本原句：We have ... for breakfast.",
+        commonNl: {
+          "eat": "Juice en tea drink je en toast eet je — daarom gebruik je in het Engels samen 'have'!",
+          "drink": "Toast eet je en juice drink je; 'have' werkt voor allebei samen!",
+          "has": "Bij 'We' gebruik je 'have', geen 'has'."
+        },
+        commonZh: {
+          "eat": "这里既有果汁茶也有吐司，英语统一用 have 表示“吃/喝”！",
+          "drink": "这里还有 toast（吐司），不能只用 drink，英语用 have 概括吃和喝！",
+          "has": "主语是 We，必须用 have，不能用 has。"
+        } },
 
       // Grammatica 3: to do (13)
       { id: "g3_1", group: "g3", type: "choice",
         promptNl: "Today: ______ you like cauliflower?", promptZh: "Today: ______ you like cauliflower?",
         subNl: "Tegenwoordige tijd (Today) + you", subZh: "Today（现在）+ you",
         options: ["Do", "Does", "Did", "Are"], answer: "Do",
-        explainNl: "Today + you (geen S-team) → Do!", explainZh: "Today + you → Do！" },
+        explainNl: "Today + you (geen S-team) → Do!",
+        explainZh: "Today + you → Do！",
+        wrongNl: {
+          "Does": "'Does' is alleen voor het S-team (he / she / it), niet voor 'you'!",
+          "Did": "'Did' gebruik je alleen voor gisteren (verleden tijd), maar hier staat 'Today'!",
+          "Are": "Bij 'like' maak je een vraag met 'do/does/did', nooit met 'are'!"
+        },
+        wrongZh: {
+          "Does": "Does 只给 S 小队（he / she / it）用，you 不能用 Does！",
+          "Did": "Did 只用于过去（yesterday），这题写的是 Today（现在）！",
+          "Are": "有实义动词 like 时，提问要用 do/does/did，不能用 Are！"
+        } },
       { id: "g3_2", group: "g3", type: "choice",
         promptNl: "Today: ______ she like spinach?", promptZh: "Today: ______ she like spinach?",
         subNl: "Tegenwoordige tijd (Today) + she", subZh: "Today（现在）+ she",
         options: ["Does", "Do", "Did", "Is"], answer: "Does",
-        explainNl: "Today + she (S-team: he/she/it!) → DoeS!", explainZh: "Today + she（S 小队）→ Does！" },
+        explainNl: "Today + she (S-team: he/she/it!) → DoeS!",
+        explainZh: "Today + she（S 小队）→ Does！",
+        wrongNl: {
+          "Do": "'she' hoort bij het S-team (he/she/it), dus je hebt een S nodig → DoeS!",
+          "Did": "Hier staat 'Today' (nu), niet 'yesterday'!",
+          "Is": "Bij het werkwoord 'like' gebruik je 'Does', niet 'Is'!"
+        },
+        wrongZh: {
+          "Do": "she 属于 S 小队（he/she/it），现在时提问必须带 S → Does！",
+          "Did": "题目是 Today（现在），不是 yesterday（昨天）！",
+          "Is": "句子里有动词 like，提问必须用 Does，不能用 Is！"
+        } },
       { id: "g3_3", group: "g3", type: "choice",
         promptNl: "Yesterday: ______ he like the soup yesterday?", promptZh: "Yesterday: ______ he like the soup yesterday?",
         subNl: "⚠️ Instinker: yesterday én he!", subZh: "⚠️ 陷阱题：看见 yesterday 和 he！",
         options: ["Did", "Does", "Do", "Was"], answer: "Did",
         explainNl: "⏰ Tijdmachine: Zie je 'yesterday'? Dan ALTIJD Did (ook bij he/she/it)!",
-        explainZh: "⏰ 看见 yesterday，全员统一用 Did（不管是不是 he/she/it）！" },
+        explainZh: "⏰ 看见 yesterday，全员统一用 Did（不管是不是 he/she/it）！",
+        wrongNl: {
+          "Does": "⚠️ Trap! Bij 'Today + he' gebruik je Does, maar hier staat 'yesterday' → altijd Did!",
+          "Do": "'Do' is alleen voor nu (Today), niet voor 'yesterday'!",
+          "Was": "Bij 'like' maak je verleden tijd vragen met 'Did', nooit met 'Was'!"
+        },
+        wrongZh: {
+          "Does": "⚠️ 上当啦！只有 Today + he 才用 Does，看见 yesterday 全部变 Did！",
+          "Do": "Do 只用于现在时，不能用于 yesterday！",
+          "Was": "有动词 like 时，过去时提问必须用 Did，不能用 Was！"
+        } },
       { id: "g3_4", group: "g3", type: "choice",
         promptNl: "Does he like meatballs? — Yes, he ______.", promptZh: "Does he like meatballs? — Yes, he ______.",
         subNl: "🪞 Spiegel-regel", subZh: "🪞 镜子法则简短回答",
         options: ["does", "do", "did", "likes"], answer: "does",
-        explainNl: "🪞 Vraag met Does → Yes, he does.", explainZh: "🪞 Does 问就用 does 答！" },
+        explainNl: "🪞 Vraag met Does → Yes, he does.",
+        explainZh: "🪞 Does 问就用 does 答！",
+        wrongNl: {
+          "do": "Bij 'he' (S-team) hoort een S, en de vraag begon met 'Does' → dus 'does'!",
+          "did": "De vraag is 'Does' (nu), niet 'Did' (gisteren)!",
+          "likes": "In een kort antwoord herhaal je het hulpwoord uit de vraag ('does'), niet 'likes'!"
+        },
+        wrongZh: {
+          "do": "主语是 he 且问句用 Does 开头，照镜子必须回 does，不能用 do！",
+          "did": "问句是 Does（现在），不是 Did（过去）！",
+          "likes": "英语简短回答要重复问句开头的助动词 does，不能直接答 likes！"
+        } },
       { id: "g3_5", group: "g3", type: "choice",
         promptNl: "Does she like lettuce? — No, she ______.", promptZh: "Does she like lettuce? — No, she ______.",
         subNl: "🪞 Spiegel-regel (ontkennend)", subZh: "🪞 镜子法则（否定）",
         options: ["doesn't", "don't", "didn't", "not does"], answer: "doesn't",
-        explainNl: "🪞 Vraag met Does → No, she doesn't.", explainZh: "🪞 Does 问否定答 doesn't！" },
+        explainNl: "🪞 Vraag met Does → No, she doesn't.",
+        explainZh: "🪞 Does 问否定答 doesn't！",
+        wrongNl: {
+          "don't": "De vraag begon met 'Does' (she = S-team), dus het antwoord is 'doesn't', niet 'don't'!",
+          "didn't": "'didn't' is verleden tijd (yesterday), maar de vraag begon met 'Does'!",
+          "not does": "De goede volgorde in het Engels is 'doesn't' (= does not), niet 'not does'."
+        },
+        wrongZh: {
+          "don't": "问句是 Does 开头（she 属于 S 小队），否定必须用 doesn't，不能用 don't！",
+          "didn't": "didn't 是过去时，这题问句是 Does（现在时）！",
+          "not does": "英语否定要放在 does 后面缩写成 doesn't，不能说 not does。"
+        } },
       { id: "g3_6", group: "g3", type: "choice",
         promptNl: "Do we like French fries? — No, we ______.", promptZh: "Do we like French fries? — No, we ______.",
         subNl: "🪞 Spiegel-regel", subZh: "🪞 镜子法则",
         options: ["don't", "doesn't", "didn't", "aren't"], answer: "don't",
-        explainNl: "🪞 Vraag met Do we → No, we don't.", explainZh: "🪞 Do 问否定答 don't！" },
+        explainNl: "🪞 Vraag met Do we → No, we don't.",
+        explainZh: "🪞 Do 问否定答 don't！",
+        wrongNl: {
+          "doesn't": "'we' hoort niet bij het S-team (he/she/it) en de vraag begon met 'Do'!",
+          "didn't": "'didn't' is voor gisteren (Did), niet voor 'Do'!",
+          "aren't": "De vraag begon met 'Do', niet met 'Are'!"
+        },
+        wrongZh: {
+          "doesn't": "we 不属于 S 小队，且问句是 Do 开头，所以用 don't！",
+          "didn't": "didn't 是过去时（对应 Did），这里问句是 Do！",
+          "aren't": "问句是 Do 开头，不是 Are 开头，不能用 aren't！"
+        } },
       { id: "g3_7", group: "g3", type: "choice",
         promptNl: "Did you like the steak yesterday? — Yes, I ______.", promptZh: "Did you like the steak yesterday? — Yes, I ______.",
         subNl: "🪞 Spiegel-regel (Yesterday)", subZh: "🪞 镜子法则（过去）",
         options: ["did", "do", "does", "liked"], answer: "did",
-        explainNl: "🪞 Vraag met Did → Yes, I did.", explainZh: "🪞 Did 问就用 did 答！" },
+        explainNl: "🪞 Vraag met Did → Yes, I did.",
+        explainZh: "🪞 Did 问就用 did 答！",
+        wrongNl: {
+          "do": "Het gaat over 'yesterday' en de vraag begon met 'Did', dus je antwoordt met 'did'!",
+          "does": "'does' is voor vandaag + he/she/it, niet voor 'Did' en 'I'!",
+          "liked": "In een kort antwoord zeg je 'Yes, I did', niet 'Yes, I liked'!"
+        },
+        wrongZh: {
+          "do": "题目是 yesterday 且问句用 Did，回答必须照镜子用 did！",
+          "does": "does 用于现在时 he/she/it，既不是过去也不是 I！",
+          "liked": "简短回答固定重复助动词 Yes, I did，不能直接说 Yes, I liked！"
+        } },
       { id: "g3_8", group: "g3", type: "choice",
         promptNl: "Did she like the cabbage yesterday? — No, she ______.", promptZh: "Did she like the cabbage yesterday? — No, she ______.",
         subNl: "🪞 Spiegel-regel (geen doesn't!)", subZh: "🪞 镜子法则（注意是过去！）",
         options: ["didn't", "doesn't", "don't", "did"], answer: "didn't",
-        explainNl: "🪞 Vraag met Did → No, she didn't.", explainZh: "🪞 Did 问否定必须用 didn't！" },
+        explainNl: "🪞 Vraag met Did → No, she didn't.",
+        explainZh: "🪞 Did 问否定必须用 didn't！",
+        wrongNl: {
+          "doesn't": "⚠️ Trap! Ook al zie je 'she', de vraag gaat over 'yesterday' (Did) → dus 'didn't'!",
+          "don't": "'don't' is tegenwoordige tijd, maar hier staat 'yesterday' en 'Did'!",
+          "did": "Er staat 'No,' vóór het antwoord — dan moet het ontkennend zijn: 'didn't'!"
+        },
+        wrongZh: {
+          "doesn't": "⚠️ 陷阱！虽然主语是 she，但问句是 Did（昨天），所以必须用 didn't！",
+          "don't": "don't 是现在时，这题是 yesterday 过去时！",
+          "did": "前面是 No，一定要用否定形式 didn't！"
+        } },
       { id: "g3_9", group: "g3", type: "choice",
         promptNl: "Kies de goede zin: Vond ze de soep gisteren lekker?", promptZh: "选出正确句子：昨天她喜欢那道汤吗？",
         subNl: "🎒 Let op de Rugzak-regel!", subZh: "🎒 注意背包法则（别超载）！",
         options: ["Did she like the soup yesterday?", "Did she liked the soup yesterday?", "Does she liked the soup yesterday?", "Did she likes the soup yesterday?"],
         answer: "Did she like the soup yesterday?",
         explainNl: "🎒 Did draagt de verleden tijd al → 'like' blijft kaal!",
-        explainZh: "🎒 Did 已经背走过去式，后面的 like 保持原形！" },
+        explainZh: "🎒 Did 已经背走过去式，后面的 like 保持原形！",
+        wrongNl: {
+          "Did she liked the soup yesterday?": "🎒 Dubbel fout! 'Did' is al verleden tijd, dus géén -d meer achter 'like'!",
+          "Does she liked the soup yesterday?": "Twee fouten: 'yesterday' moet met 'Did', én 'liked' mag niet na Does/Did!",
+          "Did she likes the soup yesterday?": "🎒 Dubbel fout! Na 'Did' komt altijd het hele werkwoord 'like', nooit 'likes'!"
+        },
+        wrongZh: {
+          "Did she liked the soup yesterday?": "🎒 背包超载！Did 已经是过去式了，like 后面不能再加 d！",
+          "Does she liked the soup yesterday?": "错两处：yesterday 要用 Did，而且助动词后面不能写 liked！",
+          "Did she likes the soup yesterday?": "🎒 错！Did 后面动词永远保持原形 like，不能加 s！"
+        } },
       { id: "g3_10", group: "g3", type: "choice",
         promptNl: "Kies de goede zin: Vindt hij komkommer lekker? (Today)", promptZh: "选出正确句子：他现在喜欢黄瓜吗？",
         subNl: "🎒 Let op de Rugzak-regel!", subZh: "🎒 注意背包法则！",
         options: ["Does he like cucumber?", "Does he likes cucumber?", "Do he like cucumber?", "Did he likes cucumber?"],
         answer: "Does he like cucumber?",
         explainNl: "🎒 Does draagt de -s al → 'like' blijft kaal!",
-        explainZh: "🎒 Does 已经背走 -s，后面用原形 like！" },
+        explainZh: "🎒 Does 已经背走 -s，后面用原形 like！",
+        wrongNl: {
+          "Does he likes cucumber?": "🎒 Dubbel fout! De -s zit al in 'Does', dus er mag géén -s achter 'like'!",
+          "Do he like cucumber?": "'he' hoort bij het S-team → in Today moet het 'Does' zijn, niet 'Do'!",
+          "Did he likes cucumber?": "Twee fouten: het is Today (niet Did) én na Did/Does komt nooit 'likes'!"
+        },
+        wrongZh: {
+          "Does he likes cucumber?": "🎒 背包超载！-s 已经在 Does 里了，like 后面不能再加 s！",
+          "Do he like cucumber?": "he 属于 S 小队，Today 提问必须用 Does，不能用 Do！",
+          "Did he likes cucumber?": "错两处：Today 不能用 Did，而且助动词后不能用 likes！"
+        } },
       { id: "g3_11", group: "g3", type: "choice",
         promptNl: "Yesterday I ______ the fried eggs!", promptZh: "Yesterday I ______ the fried eggs!",
         subNl: "Gewone zin (geen Did in de zin!)", subZh: "肯定陈述句（没有 Did 帮忙！）",
         options: ["liked", "like", "do like", "likes"], answer: "liked",
         explainNl: "Zonder Did krijgt 'like' bij Yesterday zelf een -d → Yesterday I liked!",
-        explainZh: "没有 Did 帮忙时，Yesterday 的肯定句变 liked！" },
+        explainZh: "没有 Did 帮忙时，Yesterday 的肯定句变 liked！",
+        wrongNl: {
+          "like": "Hier staat 'Yesterday' en géén 'Did' om te helpen, dus 'like' moet in de verleden tijd: 'liked'!",
+          "do like": "'do' is voor Today (nu), niet voor 'Yesterday'!",
+          "likes": "'likes' is voor Today + he/she/it, niet voor 'Yesterday' en 'I'!"
+        },
+        wrongZh: {
+          "like": "这是 yesterday 的肯定句且没有 Did 帮忙，like 必须自己加 d 变成 liked！",
+          "do like": "do 是现在时，不能用在 Yesterday！",
+          "likes": "likes 是现在时 he/she/it 用的，既不是过去也不是 I！"
+        } },
       { id: "g3_12", group: "g3", type: "fill",
         promptNl: "______ it like fish? — Yes, it does.", promptZh: "______ it like fish? — Yes, it does.",
         subNl: "Kijk naar 'does' in het antwoord! (1 woord)", subZh: "看回答里的 does 反推开头（1 词）",
         answer: "Does",
         explainNl: "🪞 Spiegel: het antwoord heeft 'does', dus de vraag begint met 'Does'!",
-        explainZh: "🪞 回答是 does，问句开头是 Does！" },
+        explainZh: "🪞 回答是 does，问句开头是 Does！",
+        commonNl: {
+          "do": "Kijk naar 'it' (S-team) en 'Yes, it does' in het antwoord → het moet 'Does' zijn!",
+          "did": "In het antwoord staat 'does' (nu), niet 'did' (gisteren)!"
+        },
+        commonZh: {
+          "do": "看主语 it（S 小队）和回答里的 does，开头必须用 Does！",
+          "did": "回答里是 does（现在时），不是 did（过去时）！"
+        } },
       { id: "g3_13", group: "g3", type: "fill",
         promptNl: "Did he like the salmon? — No, he ______.", promptZh: "Did he like the salmon? — No, he ______.",
         subNl: "Ontkennend kort antwoord met apostrof (1 woord)", subZh: "过去否定简答（带撇号，1 词）",
         answer: "didn't",
-        explainNl: "🪞 Did → No, he didn't.", explainZh: "🪞 Did 问否定答 didn't。" },
+        explainNl: "🪞 Did → No, he didn't.",
+        explainZh: "🪞 Did 问否定答 didn't。",
+        commonNl: {
+          "doesn't": "⚠️ Trap! Ook al zie je 'he', de vraag begon met 'Did' (verleden tijd) → dus 'didn't'!",
+          "don't": "De vraag begon met 'Did', niet met 'Do' → gebruik 'didn't'!",
+          "didnt": "Vergeet de apostrof (') niet: didn't!",
+          "did": "Er staat 'No,' vooraan, dus het moet ontkennend zijn: didn't!"
+        },
+        commonZh: {
+          "doesn't": "⚠️ 陷阱！虽然是 he，但问句是 Did（过去），否定必须用 didn't！",
+          "don't": "问句是 Did 开头不是 Do，要用 didn't！",
+          "didnt": "别忘了中间的小撇号（'）：didn't！",
+          "did": "前面是 No，一定要用否定形式 didn't！"
+        } },
 
       // Lesson 5 Phrases & Sunday Roast (3)
       { id: "p_1", group: "phrases", type: "choice",
@@ -785,99 +1058,196 @@
         ],
         answer: "A traditional Sunday lunch or dinner with roast meat, potatoes and vegetables",
         explainNl: "Traditionele zondagse maaltijd met gebraden vlees, aardappelen, groente, gravy en soms Yorkshire puddings.",
-        explainZh: "英国周日传统家庭聚餐：烤肉、烤土豆、蔬菜、肉汁和约克郡布丁。" },
+        explainZh: "英国周日传统家庭聚餐：烤肉、烤土豆、蔬菜、肉汁和约克郡布丁。",
+        wrongNl: {
+          "A fast-food breakfast on Sunday morning": "Een Sunday roast is geen fastfood en geen ontbijt, maar een uitgebreide lunch of diner!",
+          "A sweet dessert with pineapple": "Het is een warme hoofdmaaltijd met vlees en groente, geen toetje.",
+          "A restaurant menu only for waiters": "Het is een familiemaaltijd op zondag thuis, geen menukaart."
+        },
+        wrongZh: {
+          "A fast-food breakfast on Sunday morning": "Sunday roast 不是快餐也不是早餐，而是周日的传统午餐或晚餐！",
+          "A sweet dessert with pineapple": "它是包含烤肉和蔬菜的正餐，不是甜点。",
+          "A restaurant menu only for waiters": "它是英国家庭周日聚餐，不是菜单。"
+        } },
       { id: "p_2", group: "phrases", type: "choice",
         promptNl: "Hoe zeg je 'Wat wil je hebben?' in het Engels?", promptZh: "荷兰语 'Wat wil je hebben?' 怎么说？",
         subNl: "Lesson 5 · Phrases to know", subZh: "Lesson 5 必背句型",
         options: ["What would you like (to have)?", "Do you like breakfast?", "Are you hungry?", "What did you like yesterday?"],
         answer: "What would you like (to have)?",
         explainNl: "What would you like (to have)? = Wat wil je hebben?",
-        explainZh: "课本原句：What would you like (to have)?" },
+        explainZh: "课本原句：What would you like (to have)?",
+        wrongNl: {
+          "Do you like breakfast?": "Dat betekent 'Vind je ontbijt lekker?'",
+          "Are you hungry?": "Dat betekent 'Heb je honger?'",
+          "What did you like yesterday?": "Dat betekent 'Wat vond je gisteren lekker?'"
+        },
+        wrongZh: {
+          "Do you like breakfast?": "这句的意思是“你喜欢早餐吗？”",
+          "Are you hungry?": "这句的意思是“你饿了吗？”",
+          "What did you like yesterday?": "这句的意思是“你昨天喜欢什么？”"
+        } },
       { id: "p_3", group: "phrases", type: "choice",
         promptNl: "Welk Brits bijgerecht hoort soms bij een 'Sunday roast'?", promptZh: "Sunday roast 里有时会配哪种英国特色配菜？",
         subNl: "Lesson 5 · Nice to know", subZh: "Lesson 5 文化小知识",
         options: ["Yorkshire puddings", "French fries", "Garlic sauce", "Fried eggs"], answer: "Yorkshire puddings",
         explainNl: "In de tekst staat: '...sometimes stuffing and Yorkshire puddings.'",
-        explainZh: "课本原文提到 stuffing 和 Yorkshire puddings。" }
+        explainZh: "课本原文提到 stuffing 和 Yorkshire puddings。",
+        wrongNl: {
+          "French fries": "Bij een Sunday roast eet je 'roast potatoes' (gebakken aardappelen uit de oven), geen frietjes!",
+          "Garlic sauce": "Bij een Sunday roast hoort 'gravy' (jus), geen knoflooksaus.",
+          "Fried eggs": "Gebakken eieren horen bij het ontbijt, niet bij de Sunday roast."
+        },
+        wrongZh: {
+          "French fries": "Sunday roast 配的是烤土豆（roast potatoes），不是炸薯条！",
+          "Garlic sauce": "配的是肉汁（gravy），不是蒜蓉酱。",
+          "Fried eggs": "煎蛋属于早餐，不属于 Sunday roast。"
+        } }
     ];
 
-    // 多邻国经典词块拼句题库（带防坑干扰词！）
+    // 多邻国经典词块拼句题库（带防坑干扰词与错词解析！）
     const SENTENCE_BUILDS = [
       { id: "sb_1", group: "g1",
         promptNl: "Wat wil je hebben voor de lunch?", promptZh: "你午饭想吃什么？",
         target: ["What", "would", "you", "like", "to", "have", "for", "lunch?"],
         distractors: ["liking"],
+        trapNl: { "liking": "'liking' bestaat niet na 'would you' — gebruik altijd 'like'!" },
+        trapZh: { "liking": "would you 后面不能用 liking，必须用原形 like！" },
         explainNl: "What would you like to have for lunch? ('would' staat vóór 'you').",
         explainZh: "礼貌点餐固定语序：What would you like to have for lunch?" },
       { id: "sb_2", group: "g1",
         promptNl: "Ik wil graag een glas sinaasappelsap, alstublieft.", promptZh: "请给我一杯橙汁。",
         target: ["I'd", "like", "a", "glass", "of", "orange", "juice,", "please."],
         distractors: ["am"],
+        trapNl: { "am": "'am' hoort er niet in! 'I'd' is al 'I would'." },
+        trapZh: { "am": "多余了！I'd 已经是 I would 的缩写，不能加 am。" },
         explainNl: "I'd like a glass of orange juice, please.",
         explainZh: "点餐固定表达：I'd like ..., please." },
       { id: "sb_3", group: "g2",
         promptNl: "Wat eet je normaal voor het ontbijt?", promptZh: "你早饭平时吃什么？",
         target: ["What", "do", "you", "normally", "have", "for", "breakfast?"],
         distractors: ["make"],
+        trapNl: { "make": "'make breakfast' is ontbijt klaarmaken, maar 'eten' is in je boek 'have'!" },
+        trapZh: { "make": "make breakfast 是“做早饭”，表示“吃早饭”要用 have！" },
         explainNl: "Bij breakfast/lunch gebruik je altijd 'have'!",
         explainZh: "三餐用 have：What do you normally have for breakfast?" },
       { id: "sb_4", group: "g2",
         promptNl: "Wij eten alleen een boterham voor de lunch.", promptZh: "我们午饭只吃一个三明治。",
         target: ["We", "only", "have", "a", "sandwich", "for", "lunch."],
         distractors: ["did"],
+        trapNl: { "did": "Dit is een gewone zin (geen vraag en geen gisteren), dus 'did' hoort er niet in!" },
+        trapZh: { "did": "这是现在的肯定句，不是问句也不是过去，不能加 did！" },
         explainNl: "We only have a sandwich for lunch.",
         explainZh: "课本原句：We only have a sandwich for lunch." },
       { id: "sb_5", group: "g3",
         promptNl: "Vindt zij spinazie lekker? (Today)", promptZh: "她现在喜欢菠菜吗？（Today）",
         target: ["Does", "she", "like", "spinach?"],
         distractors: ["Do", "likes"],
+        trapNl: {
+          "Do": "'she' hoort bij het S-team (he/she/it), dus begin met 'Does', niet 'Do'!",
+          "likes": "🎒 De -s zit al in 'Does', dus 'like' blijft kaal (géén likes)!"
+        },
+        trapZh: {
+          "Do": "she 属于 S 小队，现在时提问必须用 Does，不能用 Do！",
+          "likes": "🎒 -s 已经在 Does 里了，后面的 like 不能再加 s！"
+        },
         explainNl: "Today + she → Does, en 'like' blijft kaal (géén likes)!",
         explainZh: "Today + she 用 Does，后面的 like 保持原形！" },
       { id: "sb_6", group: "g3",
         promptNl: "Vond hij de soep gisteren lekker? (Yesterday)", promptZh: "他昨天喜欢那道汤吗？（Yesterday）",
         target: ["Did", "he", "like", "the", "soup", "yesterday?"],
         distractors: ["Does", "liked"],
+        trapNl: {
+          "Does": "⚠️ Trap! Ook al zie je 'he', er staat 'yesterday' → begin dus met 'Did'!",
+          "liked": "🎒 'Did' is al verleden tijd, dus 'like' blijft kaal (géén liked)!"
+        },
+        trapZh: {
+          "Does": "⚠️ 陷阱！虽然是 he，但有 yesterday 必须用 Did！",
+          "liked": "🎒 Did 已经背走过去式，后面的 like 不能用 liked！"
+        },
         explainNl: "Yesterday → Did (ook bij he!), en 'like' blijft kaal (géén liked)!",
         explainZh: "Yesterday 一律用 Did，后面的 like 保持原形！" },
       { id: "sb_7", group: "g3",
         promptNl: "Vonden wij de bloemkool gisteren lekker? (Yesterday)", promptZh: "我们昨天喜欢花椰菜吗？",
         target: ["Did", "we", "like", "the", "cauliflower", "yesterday?"],
         distractors: ["Do", "liked"],
+        trapNl: {
+          "Do": "Er staat 'yesterday' (verleden tijd), dus gebruik 'Did', niet 'Do'!",
+          "liked": "🎒 Na 'Did' blijft 'like' altijd kaal (géén liked)!"
+        },
+        trapZh: {
+          "Do": "有 yesterday（昨天）要用 Did，不能用 Do！",
+          "liked": "🎒 Did 后面必须用原形 like，不能用 liked！"
+        },
         explainNl: "Did we like the cauliflower yesterday?",
         explainZh: "过去提问用 Did + 原形 like！" },
       { id: "sb_8", group: "g3",
         promptNl: "Gisteren vond ik de aardappelen lekker. (Gewone zin)", promptZh: "昨天我喜欢土豆。（肯定陈述句）",
         target: ["Yesterday", "I", "liked", "the", "potatoes."],
         distractors: ["like", "did"],
+        trapNl: {
+          "like": "Dit is Yesterday zonder 'Did', dus 'like' moet zelf in de verleden tijd: 'liked'!",
+          "did": "In een gewone bevestigende zin gebruik je geen 'did' — maak van 'like' gewoon 'liked'!"
+        },
+        trapZh: {
+          "like": "这是 Yesterday 的肯定句且没有 Did 帮忙，必须用 liked！",
+          "did": "普通肯定句不加 did，直接把 like 变成 liked！"
+        },
         explainNl: "Geen 'Did' in de zin → dus bij Yesterday wordt het 'liked'!",
         explainZh: "没有 Did 的过去肯定句，like 变 liked！" }
     ];
 
     const FLITS_BANK = [
       { mode: "aux", time: "today", person: "👧 she", answer: "Does", opts: ["Do", "Does", "Did"],
-        exNl: "Today + she (S-team!) → Does!", exZh: "Today + she（S 小队）→ Does！" },
+        exNl: "Today + she (S-team!) → Does!", exZh: "Today + she（S 小队）→ Does！",
+        wrongNl: { "Do": "'she' hoort bij het S-team (he/she/it), dus 'Do' mist de S!", "Did": "Hier staat 'Today' (nu), niet 'Yesterday'!" },
+        wrongZh: { "Do": "she 属于 S 小队，Do 少了 S！", "Did": "题目是 Today（现在），不是 Yesterday！" } },
       { mode: "aux", time: "yesterday", person: "👧 she", answer: "Did", opts: ["Do", "Does", "Did"],
-        exNl: "Yesterday! Voor iedereen altijd Did!", exZh: "看见 Yesterday，全员一律用 Did！" },
+        exNl: "Yesterday! Voor iedereen altijd Did!", exZh: "看见 Yesterday，全员一律用 Did！",
+        wrongNl: { "Do": "'Do' is voor Today, niet voor Yesterday!", "Does": "⚠️ Trap! Ook bij 'she' wordt het bij Yesterday altijd 'Did'!" },
+        wrongZh: { "Do": "Do 用于现在，不能用于 Yesterday！", "Does": "⚠️ 陷阱！看见 Yesterday 连 she 也要用 Did！" } },
       { mode: "aux", time: "today", person: "👉 you", answer: "Do", opts: ["Do", "Does", "Did"],
-        exNl: "Today + you → Do!", exZh: "Today + you → Do！" },
+        exNl: "Today + you → Do!", exZh: "Today + you → Do！",
+        wrongNl: { "Does": "'you' hoort niet bij het S-team (alleen he/she/it krijgen Does)!", "Did": "Hier staat 'Today' (nu), niet 'Yesterday'!" },
+        wrongZh: { "Does": "you 不在 S 小队（只有 he/she/it 用 Does）！", "Did": "题目是 Today，不是 Yesterday！" } },
       { mode: "aux", time: "yesterday", person: "👦 he", answer: "Did", opts: ["Do", "Does", "Did"],
-        exNl: "Yesterday = verleden tijd → Did!", exZh: "Yesterday 是过去 → Did！" },
+        exNl: "Yesterday = verleden tijd → Did!", exZh: "Yesterday 是过去 → Did！",
+        wrongNl: { "Do": "'Do' is voor Today, niet voor Yesterday!", "Does": "⚠️ Trap! 'he' is alleen Does bij Today — bij Yesterday wint altijd 'Did'!" },
+        wrongZh: { "Do": "Do 只用于 Today！", "Does": "⚠️ 陷阱！Yesterday 不管是不是 he，一律用 Did！" } },
       { mode: "aux", time: "today", person: "🐶 it", answer: "Does", opts: ["Do", "Does", "Did"],
-        exNl: "Today + it (he/she/it = S-team!) → Does!", exZh: "Today + it（S 小队）→ Does！" },
+        exNl: "Today + it (he/she/it = S-team!) → Does!", exZh: "Today + it（S 小队）→ Does！",
+        wrongNl: { "Do": "'it' hoort óók bij het S-team (he/she/it) → dus 'Does'!", "Did": "Hier staat 'Today', niet 'Yesterday'!" },
+        wrongZh: { "Do": "it 也属于 S 小队（he/she/it），所以要用 Does！", "Did": "题目是 Today，不是 Yesterday！" } },
       { mode: "aux", time: "today", person: "👥 we", answer: "Do", opts: ["Do", "Does", "Did"],
-        exNl: "Today + we → Do!", exZh: "Today + we → Do！" },
+        exNl: "Today + we → Do!", exZh: "Today + we → Do！",
+        wrongNl: { "Does": "'we' is meervoud (geen he/she/it), dus géén Does!", "Did": "Hier staat 'Today', niet 'Yesterday'!" },
+        wrongZh: { "Does": "we 是复数，不属于 S 小队，不用 Does！", "Did": "题目是 Today，不是 Yesterday！" } },
       { mode: "mirror", q: "Does he like spinach?", yn: "❌ No, he ...", answer: "doesn't", opts: ["don't", "doesn't", "didn't"],
-        exNl: "🪞 Does → No, he doesn't!", exZh: "🪞 Does 问 → No, he doesn't！" },
+        exNl: "🪞 Does → No, he doesn't!", exZh: "🪞 Does 问 → No, he doesn't！",
+        wrongNl: { "don't": "De vraag begon met 'Does' (met S), dus je antwoordt met 'doesn't'!", "didn't": "De vraag is 'Does' (vandaag), niet 'Did' (gisteren)!" },
+        wrongZh: { "don't": "问句是 Does（带 S），回答必须用 doesn't！", "didn't": "问句是 Does（现在），不是 Did（过去）！" } },
       { mode: "mirror", q: "Did she like the soup yesterday?", yn: "❌ No, she ...", answer: "didn't", opts: ["don't", "doesn't", "didn't"],
-        exNl: "🪞 Did → No, she didn't!", exZh: "🪞 Did 问 → No, she didn't！" },
+        exNl: "🪞 Did → No, she didn't!", exZh: "🪞 Did 问 → No, she didn't！",
+        wrongNl: { "don't": "De vraag begon met 'Did' (yesterday), niet 'Do'!", "doesn't": "⚠️ Trap! Ook al zie je 'she', de vraag begon met 'Did' → dus 'didn't'!" },
+        wrongZh: { "don't": "问句是 Did（昨天），不是 Do！", "doesn't": "⚠️ 陷阱！虽然是 she，但问句是 Did 开头，必须回 didn't！" } },
       { mode: "mirror", q: "Do we like cauliflower?", yn: "❌ No, we ...", answer: "don't", opts: ["don't", "doesn't", "didn't"],
-        exNl: "🪞 Do → No, we don't!", exZh: "🪞 Do 问 → No, we don't！" },
+        exNl: "🪞 Do → No, we don't!", exZh: "🪞 Do 问 → No, we don't！",
+        wrongNl: { "doesn't": "De vraag begon met 'Do we', niet 'Does'!", "didn't": "De vraag begon met 'Do' (vandaag), niet 'Did'!" },
+        wrongZh: { "doesn't": "问句是 Do we 开头，不用 doesn't！", "didn't": "问句是 Do（现在），不用 didn't！" } },
       { mode: "bug", sentence: "Did he liked the lettuce yesterday?", answer: "BUG",
-        exNl: "🎒 Dubbel! Did is al verleden tijd → Did he LIKE!", exZh: "🎒 超载！Did 已经是过去，必须用原形 like！" },
+        exNl: "🎒 Dubbel! Did is al verleden tijd → het moet zijn: Did he LIKE!",
+        exZh: "🎒 超载！Did 已经是过去，必须用原形 like！",
+        wrongNl: { "OK": "Kijk naar 'Did' én 'liked': dat is dubbel verleden tijd! Na 'Did' blijft 'like' altijd kaal." },
+        wrongZh: { "OK": "注意看 Did 和 liked：两个过去式撞车超载了！Did 后面必须用原形 like。" } },
       { mode: "bug", sentence: "Does she likes cucumber?", answer: "BUG",
-        exNl: "🎒 Dubbel! De -s zit al in Does → Does she LIKE!", exZh: "🎒 超载！-s 已在 Does 里，必须用原形 like！" },
+        exNl: "🎒 Dubbel! De -s zit al in Does → het moet zijn: Does she LIKE!",
+        exZh: "🎒 超载！-s 已在 Does 里，必须用原形 like！",
+        wrongNl: { "OK": "Kijk naar 'Does' én 'likes': twee keer een S! Na 'Does' komt altijd 'like' zonder -s." },
+        wrongZh: { "OK": "注意看 Does 和 likes：两个 S 超载了！Does 后面必须用原形 like。" } },
       { mode: "bug", sentence: "Yesterday I liked the French fries.", answer: "OK",
-        exNl: "✅ Goed! Geen Did in de zin, dus bij Yesterday wordt het liked.", exZh: "✅ 正确！肯定句没有 Did，所以变 liked。" }
+        exNl: "✅ Goed! Geen Did in de zin, dus bij Yesterday wordt het liked.",
+        exZh: "✅ 正确！肯定句没有 Did，所以变 liked。",
+        wrongNl: { "BUG": "Hier staat géén 'Did' in de zin! Zonder 'Did' moet 'like' bij Yesterday zelf veranderen in 'liked' — dus deze zin is helemaal goed!" },
+        wrongZh: { "BUG": "这句里并没有 Did！在没有 Did 帮忙的肯定句里，Yesterday 的 like 必须自己变成 liked，所以这句话是对的！" } }
     ];
 
     // =====================================================
@@ -1581,17 +1951,27 @@
       }
       else if (step.kind === "sentence_build") {
         const sb = step.sb;
-        const built = lesson.sbPicked.map(bi => step._bank[bi]).join(" ");
+        const pickedWords = lesson.sbPicked.map(bi => step._bank[bi]);
+        const built = pickedWords.join(" ");
         const expected = sb.target.join(" ");
         ok = built === expected;
         speakEn(expected);
         if (ok) {
           fbTitle = t("Perfecte zin gebouwd!", "拼句完美！");
-          fbDetail = tBlock(sb.explainNl, sb.explainZh);
+          fbDetail = `<div class="fb-why">💡 ${tBlock(sb.explainNl, sb.explainZh)}</div>`;
           handleRecord(true, "sb", sb.id, step);
         } else {
           fbTitle = t(`Goede zin: ${expected}`, `正确句子：${expected}`);
-          fbDetail = `💡 ${tBlock(sb.explainNl, sb.explainZh)}`;
+          const usedTraps = pickedWords.filter(w => sb.trapNl && sb.trapNl[w]);
+          let trapMsg = "";
+          if (usedTraps.length > 0) {
+            trapMsg = usedTraps.map(tw =>
+              `<div class="fb-why">❌ <strong>${escapeHtml(tw)}</strong>: ${tBlock(sb.trapNl[tw], sb.trapZh[tw])}</div>`
+            ).join("");
+          } else {
+            trapMsg = `<div class="fb-why">⚠️ ${tBlock("Let goed op de woordvolgorde!", "注意单词排列顺序哦！")}</div>`;
+          }
+          fbDetail = `${trapMsg}<div style="margin-top:5px;">💡 ${tBlock(sb.explainNl, sb.explainZh)}</div>`;
           handleRecord(false, "sb", sb.id, step, `${sb.promptNl} → ${expected}`);
         }
       }
@@ -1599,11 +1979,16 @@
         const f = step.flits;
         ok = lesson.selected === f.answer;
         if (ok) {
-          fbTitle = t("Supersnel goed!", "闪电答对！"); fbDetail = tBlock(f.exNl, f.exZh);
+          fbTitle = t("Supersnel goed!", "闪电答对！");
+          fbDetail = `<div class="fb-why">💡 ${tBlock(f.exNl, f.exZh)}</div>`;
           state.xp += 10; state.streak += 1; if (!step.isRetry) lesson.firstTryRight++;
           playTone("ok"); saveState();
         } else {
-          fbTitle = t("Bijna! Kijk goed:", "差一点，看解析："); fbDetail = tBlock(f.exNl, f.exZh);
+          fbTitle = t("Bijna! Kijk waarom:", "差一点，看看原因：");
+          const wNl = f.wrongNl && f.wrongNl[lesson.selected];
+          const wZh = f.wrongZh && f.wrongZh[lesson.selected];
+          const whyHtml = wNl ? `<div class="fb-why">❌ ${tBlock(wNl, wZh)}</div>` : "";
+          fbDetail = `${whyHtml}<div style="margin-top:5px;">💡 ${tBlock(f.exNl, f.exZh)}</div>`;
           state.streak = 0; playTone("err"); saveState();
           lesson.queue.push({ ...step, isRetry: true });
         }
@@ -1612,12 +1997,25 @@
         const q = step.q;
         ok = normalizeAns(lesson.selected) === normalizeAns(q.answer);
         if (ok) {
-          fbTitle = t("Top! Helemaal goed!", "完全正确！"); fbDetail = tBlock(q.explainNl, q.explainZh);
+          fbTitle = t("Top! Helemaal goed!", "完全正确！");
+          fbDetail = `<div class="fb-why">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
           handleRecord(true, "grammar", q.id, step);
         } else {
           fbTitle = t(`Goede antwoord: ${q.answer}`, `正确答案：${q.answer}`);
-          fbDetail = `💡 ${tBlock(q.explainNl, q.explainZh)}`;
-          handleRecord(false, "grammar", q.id, step, `${q.promptNl} → ${q.answer}`);
+          let whyHtml = "";
+          if (q.type === "choice" && q.wrongNl && q.wrongNl[lesson.selected]) {
+            whyHtml = `<div class="fb-why">❌ <strong>${escapeHtml(lesson.selected)}</strong>: ${tBlock(q.wrongNl[lesson.selected], q.wrongZh[lesson.selected])}</div>`;
+          } else if (q.type === "fill" && q.commonNl) {
+            const normTyped = normalizeAns(lesson.selected);
+            if (q.commonNl[normTyped]) {
+              whyHtml = `<div class="fb-why">❌ <strong>${escapeHtml(lesson.selected)}</strong>: ${tBlock(q.commonNl[normTyped], q.commonZh[normTyped])}</div>`;
+            }
+          }
+          fbDetail = `${whyHtml}<div style="margin-top:5px;">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
+          const errDetail = whyHtml
+            ? `${q.promptNl} → ${q.answer} (${state.lang === "zh" ? (q.wrongZh?.[lesson.selected] || q.commonZh?.[normalizeAns(lesson.selected)] || q.explainZh) : (q.wrongNl?.[lesson.selected] || q.commonNl?.[normalizeAns(lesson.selected)] || q.explainNl)})`
+            : `${q.promptNl} → ${q.answer} (${state.lang === "zh" ? q.explainZh : q.explainNl})`;
+          handleRecord(false, "grammar", q.id, step, errDetail);
         }
       }
 
