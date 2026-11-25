@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Ernst Leerplein" />
+  <meta name="theme-color" content="#58cc02" />
+  <title>Ernst's Leerplein</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      background: #f7f9fc;
+      color: #3c3c3c;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 32px 18px 60px; }
+    h1 { font-size: 1.7rem; margin: 0 0 4px; color: #46a302; }
+    p.sub { margin: 0 0 26px; color: #777; }
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border: 2px solid #e5e5e5;
+      border-bottom-width: 6px;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:active { transform: translateY(3px); }
+    .icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: #58cc02; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; flex-shrink: 0;
+    }
+    .title { font-weight: 900; font-size: 1.1rem; }
+    .desc { font-size: 0.88rem; color: #777; margin-top: 3px; }
+    .soon { opacity: 0.45; pointer-events: none; }
+    .soon .icon { background: #e5e5e5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🤖 Ernst's Leerplein</h1>
+    <p class="sub">Kies wat je vandaag wilt oefenen! · 今天想练什么？</p>
+
+    <a class="card" href="English/Unit2_Food_and_Restaurant/Unit2_%E4%BA%92%E5%8A%A8%E5%A4%8D%E4%B9%A0%E6%B8%B8%E6%88%8F.html">
+      <div class="icon">🍽️</div>
+      <div>
+        <div class="title">Engels · Unit 2 Food &amp; Restaurant</div>
+        <div class="desc">Take it Easy 7-8A · 10 levels · Groenten, Grammatica 1–3 &amp; Eindtoets</div>
+      </div>
+    </a>
+
+    <div class="card soon">
+      <div class="icon">🔒</div>
+      <div>
+        <div class="title">Binnenkort meer…</div>
+        <div class="desc">Nieuwe units en vakken komen hier · 更多单元即将上线</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

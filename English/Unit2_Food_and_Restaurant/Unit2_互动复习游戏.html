@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Ernst Unit 2" />
+  <meta name="theme-color" content="#58cc02" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%2358cc02'/%3E%3Ctext x='90' y='122' font-size='100' text-anchor='middle'%3E%F0%9F%A4%96%3C/text%3E%3C/svg%3E" />
+  <title>Ernst's Unit 2 Quest · 10-Level Oefenpad</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --green: #58cc02;
+      --green-dark: #46a302;
+      --green-soft: #e9fad9;
+      --blue: #1cb0f6;
+      --blue-dark: #0095db;
+      --blue-soft: #e6f7ff;
+      --purple: #ce82ff;
+      --purple-dark: #9b51e0;
+      --purple-soft: #f5ebff;
+      --gold: #ffc800;
+      --gold-dark: #e09f00;
+      --gold-soft: #fff8d6;
+      --orange: #ff9600;
+      --orange-dark: #e07b00;
+      --red: #ff4b4b;
+      --red-dark: #d93636;
+      --red-soft: #ffecec;
+      --gray: #e5e5e5;
+      --gray-dark: #afafaf;
+      --text: #3c3c3c;
+      --muted: #777777;
+      --border: #e5e5e5;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ============ TOP BAR (MAP VIEW) ============ */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      padding: 10px 16px;
+    }
+    .topbar-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--green-dark);
+    }
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+    }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .lang-group {
+      display: inline-flex;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 2px;
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .lang-btn.active {
+      background: #fff;
+      color: var(--blue-dark);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .icon-btn {
+      border: 2px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 4px 9px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .icon-btn.on {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+    }
+
+    /* ============ PATH MAP VIEW ============ */
+    .map-container {
+      max-width: 640px;
+      margin: 20px auto 64px;
+      padding: 0 16px;
+    }
+    .unit-banner {
+      color: #fff;
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin: 24px 0 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .unit-banner.sec1 { background: linear-gradient(135deg, #58cc02, #3cb300); box-shadow: 0 5px 0 var(--green-dark); margin-top: 4px; }
+    .unit-banner.sec2 { background: linear-gradient(135deg, #a855f7, #7c3aed); box-shadow: 0 5px 0 #6d28d9; }
+    .unit-banner.sec3 { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 5px 0 #b45309; }
+    .unit-banner h2 { margin: 0; font-size: 1.12rem; }
+    .unit-banner p { margin: 3px 0 0; font-size: 0.84rem; opacity: 0.94; }
+    .unit-progress-pill {
+      background: rgba(255,255,255,0.22);
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-weight: 900;
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    .path-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0 8px;
+    }
+    .path-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .path-connector {
+      width: 6px;
+      height: 18px;
+      border-radius: 99px;
+      background: var(--gray);
+    }
+    .path-connector.done { background: var(--green); }
+
+    .node-row { display: flex; align-items: center; gap: 14px; }
+    .node-btn {
+      width: 80px;
+      height: 74px;
+      border-radius: 50%;
+      border: none;
+      font-size: 1.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.12s;
+      user-select: none;
+    }
+    .node-btn:active:not(:disabled) { transform: translateY(4px); }
+    .node-btn.locked { background: var(--gray); box-shadow: 0 7px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .node-btn.current { background: var(--green); box-shadow: 0 7px 0 var(--green-dark); color: #fff; animation: gentlePulse 1.8s infinite; }
+    .node-btn.current.boss { background: #9333ea; box-shadow: 0 7px 0 #6b21a8; }
+    .node-btn.current.exam { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); }
+    .node-btn.done { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); color: #fff; }
+
+    .node-check {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--green);
+      color: #fff;
+      border: 3px solid #fff;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 0.82rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .start-bubble {
+      position: absolute;
+      top: -34px;
+      background: #fff;
+      color: var(--green-dark);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 3px 12px;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      white-space: nowrap;
+      animation: floatY 1.6s ease-in-out infinite;
+    }
+    .node-label { margin-top: 9px; text-align: center; max-width: 260px; }
+    .node-title { font-weight: 900; font-size: 0.94rem; color: var(--text); }
+    .node-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .robot-buddy { font-size: 2.2rem; animation: floatY 2.2s ease-in-out infinite; }
+
+    @keyframes gentlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .parent-bar {
+      margin-top: 28px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    /* ============ FULLSCREEN LESSON VIEW ============ */
+    .lesson-shell { display: none; min-height: 100vh; flex-direction: column; background: #fff; }
+    .lesson-shell.active { display: flex; }
+    .map-shell.hidden { display: none; }
+
+    .lesson-top {
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 18px 18px 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .close-btn {
+      border: none;
+      background: transparent;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gray-dark);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 10px;
+    }
+    .close-btn:hover { background: #f1f5f9; color: var(--text); }
+
+    .duo-bar-track { flex: 1; height: 16px; background: var(--gray); border-radius: 999px; overflow: hidden; }
+    .duo-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--green), #7ce622); border-radius: 999px; transition: width 0.3s ease; }
+    .lesson-counter { font-weight: 900; font-size: 0.9rem; color: var(--muted); min-width: 56px; text-align: right; }
+
+    .lesson-body {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px 20px 136px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--purple-dark);
+      margin-bottom: 8px;
+    }
+    .step-badge.retry { color: var(--orange-dark); }
+
+    .q-title { font-size: 1.42rem; font-weight: 900; margin: 0 0 8px; color: var(--text); line-height: 1.35; }
+    .q-sub { font-size: 0.96rem; color: var(--muted); margin: 0 0 18px; }
+    .bilingual-zh { display: block; font-size: 0.85em; font-weight: 600; color: #64748b; margin-top: 3px; }
+
+    .duo-btn {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 26px;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      color: #fff;
+      background: var(--green);
+      box-shadow: 0 5px 0 var(--green-dark);
+    }
+    .duo-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--green-dark); }
+    .duo-btn:disabled { background: var(--gray); box-shadow: 0 5px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .duo-btn.purple { background: #9333ea; box-shadow: 0 5px 0 #6b21a8; }
+    .duo-btn.red { background: var(--red); box-shadow: 0 5px 0 var(--red-dark); }
+    .duo-btn.outline { background: #fff; color: var(--text); border: 2px solid var(--border); box-shadow: 0 4px 0 var(--border); }
+
+    /* Choice tiles */
+    .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+    .choice-grid.single-col { grid-template-columns: 1fr; }
+    @media (max-width: 560px) { .choice-grid { grid-template-columns: 1fr; } }
+
+    .choice-tile {
+      border: 2px solid var(--border);
+      border-bottom-width: 5px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 15px 16px;
+      font-size: 1.04rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .choice-tile:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
+    .choice-tile.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .choice-tile.correct { border-color: var(--green); background: var(--green-soft); color: #2b7000; }
+    .choice-tile.wrong { border-color: var(--red); background: var(--red-soft); color: #a81c1c; }
+    .tile-num {
+      width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--border);
+      display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--muted); flex-shrink: 0;
+    }
+
+    /* Word-bank sentence builder (Duolingo signature!) */
+    .sentence-slot {
+      min-height: 68px;
+      border: 2.5px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .sentence-slot.has-words { border-style: solid; border-color: var(--blue); background: #fcfeff; }
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      padding: 6px 0;
+    }
+    .wb-chip {
+      border: 2px solid var(--border);
+      border-bottom-width: 4px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 10px 15px;
+      font-size: 1.04rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.1s;
+    }
+    .wb-chip:active:not(:disabled) { transform: translateY(2px); }
+    .wb-chip.placed { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .wb-chip.used { opacity: 0.22; pointer-events: none; }
+
+    /* Match pairs */
+    .match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+    .match-col { display: flex; flex-direction: column; gap: 10px; }
+    .match-tile {
+      border: 2px solid var(--border);
+      border-bottom-width: 5px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 12px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .match-tile.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .match-tile.matched { border-color: var(--green); background: var(--green-soft); color: #2b7000; opacity: 0.42; pointer-events: none; }
+
+    /* Spelling */
+    .spell-card {
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .spell-input {
+      width: 100%;
+      padding: 15px 18px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      border: 2px solid #cbd5e1;
+      border-bottom-width: 5px;
+      border-radius: 16px;
+      outline: none;
+    }
+    .spell-input:focus { border-color: var(--blue); background: #fcfeff; }
+
+    .letter-diff { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; font-family: Consolas, monospace; font-size: 1.05rem; }
+    .ld-char { padding: 2px 6px; border-radius: 6px; font-weight: 900; }
+    .ld-ok { background: #bbf7d0; color: #14532d; }
+    .ld-bad { background: #fecaca; color: #991b1b; text-decoration: underline; }
+
+    /* Teach Card */
+    .teach-card { border: 2px solid #e2e8f0; border-radius: 18px; padding: 18px; background: #fafcff; }
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 8px; font-weight: 900; }
+    .pill-do { background: #dbeafe; color: #1e40af; }
+    .pill-does { background: #fef08a; color: #854d0e; }
+    .pill-did { background: #f3e8ff; color: #6b21a8; }
+    .pill-bare { background: #dcfce7; color: #166534; }
+    .pill-err { background: #fee2e2; color: #991b1b; text-decoration: line-through; }
+
+    .mini-switch { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .mini-switch button {
+      padding: 8px 13px; border-radius: 12px; border: 2px solid var(--border); background: #fff; font-weight: 800; cursor: pointer;
+    }
+    .mini-switch button.active { border-color: var(--purple-dark); background: var(--purple-soft); color: #5b21b6; }
+
+    .clue-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 18px; }
+    .clue-pill { padding: 10px 18px; border-radius: 14px; font-size: 1.18rem; font-weight: 900; border: 2.5px solid #cbd5e1; background: #fff; }
+    .clue-pill.today { background: #eff6ff; border-color: #60a5fa; color: #1e40af; }
+    .clue-pill.past { background: #f3e8ff; border-color: #a78bfa; color: #5b21b6; }
+    .clue-pill.person { background: #fefce8; border-color: #facc15; color: #854d0e; }
+
+    /* Footer */
+    .lesson-footer { position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid var(--border); background: #fff; padding: 16px 20px; z-index: 30; }
+    .lesson-footer.ok { background: var(--green-soft); border-top-color: #b7eb8f; }
+    .lesson-footer.err { background: var(--red-soft); border-top-color: #ffa39e; }
+    .footer-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .fb-text { flex: 1; min-width: 200px; }
+    .fb-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 3px; }
+    .lesson-footer.ok .fb-title { color: #2b7000; }
+    .lesson-footer.err .fb-title { color: #b91c1c; }
+    .fb-detail { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+
+    /* Victory */
+    .victory-box { text-align: center; padding: 16px 10px; }
+    .cijfer-circle {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fde047;
+      font-size: 2.7rem; font-weight: 900; margin: 14px 0;
+      box-shadow: 0 10px 26px rgba(37,99,235,0.28);
+    }
+    .cijfer-circle span { font-size: 0.85rem; color: #fff; font-weight: 700; }
+    .review-list { text-align: left; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .review-item { padding: 10px 14px; border-radius: 12px; border: 1.5px solid #fecaca; background: #fff5f5; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= MAP VIEW ================= -->
+  <div class="map-shell" id="map-shell">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-mini">🤖 <span id="brand-txt"></span></div>
+        <div class="stats-row">
+          <span class="stat-chip">⚡ <span id="stat-xp">0</span> XP</span>
+          <span class="stat-chip">🔥 <span id="stat-streak">0</span></span>
+          <span class="stat-chip">📖 <span id="stat-words">0</span>/40</span>
+        </div>
+        <div class="controls-row">
+          <div class="lang-group">
+            <button class="lang-btn active" id="lang-nl" onclick="setLang('nl')">🇳🇱 NL</button>
+            <button class="lang-btn" id="lang-both" onclick="setLang('both')">🌐 NL+中</button>
+            <button class="lang-btn" id="lang-zh" onclick="setLang('zh')">🇨🇳 中文</button>
+          </div>
+          <button class="icon-btn on" id="btn-speech" onclick="toggleSpeech()">🔊</button>
+          <button class="icon-btn on" id="btn-sfx" onclick="toggleSfx()">🎵</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div id="map-sections"></div>
+
+      <div class="parent-bar">
+        <span id="parent-hint"></span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="icon-btn" id="btn-parent-mode" onclick="toggleParentMode()"></button>
+          <button class="icon-btn" id="btn-reset" onclick="resetProgress()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FULLSCREEN LESSON VIEW ================= -->
+  <div class="lesson-shell" id="lesson-shell">
+    <div class="lesson-top">
+      <button class="close-btn" onclick="exitLesson()" title="Terug / 返回地图">✕</button>
+      <div class="duo-bar-track"><div class="duo-bar-fill" id="duo-bar-fill"></div></div>
+      <div class="lesson-counter" id="lesson-counter">1 / 10</div>
+    </div>
+
+    <div class="lesson-body" id="lesson-body"></div>
+
+    <div class="lesson-footer" id="lesson-footer">
+      <div class="footer-inner" id="footer-inner"></div>
+    </div>
+  </div>
+
+  <script>
+    // =====================================================
+    // 1. 完整 Unit 2 数据（40 词 + 蔬菜记忆法 + Grammatica 1–3 + 词块拼句）
+    // =====================================================
+    const VOCAB = [
+      // Lesson 1 (10)
+      { id: "w01", lesson: 1, en: "starter", nl: "voorgerecht", zh: "前菜", emoji: "🥗", veg: false },
+      { id: "w02", lesson: 1, en: "main course", nl: "hoofdgerecht", zh: "主菜", emoji: "🍽️", veg: false },
+      { id: "w03", lesson: 1, en: "dessert", nl: "nagerecht", zh: "甜点", emoji: "🍨", veg: false },
+      { id: "w04", lesson: 1, en: "to be hungry", nl: "honger hebben", zh: "饿了", emoji: "😋", veg: false },
+      { id: "w05", lesson: 1, en: "to be thirsty", nl: "dorst hebben", zh: "渴了", emoji: "🥤", veg: false },
+      { id: "w06", lesson: 1, en: "a cup of tea", nl: "een kop thee", zh: "一杯茶", emoji: "🍵", veg: false },
+      { id: "w07", lesson: 1, en: "soup", nl: "soep", zh: "汤", emoji: "🍲", veg: false },
+      { id: "w08", lesson: 1, en: "waiter", nl: "ober", zh: "服务员", emoji: "🧑‍🍳", veg: false },
+      { id: "w09", lesson: 1, en: "menu", nl: "menu", zh: "菜单", emoji: "📋", veg: false },
+      { id: "w10", lesson: 1, en: "food", nl: "voedsel", zh: "食物", emoji: "🍱", veg: false },
+
+      // Lesson 2 (10)
+      { id: "w11", lesson: 2, en: "vegetables", nl: "groente", zh: "蔬菜", emoji: "🥦", veg: true,
+        tipNl: "ve-ge-table-s: het woord 'table' (tafel) zit erin! Vergeet de -s niet.",
+        tipZh: "ve-ge-table-s：里面藏着 table（餐桌）！别漏最后的 s。" },
+      { id: "w12", lesson: 2, en: "pork chop", nl: "karbonade", zh: "猪排", emoji: "🥩", veg: false },
+      { id: "w13", lesson: 2, en: "meatball", nl: "gehaktbal", zh: "肉丸", emoji: "🧆", veg: false },
+      { id: "w14", lesson: 2, en: "steak", nl: "biefstuk", zh: "牛排", emoji: "🥩", veg: false },
+      { id: "w15", lesson: 2, en: "spinach", nl: "spinazie", zh: "菠菜", emoji: "🥬", veg: true,
+        tipNl: "Begint net als 'spinazie': spina + ch!",
+        tipZh: "和荷兰语 spinazie 开头一样：spina + ch！" },
+      { id: "w16", lesson: 2, en: "cauliflower", nl: "bloemkool", zh: "花椰菜", emoji: "🥦", veg: true,
+        tipNl: "Bloem = flower! Onthoud: cau-li-flower!",
+        tipZh: "荷兰语 bloem = flower（花）！记住 cau-li-flower！" },
+      { id: "w17", lesson: 2, en: "tomato", nl: "tomaat", zh: "番茄", emoji: "🍅", veg: true,
+        tipNl: "Tweeling met potato: to-ma-to (eindigt op o).",
+        tipZh: "和 potato 是 -ato 双胞胎：to-ma-to！" },
+      { id: "w18", lesson: 2, en: "potato", nl: "aardappel", zh: "土豆", emoji: "🥔", veg: true,
+        tipNl: "Tweeling met tomato: po-ta-to (twee keer t, eindigt op o).",
+        tipZh: "和 tomato 双胞胎：po-ta-to！" },
+      { id: "w19", lesson: 2, en: "salmon", nl: "zalm", zh: "三文鱼", emoji: "🐟", veg: false },
+      { id: "w20", lesson: 2, en: "shrimp", nl: "garnaal", zh: "虾", emoji: "🦐", veg: false },
+
+      // Lesson 3 (10)
+      { id: "w21", lesson: 3, en: "restaurant", nl: "restaurant", zh: "餐厅", emoji: "🏠", veg: false },
+      { id: "w22", lesson: 3, en: "tablecloth", nl: "tafelkleed", zh: "桌布", emoji: "🧻", veg: false },
+      { id: "w23", lesson: 3, en: "napkin", nl: "servet", zh: "餐巾", emoji: "🍽️", veg: false },
+      { id: "w24", lesson: 3, en: "salt and pepper", nl: "zout en peper", zh: "盐和胡椒", emoji: "🧂", veg: false },
+      { id: "w25", lesson: 3, en: "breakfast", nl: "ontbijt", zh: "早餐", emoji: "🥐", veg: false },
+      { id: "w26", lesson: 3, en: "lunch", nl: "lunch", zh: "午餐", emoji: "🥪", veg: false },
+      { id: "w27", lesson: 3, en: "dinner", nl: "avondeten", zh: "晚餐", emoji: "🍝", veg: false },
+      { id: "w28", lesson: 3, en: "fried eggs", nl: "gebakken eieren", zh: "煎蛋", emoji: "🍳", veg: false },
+      { id: "w29", lesson: 3, en: "bill", nl: "rekening", zh: "账单", emoji: "🧾", veg: false },
+      { id: "w30", lesson: 3, en: "French fries", nl: "Franse frietjes", zh: "炸薯条", emoji: "🍟", veg: false },
+
+      // Lesson 4 (10)
+      { id: "w31", lesson: 4, en: "tasty", nl: "lekker", zh: "美味的", emoji: "😋", veg: false },
+      { id: "w32", lesson: 4, en: "beef", nl: "rundvlees", zh: "牛肉", emoji: "🥩", veg: false },
+      { id: "w33", lesson: 4, en: "drinks", nl: "drankjes", zh: "饮料", emoji: "🧃", veg: false },
+      { id: "w34", lesson: 4, en: "meal", nl: "maaltijd", zh: "一餐", emoji: "🍲", veg: false },
+      { id: "w35", lesson: 4, en: "lettuce", nl: "sla", zh: "生菜", emoji: "🥬", veg: true,
+        tipNl: "let + tuce: dubbele t (tt) in het midden en -uce!",
+        tipZh: "let + tuce：中间双 t（tt），结尾 -uce！" },
+      { id: "w36", lesson: 4, en: "onion", nl: "ui", zh: "洋葱", emoji: "🧅", veg: true,
+        tipNl: "o-ni-on: twee ronde o's zijn twee uienringen!",
+        tipZh: "o-ni-on：两个 o 像两个圆圆的洋葱圈！" },
+      { id: "w37", lesson: 4, en: "pineapple", nl: "ananas", zh: "菠萝", emoji: "🍍", veg: false },
+      { id: "w38", lesson: 4, en: "cucumber", nl: "komkommer", zh: "黄瓜", emoji: "🥒", veg: true,
+        tipNl: "Schrijf met c en twee keer u: cu-cum-ber!",
+        tipZh: "开头是 c 和两个 u：cu-cum-ber！" },
+      { id: "w39", lesson: 4, en: "cabbage", nl: "kool", zh: "卷心菜", emoji: "🥬", veg: true,
+        tipNl: "cab + b + age: onthoud de dubbele b (bb)!",
+        tipZh: "cab + b + age：记住中间双 b（bb）！" },
+      { id: "w40", lesson: 4, en: "garlic sauce", nl: "knoflooksaus", zh: "蒜蓉酱", emoji: "🧄", veg: false }
+    ];
+
+    const VEG_WORDS = VOCAB.filter(w => w.veg);
+    const NON_VEG_WORDS = VOCAB.filter(w => !w.veg);
+
+    const GRAMMAR_QUESTIONS = [
+      // Grammatica 1: would like (7)
+      { id: "g1_1", group: "g1", type: "choice",
+        promptNl: "What ______ to have for lunch?", promptZh: "What ______ to have for lunch?",
+        subNl: "De ober vraagt: Wat wil je hebben voor de lunch?", subZh: "服务员问你：午饭想吃什么？",
+        options: ["would you like", "do you liking", "you would like", "likes you"], answer: "would you like",
+        explainNl: "Beleefd vragen: What would you like to ...? ('would' vóór 'you').",
+        explainZh: "礼貌问想要什么：What would you like to ...?（would 在 you 前）。" },
+      { id: "g1_2", group: "g1", type: "choice",
+        promptNl: "______ a ham sandwich?", promptZh: "______ a ham sandwich?",
+        subNl: "Vertaal: Wil je een broodje ham?", subZh: "翻译：你想要一个火腿三明治吗？",
+        options: ["Would you like", "Do you would like", "Would like you", "Are you like"], answer: "Would you like",
+        explainNl: "Iemand iets aanbieden: Would you like (to have) a ...?",
+        explainZh: "询问是否想要某物：Would you like (to have) a ...?" },
+      { id: "g1_3", group: "g1", type: "choice",
+        promptNl: "Would you like a cup of tea? — ______, please.", promptZh: "Would you like a cup of tea? — ______, please.",
+        subNl: "Antwoord beleefd: Ja, graag.", subZh: "礼貌回答：好的，请给我（Ja, graag.）",
+        options: ["Yes", "Yeah want", "I do", "OK"], answer: "Yes",
+        explainNl: "Yes, please. = Ja, graag.", explainZh: "Yes, please. = Ja, graag." },
+      { id: "g1_4", group: "g1", type: "choice",
+        promptNl: "Would you like some garlic sauce? — No, ______.", promptZh: "Would you like some garlic sauce? — No, ______.",
+        subNl: "Antwoord beleefd: Nee, dank je wel.", subZh: "礼貌拒绝（Nee, dank je wel.）",
+        options: ["thank you", "please", "I don't want", "I didn't"], answer: "thank you",
+        explainNl: "No, thank you. = Nee, dank je wel.", explainZh: "No, thank you. = Nee, dank je wel." },
+      { id: "g1_5", group: "g1", type: "fill",
+        promptNl: "I ______ like to have a salad.", promptZh: "I ______ like to have a salad.",
+        subNl: "Ik wil graag een salade. (1 woord)", subZh: "我想要一份沙拉（填 1 个词）",
+        answer: "would",
+        explainNl: "Bestellen: I would like (to have) ... / I'd like ...",
+        explainZh: "点餐固定说 I would like / I'd like。" },
+      { id: "g1_6", group: "g1", type: "choice",
+        promptNl: "What would you like to drink? — ______ orange juice, please.", promptZh: "What would you like to drink? — ______ orange juice, please.",
+        subNl: "Ik wil graag sinaasappelsap.", subZh: "请给我橙汁。",
+        options: ["I'd like", "I liking", "I did like", "I am like"], answer: "I'd like",
+        explainNl: "I'd like = I would like (= ik wil graag).", explainZh: "I'd like 是 I would like 的缩写。" },
+      { id: "g1_7", group: "g1", type: "choice",
+        promptNl: "Welke zin betekent: 'Ik wil graag een biefstuk bestellen'?", promptZh: "哪句话表示“现在点餐想要一份牛排”？",
+        subNl: "Verschil tussen 'like' en 'would like'", subZh: "区分 like 和 would like",
+        options: ["I would like a steak, please.", "I like steak.", "Did I like steak?", "I have steak for lunch."], answer: "I would like a steak, please.",
+        explainNl: "'I like' = vind ik lekker; 'I would like' = wil ik graag.",
+        explainZh: "I like 是平时喜欢；I would like 才是现在想要。" },
+
+      // Grammatica 2: have (5)
+      { id: "g2_1", group: "g2", type: "choice",
+        promptNl: "What do you normally ______ for breakfast?", promptZh: "What do you normally ______ for breakfast?",
+        subNl: "Welk werkwoord gebruik je bij breakfast / lunch?", subZh: "三餐前英语习惯用哪个动词？",
+        options: ["have", "take", "do", "make"], answer: "have",
+        explainNl: "Grammatica 2: Bij breakfast/lunch gebruik je normaal 'have'!",
+        explainZh: "吃早/午/晚饭英语固定用 have！" },
+      { id: "g2_2", group: "g2", type: "fill",
+        promptNl: "We only ______ a sandwich for lunch.", promptZh: "We only ______ a sandwich for lunch.",
+        subNl: "Wij eten alleen een boterham voor de lunch. (1 woord)", subZh: "我们午饭只吃三明治（填 1 个词）",
+        answer: "have",
+        explainNl: "have ... for lunch = iets eten voor de lunch.", explainZh: "have ... for lunch = 午饭吃……" },
+      { id: "g2_3", group: "g2", type: "choice",
+        promptNl: "Hoe zeg je 'ontbijten' in het Engels?", promptZh: "荷兰语 'ontbijten' 英语怎么说？",
+        subNl: "Unit 2 Lesson 5", subZh: "Unit 2 Lesson 5 原文",
+        options: ["to have breakfast", "to breakfast", "to do breakfast", "to make breakfast"], answer: "to have breakfast",
+        explainNl: "To have breakfast = ontbijten.", explainZh: "书上原句：To have breakfast = ontbijten。" },
+      { id: "g2_4", group: "g2", type: "choice",
+        promptNl: "What do you usually have ______ lunch?", promptZh: "What do you usually have ______ lunch?",
+        subNl: "Welk voorzetsel hoort vóór lunch?", subZh: "三餐前用哪个介词？",
+        options: ["for", "at", "in", "on"], answer: "for",
+        explainNl: "Vaste regel: have something FOR breakfast/lunch.", explainZh: "固定搭配：have ... FOR breakfast/lunch。" },
+      { id: "g2_5", group: "g2", type: "fill",
+        promptNl: "We ______ juice, tea and toast for breakfast.", promptZh: "We ______ juice, tea and toast for breakfast.",
+        subNl: "Vul het werkwoord uit Grammatica 2 in (1 woord)", subZh: "填入 Grammatica 2 的核心动词（1 词）",
+        answer: "have",
+        explainNl: "We have juice, tea and toast for breakfast.", explainZh: "课本原句：We have ... for breakfast." },
+
+      // Grammatica 3: to do (13)
+      { id: "g3_1", group: "g3", type: "choice",
+        promptNl: "Today: ______ you like cauliflower?", promptZh: "Today: ______ you like cauliflower?",
+        subNl: "Tegenwoordige tijd (Today) + you", subZh: "Today（现在）+ you",
+        options: ["Do", "Does", "Did", "Are"], answer: "Do",
+        explainNl: "Today + you (geen S-team) → Do!", explainZh: "Today + you → Do！" },
+      { id: "g3_2", group: "g3", type: "choice",
+        promptNl: "Today: ______ she like spinach?", promptZh: "Today: ______ she like spinach?",
+        subNl: "Tegenwoordige tijd (Today) + she", subZh: "Today（现在）+ she",
+        options: ["Does", "Do", "Did", "Is"], answer: "Does",
+        explainNl: "Today + she (S-team: he/she/it!) → DoeS!", explainZh: "Today + she（S 小队）→ Does！" },
+      { id: "g3_3", group: "g3", type: "choice",
+        promptNl: "Yesterday: ______ he like the soup yesterday?", promptZh: "Yesterday: ______ he like the soup yesterday?",
+        subNl: "⚠️ Instinker: yesterday én he!", subZh: "⚠️ 陷阱题：看见 yesterday 和 he！",
+        options: ["Did", "Does", "Do", "Was"], answer: "Did",
+        explainNl: "⏰ Tijdmachine: Zie je 'yesterday'? Dan ALTIJD Did (ook bij he/she/it)!",
+        explainZh: "⏰ 看见 yesterday，全员统一用 Did（不管是不是 he/she/it）！" },
+      { id: "g3_4", group: "g3", type: "choice",
+        promptNl: "Does he like meatballs? — Yes, he ______.", promptZh: "Does he like meatballs? — Yes, he ______.",
+        subNl: "🪞 Spiegel-regel", subZh: "🪞 镜子法则简短回答",
+        options: ["does", "do", "did", "likes"], answer: "does",
+        explainNl: "🪞 Vraag met Does → Yes, he does.", explainZh: "🪞 Does 问就用 does 答！" },
+      { id: "g3_5", group: "g3", type: "choice",
+        promptNl: "Does she like lettuce? — No, she ______.", promptZh: "Does she like lettuce? — No, she ______.",
+        subNl: "🪞 Spiegel-regel (ontkennend)", subZh: "🪞 镜子法则（否定）",
+        options: ["doesn't", "don't", "didn't", "not does"], answer: "doesn't",
+        explainNl: "🪞 Vraag met Does → No, she doesn't.", explainZh: "🪞 Does 问否定答 doesn't！" },
+      { id: "g3_6", group: "g3", type: "choice",
+        promptNl: "Do we like French fries? — No, we ______.", promptZh: "Do we like French fries? — No, we ______.",
+        subNl: "🪞 Spiegel-regel", subZh: "🪞 镜子法则",
+        options: ["don't", "doesn't", "didn't", "aren't"], answer: "don't",
+        explainNl: "🪞 Vraag met Do we → No, we don't.", explainZh: "🪞 Do 问否定答 don't！" },
+      { id: "g3_7", group: "g3", type: "choice",
+        promptNl: "Did you like the steak yesterday? — Yes, I ______.", promptZh: "Did you like the steak yesterday? — Yes, I ______.",
+        subNl: "🪞 Spiegel-regel (Yesterday)", subZh: "🪞 镜子法则（过去）",
+        options: ["did", "do", "does", "liked"], answer: "did",
+        explainNl: "🪞 Vraag met Did → Yes, I did.", explainZh: "🪞 Did 问就用 did 答！" },
+      { id: "g3_8", group: "g3", type: "choice",
+        promptNl: "Did she like the cabbage yesterday? — No, she ______.", promptZh: "Did she like the cabbage yesterday? — No, she ______.",
+        subNl: "🪞 Spiegel-regel (geen doesn't!)", subZh: "🪞 镜子法则（注意是过去！）",
+        options: ["didn't", "doesn't", "don't", "did"], answer: "didn't",
+        explainNl: "🪞 Vraag met Did → No, she didn't.", explainZh: "🪞 Did 问否定必须用 didn't！" },
+      { id: "g3_9", group: "g3", type: "choice",
+        promptNl: "Kies de goede zin: Vond ze de soep gisteren lekker?", promptZh: "选出正确句子：昨天她喜欢那道汤吗？",
+        subNl: "🎒 Let op de Rugzak-regel!", subZh: "🎒 注意背包法则（别超载）！",
+        options: ["Did she like the soup yesterday?", "Did she liked the soup yesterday?", "Does she liked the soup yesterday?", "Did she likes the soup yesterday?"],
+        answer: "Did she like the soup yesterday?",
+        explainNl: "🎒 Did draagt de verleden tijd al → 'like' blijft kaal!",
+        explainZh: "🎒 Did 已经背走过去式，后面的 like 保持原形！" },
+      { id: "g3_10", group: "g3", type: "choice",
+        promptNl: "Kies de goede zin: Vindt hij komkommer lekker? (Today)", promptZh: "选出正确句子：他现在喜欢黄瓜吗？",
+        subNl: "🎒 Let op de Rugzak-regel!", subZh: "🎒 注意背包法则！",
+        options: ["Does he like cucumber?", "Does he likes cucumber?", "Do he like cucumber?", "Did he likes cucumber?"],
+        answer: "Does he like cucumber?",
+        explainNl: "🎒 Does draagt de -s al → 'like' blijft kaal!",
+        explainZh: "🎒 Does 已经背走 -s，后面用原形 like！" },
+      { id: "g3_11", group: "g3", type: "choice",
+        promptNl: "Yesterday I ______ the fried eggs!", promptZh: "Yesterday I ______ the fried eggs!",
+        subNl: "Gewone zin (geen Did in de zin!)", subZh: "肯定陈述句（没有 Did 帮忙！）",
+        options: ["liked", "like", "do like", "likes"], answer: "liked",
+        explainNl: "Zonder Did krijgt 'like' bij Yesterday zelf een -d → Yesterday I liked!",
+        explainZh: "没有 Did 帮忙时，Yesterday 的肯定句变 liked！" },
+      { id: "g3_12", group: "g3", type: "fill",
+        promptNl: "______ it like fish? — Yes, it does.", promptZh: "______ it like fish? — Yes, it does.",
+        subNl: "Kijk naar 'does' in het antwoord! (1 woord)", subZh: "看回答里的 does 反推开头（1 词）",
+        answer: "Does",
+        explainNl: "🪞 Spiegel: het antwoord heeft 'does', dus de vraag begint met 'Does'!",
+        explainZh: "🪞 回答是 does，问句开头是 Does！" },
+      { id: "g3_13", group: "g3", type: "fill",
+        promptNl: "Did he like the salmon? — No, he ______.", promptZh: "Did he like the salmon? — No, he ______.",
+        subNl: "Ontkennend kort antwoord met apostrof (1 woord)", subZh: "过去否定简答（带撇号，1 词）",
+        answer: "didn't",
+        explainNl: "🪞 Did → No, he didn't.", explainZh: "🪞 Did 问否定答 didn't。" },
+
+      // Lesson 5 Phrases & Sunday Roast (3)
+      { id: "p_1", group: "phrases", type: "choice",
+        promptNl: "What is a 'Sunday roast' in the UK?", promptZh: "英国的 'Sunday roast' 是什么？",
+        subNl: "Lesson 5 · Nice to know", subZh: "Lesson 5 文化小知识",
+        options: [
+          "A traditional Sunday lunch or dinner with roast meat, potatoes and vegetables",
+          "A fast-food breakfast on Sunday morning",
+          "A sweet dessert with pineapple",
+          "A restaurant menu only for waiters"
+        ],
+        answer: "A traditional Sunday lunch or dinner with roast meat, potatoes and vegetables",
+        explainNl: "Traditionele zondagse maaltijd met gebraden vlees, aardappelen, groente, gravy en soms Yorkshire puddings.",
+        explainZh: "英国周日传统家庭聚餐：烤肉、烤土豆、蔬菜、肉汁和约克郡布丁。" },
+      { id: "p_2", group: "phrases", type: "choice",
+        promptNl: "Hoe zeg je 'Wat wil je hebben?' in het Engels?", promptZh: "荷兰语 'Wat wil je hebben?' 怎么说？",
+        subNl: "Lesson 5 · Phrases to know", subZh: "Lesson 5 必背句型",
+        options: ["What would you like (to have)?", "Do you like breakfast?", "Are you hungry?", "What did you like yesterday?"],
+        answer: "What would you like (to have)?",
+        explainNl: "What would you like (to have)? = Wat wil je hebben?",
+        explainZh: "课本原句：What would you like (to have)?" },
+      { id: "p_3", group: "phrases", type: "choice",
+        promptNl: "Welk Brits bijgerecht hoort soms bij een 'Sunday roast'?", promptZh: "Sunday roast 里有时会配哪种英国特色配菜？",
+        subNl: "Lesson 5 · Nice to know", subZh: "Lesson 5 文化小知识",
+        options: ["Yorkshire puddings", "French fries", "Garlic sauce", "Fried eggs"], answer: "Yorkshire puddings",
+        explainNl: "In de tekst staat: '...sometimes stuffing and Yorkshire puddings.'",
+        explainZh: "课本原文提到 stuffing 和 Yorkshire puddings。" }
+    ];
+
+    // 多邻国经典词块拼句题库（带防坑干扰词！）
+    const SENTENCE_BUILDS = [
+      { id: "sb_1", group: "g1",
+        promptNl: "Wat wil je hebben voor de lunch?", promptZh: "你午饭想吃什么？",
+        target: ["What", "would", "you", "like", "to", "have", "for", "lunch?"],
+        distractors: ["liking"],
+        explainNl: "What would you like to have for lunch? ('would' staat vóór 'you').",
+        explainZh: "礼貌点餐固定语序：What would you like to have for lunch?" },
+      { id: "sb_2", group: "g1",
+        promptNl: "Ik wil graag een glas sinaasappelsap, alstublieft.", promptZh: "请给我一杯橙汁。",
+        target: ["I'd", "like", "a", "glass", "of", "orange", "juice,", "please."],
+        distractors: ["am"],
+        explainNl: "I'd like a glass of orange juice, please.",
+        explainZh: "点餐固定表达：I'd like ..., please." },
+      { id: "sb_3", group: "g2",
+        promptNl: "Wat eet je normaal voor het ontbijt?", promptZh: "你早饭平时吃什么？",
+        target: ["What", "do", "you", "normally", "have", "for", "breakfast?"],
+        distractors: ["make"],
+        explainNl: "Bij breakfast/lunch gebruik je altijd 'have'!",
+        explainZh: "三餐用 have：What do you normally have for breakfast?" },
+      { id: "sb_4", group: "g2",
+        promptNl: "Wij eten alleen een boterham voor de lunch.", promptZh: "我们午饭只吃一个三明治。",
+        target: ["We", "only", "have", "a", "sandwich", "for", "lunch."],
+        distractors: ["did"],
+        explainNl: "We only have a sandwich for lunch.",
+        explainZh: "课本原句：We only have a sandwich for lunch." },
+      { id: "sb_5", group: "g3",
+        promptNl: "Vindt zij spinazie lekker? (Today)", promptZh: "她现在喜欢菠菜吗？（Today）",
+        target: ["Does", "she", "like", "spinach?"],
+        distractors: ["Do", "likes"],
+        explainNl: "Today + she → Does, en 'like' blijft kaal (géén likes)!",
+        explainZh: "Today + she 用 Does，后面的 like 保持原形！" },
+      { id: "sb_6", group: "g3",
+        promptNl: "Vond hij de soep gisteren lekker? (Yesterday)", promptZh: "他昨天喜欢那道汤吗？（Yesterday）",
+        target: ["Did", "he", "like", "the", "soup", "yesterday?"],
+        distractors: ["Does", "liked"],
+        explainNl: "Yesterday → Did (ook bij he!), en 'like' blijft kaal (géén liked)!",
+        explainZh: "Yesterday 一律用 Did，后面的 like 保持原形！" },
+      { id: "sb_7", group: "g3",
+        promptNl: "Vonden wij de bloemkool gisteren lekker? (Yesterday)", promptZh: "我们昨天喜欢花椰菜吗？",
+        target: ["Did", "we", "like", "the", "cauliflower", "yesterday?"],
+        distractors: ["Do", "liked"],
+        explainNl: "Did we like the cauliflower yesterday?",
+        explainZh: "过去提问用 Did + 原形 like！" },
+      { id: "sb_8", group: "g3",
+        promptNl: "Gisteren vond ik de aardappelen lekker. (Gewone zin)", promptZh: "昨天我喜欢土豆。（肯定陈述句）",
+        target: ["Yesterday", "I", "liked", "the", "potatoes."],
+        distractors: ["like", "did"],
+        explainNl: "Geen 'Did' in de zin → dus bij Yesterday wordt het 'liked'!",
+        explainZh: "没有 Did 的过去肯定句，like 变 liked！" }
+    ];
+
+    const FLITS_BANK = [
+      { mode: "aux", time: "today", person: "👧 she", answer: "Does", opts: ["Do", "Does", "Did"],
+        exNl: "Today + she (S-team!) → Does!", exZh: "Today + she（S 小队）→ Does！" },
+      { mode: "aux", time: "yesterday", person: "👧 she", answer: "Did", opts: ["Do", "Does", "Did"],
+        exNl: "Yesterday! Voor iedereen altijd Did!", exZh: "看见 Yesterday，全员一律用 Did！" },
+      { mode: "aux", time: "today", person: "👉 you", answer: "Do", opts: ["Do", "Does", "Did"],
+        exNl: "Today + you → Do!", exZh: "Today + you → Do！" },
+      { mode: "aux", time: "yesterday", person: "👦 he", answer: "Did", opts: ["Do", "Does", "Did"],
+        exNl: "Yesterday = verleden tijd → Did!", exZh: "Yesterday 是过去 → Did！" },
+      { mode: "aux", time: "today", person: "🐶 it", answer: "Does", opts: ["Do", "Does", "Did"],
+        exNl: "Today + it (he/she/it = S-team!) → Does!", exZh: "Today + it（S 小队）→ Does！" },
+      { mode: "aux", time: "today", person: "👥 we", answer: "Do", opts: ["Do", "Does", "Did"],
+        exNl: "Today + we → Do!", exZh: "Today + we → Do！" },
+      { mode: "mirror", q: "Does he like spinach?", yn: "❌ No, he ...", answer: "doesn't", opts: ["don't", "doesn't", "didn't"],
+        exNl: "🪞 Does → No, he doesn't!", exZh: "🪞 Does 问 → No, he doesn't！" },
+      { mode: "mirror", q: "Did she like the soup yesterday?", yn: "❌ No, she ...", answer: "didn't", opts: ["don't", "doesn't", "didn't"],
+        exNl: "🪞 Did → No, she didn't!", exZh: "🪞 Did 问 → No, she didn't！" },
+      { mode: "mirror", q: "Do we like cauliflower?", yn: "❌ No, we ...", answer: "don't", opts: ["don't", "doesn't", "didn't"],
+        exNl: "🪞 Do → No, we don't!", exZh: "🪞 Do 问 → No, we don't！" },
+      { mode: "bug", sentence: "Did he liked the lettuce yesterday?", answer: "BUG",
+        exNl: "🎒 Dubbel! Did is al verleden tijd → Did he LIKE!", exZh: "🎒 超载！Did 已经是过去，必须用原形 like！" },
+      { mode: "bug", sentence: "Does she likes cucumber?", answer: "BUG",
+        exNl: "🎒 Dubbel! De -s zit al in Does → Does she LIKE!", exZh: "🎒 超载！-s 已在 Does 里，必须用原形 like！" },
+      { mode: "bug", sentence: "Yesterday I liked the French fries.", answer: "OK",
+        exNl: "✅ Goed! Geen Did in de zin, dus bij Yesterday wordt het liked.", exZh: "✅ 正确！肯定句没有 Did，所以变 liked。" }
+    ];
+
+    // =====================================================
+    // 2. 10 关全覆盖多邻国路线（约 45–55 分钟，分 3 大章节）
+    // =====================================================
+    const SECTIONS = [
+      { id: 1, cls: "sec1", titleNl: "Deel 1 · 🥦 Groenten & Alle 40 Woorden", titleZh: "第一篇章 · 🥦 蔬菜特训 & 全部 40 词",
+        subNl: "Alle woorden uit Lesson 1 t/m 4 (ca. 20 min)", subZh: "100% 覆盖 Lesson 1–4 全部词汇（约 20 分钟）" },
+      { id: 2, cls: "sec2", titleNl: "Deel 2 · ⚡ Grammatica 1–3 & Do / Does / Did", titleZh: "第二篇章 · ⚡ Grammatica 1–3 深度突破",
+        subNl: "Bouw zinnen, oefen de Tijdmachine & versla Do/Does/Did (ca. 18 min)", subZh: "词块拼句 + 时间机闪电反射 + 语法 Boss（约 18 分钟）" },
+      { id: 3, cls: "sec3", titleNl: "Deel 3 · 🏆 Herhaling & Echte Eindtoets", titleZh: "第三篇章 · 🏆 二刷强化 & 终极模拟考",
+        subNl: "Laatste check, Fouten-EHBO & je eindcijfer (ca. 14 min)", subZh: "蔬菜二刷 + 错题清零 + 24 题真题模拟（约 14 分钟）" }
+    ];
+
+    const LEVELS = [
+      { id: 1, sec: 1, icon: "🥦", offset: 0, kind: "normal",
+        titleNl: "Level 1 · Groente Mix", titleZh: "第 1 关 · 蔬菜消消乐热身",
+        subNl: "Koppel & herken de 9 groenten (~3 min)", subZh: "9 个蔬菜词配对 + 选词（约 3 分钟）" },
+      { id: 2, sec: 1, icon: "✍️", offset: -46, kind: "normal",
+        titleNl: "Level 2 · Groente Spelling-Boss", titleZh: "第 2 关 · 蔬菜拼写 Boss",
+        subNl: "Typ alle 9 groenten foutloos (~5 min)", subZh: "9 个蔬菜词全拼写通关（约 5 分钟）" },
+      { id: 3, sec: 1, icon: "🧑‍🍳", offset: -14, kind: "normal",
+        titleNl: "Level 3 · Lesson 1 & 2 (15 woorden)", titleZh: "第 3 关 · Lesson 1 & 2 全覆盖",
+        subNl: "Bestellen, vlees & vis (~6 min)", subZh: "点餐 + 肉类海鲜 15 词全刷（约 6 分钟）" },
+      { id: 4, sec: 1, icon: "🍳", offset: 42, kind: "normal",
+        titleNl: "Level 4 · Lesson 3 & 4 (16 woorden)", titleZh: "第 4 关 · Lesson 3 & 4 全覆盖",
+        subNl: "Restaurant, ontbijt, lunch & diner (~6 min)", subZh: "餐厅三餐 + 味道蔬果 16 词全刷（约 6 分钟）" },
+
+      { id: 5, sec: 2, icon: "🍽️", offset: 14, kind: "boss",
+        titleNl: "Level 5 · Grammatica 1 & 2 + Zinnen bouwen", titleZh: "第 5 关 · would like & have 拼句实战",
+        subNl: "would like & have bij ontbijt/lunch (~6 min)", subZh: "多邻国词块拼句 + 考点实战（约 6 分钟）" },
+      { id: 6, sec: 2, icon: "⏰", offset: -42, kind: "boss",
+        titleNl: "Level 6 · Do / Does / Did Tijdmachine", titleZh: "第 6 关 · Do/Does/Did 时间机与闪电反射",
+        subNl: "3 super-trucs + 12 rondes Flits-Game (~5 min)", subZh: "3 大口诀互动实验室 + 12 轮闪电反射（约 5 分钟）" },
+      { id: 7, sec: 2, icon: "⚡", offset: 16, kind: "boss",
+        titleNl: "Level 7 · Do / Does / Did Boss Arena", titleZh: "第 7 关 · Do/Does/Did 终极强化",
+        subNl: "Zinnen bouwen + alle toetsvragen (~7 min)", subZh: "拼句避坑 + 全部核心真题打通（约 7 分钟）" },
+
+      { id: 8, sec: 3, icon: "🇬🇧", offset: 44, kind: "normal",
+        titleNl: "Level 8 · Sunday Roast & Groente Check", titleZh: "第 8 关 · Lesson 5 句型 + 蔬菜二刷",
+        subNl: "Phrases + extra ronde moeilijke groenten (~4 min)", subZh: "文化句型 + 间隔重复二刷难拼蔬菜（约 4 分钟）" },
+      { id: 9, sec: 3, icon: "🩹", offset: -34, kind: "normal",
+        titleNl: "Level 9 · Fouten-EHBO", titleZh: "第 9 关 · 个人错题大清零",
+        subNl: "Werk al je fouten weg vóór de eindtoets (~3 min)", subZh: "考前清空前 8 关所有错题（约 3 分钟）" },
+      { id: 10, sec: 3, icon: "🏆", offset: 0, kind: "exam",
+        titleNl: "Level 10 · Unit 2 Eindtoets (24 vragen)", titleZh: "第 10 关 · 24 题终极模拟考（出 Cijfer）",
+        subNl: "Net als morgen op school · Cijfer 1–10 (~8 min)", subZh: "全真考卷结构 · 交卷出 1–10 分（约 8 分钟）" }
+    ];
+
+    // =====================================================
+    // 3. 状态与工具函数
+    // =====================================================
+    const STORAGE_KEY = "ernst_unit2_duo_v2";
+    let state = {
+      lang: "nl",
+      xp: 0,
+      streak: 0,
+      unlockedLevel: 1,
+      completedLevels: {},
+      mastered: {},
+      mistakes: {},
+      parentMode: false,
+      speechOn: true,
+      sfxOn: true,
+      bestCijfer: null
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("ernst_unit2_duo_v1");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state = { ...state, ...parsed };
+          if (state.unlockedLevel > 10) state.unlockedLevel = 10;
+        }
+      } catch (e) {}
+    }
+    function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+
+    function t(nl, zh) { return state.lang === "nl" ? nl : (state.lang === "zh" ? zh : `${nl} / ${zh}`); }
+    function tBlock(nl, zh) {
+      if (state.lang === "nl") return escapeHtml(nl);
+      if (state.lang === "zh") return escapeHtml(zh);
+      return `${escapeHtml(nl)}<span class="bilingual-zh">${escapeHtml(zh)}</span>`;
+    }
+    function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    }
+    function normalizeAns(s) { return (s || "").trim().replace(/[’`]/g, "'").replace(/\s+/g, " ").toLowerCase(); }
+
+    function renderLetterDiff(typed, target) {
+      const u = typed.trim();
+      let html = '<div class="letter-diff">';
+      for (let i = 0; i < target.length; i++) {
+        const ch = target[i];
+        const ok = u[i] && u[i].toLowerCase() === ch.toLowerCase();
+        html += `<span class="ld-char ${ok ? "ld-ok" : "ld-bad"}">${ch === " " ? "␣" : escapeHtml(ch)}</span>`;
+      }
+      return html + "</div>";
+    }
+
+    let audioCtx = null;
+    function playTone(type) {
+      if (!state.sfxOn) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const notes = type === "win" ? [523, 659, 784, 1046] : (type === "ok" ? [523, 659] : [220, 175]);
+        notes.forEach((freq, i) => {
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.connect(g); g.connect(audioCtx.destination);
+          o.type = type === "err" ? "sawtooth" : "triangle";
+          o.frequency.setValueAtTime(freq, now + i * 0.08);
+          g.gain.setValueAtTime(0.12, now + i * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.18);
+          o.start(now + i * 0.08); o.stop(now + i * 0.08 + 0.18);
+        });
+      } catch (e) {}
+    }
+
+    function speakEn(text) {
+      if (!state.speechOn || !("speechSynthesis" in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "en-GB"; u.rate = 0.92;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    function setLang(l) { state.lang = l; saveState(); renderMap(); if (lesson && lesson.active) renderCurrentStep(); }
+    function toggleSpeech() { state.speechOn = !state.speechOn; saveState(); renderMap(); }
+    function toggleSfx() { state.sfxOn = !state.sfxOn; saveState(); renderMap(); }
+    function toggleParentMode() { state.parentMode = !state.parentMode; saveState(); renderMap(); }
+    function resetProgress() {
+      if (!confirm(t("Alle voortgang en levels opnieuw starten?", "确定要重置所有闯关进度和 XP 吗？"))) return;
+      state.xp = 0; state.streak = 0; state.unlockedLevel = 1;
+      state.completedLevels = {}; state.mastered = {}; state.mistakes = {}; state.bestCijfer = null;
+      saveState(); renderMap();
+    }
+
+    // =====================================================
+    // 4. 渲染 3 篇章 × 10 关地图
+    // =====================================================
+    function renderMap() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "nl";
+      document.getElementById("brand-txt").textContent = t("Ernst's Unit 2 Quest", "Ernst 英语 Unit 2 闯关");
+      document.getElementById("stat-xp").textContent = state.xp;
+      document.getElementById("stat-streak").textContent = state.streak;
+      document.getElementById("stat-words").textContent = Object.keys(state.mastered).length;
+
+      ["nl", "both", "zh"].forEach(l => document.getElementById(`lang-${l}`).classList.toggle("active", state.lang === l));
+      const sp = document.getElementById("btn-speech");
+      sp.textContent = state.speechOn ? "🔊" : "🔇"; sp.classList.toggle("on", state.speechOn);
+      const sf = document.getElementById("btn-sfx");
+      sf.textContent = state.sfxOn ? "🎵" : "🔕"; sf.classList.toggle("on", state.sfxOn);
+
+      const mCount = Object.keys(state.mistakes).length;
+      const secWrap = document.getElementById("map-sections");
+
+      secWrap.innerHTML = SECTIONS.map(sec => {
+        const secLevels = LEVELS.filter(l => l.sec === sec.id);
+        const secDone = secLevels.filter(l => state.completedLevels[l.id]).length;
+        const nodesHtml = secLevels.map((lv, idx) => {
+          const isDone = !!state.completedLevels[lv.id];
+          const isUnlocked = state.parentMode || lv.id <= state.unlockedLevel;
+          const isCurrent = !isDone && lv.id === state.unlockedLevel;
+          const cls = isDone ? "done" : (isUnlocked ? `current ${lv.kind}` : "locked");
+          const title = state.lang === "zh" ? lv.titleZh : (state.lang === "nl" ? lv.titleNl : `${lv.titleNl} · ${lv.titleZh}`);
+          let sub = state.lang === "zh" ? lv.subZh : lv.subNl;
+          if (lv.id === 9 && mCount > 0) sub = state.lang === "zh" ? `当前有 ${mCount} 道待清零错题` : `${mCount} fouten klaar om weg te werken!`;
+          if (lv.id === 10 && state.bestCijfer) sub = `${sub} · 🏆 ${state.bestCijfer}/10`;
+          const conn = idx > 0 ? `<div class="path-connector ${state.completedLevels[secLevels[idx-1].id] ? "done" : ""}"></div>` : "";
+          return `
+            ${conn}
+            <div class="path-step" style="transform: translateX(${lv.offset}px);">
+              <div class="node-row">
+                ${isCurrent ? `<div class="robot-buddy">🤖</div>` : ""}
+                <button class="node-btn ${cls}" ${isUnlocked ? "" : "disabled"} onclick="startLevel(${lv.id})">
+                  ${isCurrent ? `<div class="start-bubble">START!</div>` : ""}
+                  ${isUnlocked ? lv.icon : "🔒"}
+                  ${isDone ? `<span class="node-check">✓</span>` : ""}
+                </button>
+              </div>
+              <div class="node-label">
+                <div class="node-title">${escapeHtml(title)}</div>
+                <div class="node-sub">${escapeHtml(sub)}</div>
+              </div>
+            </div>`;
+        }).join("");
+
+        return `
+          <div class="unit-banner ${sec.cls}">
+            <div>
+              <h2>${escapeHtml(state.lang === "zh" ? sec.titleZh : sec.titleNl)}</h2>
+              <p>${escapeHtml(state.lang === "zh" ? sec.subZh : sec.subNl)}</p>
+            </div>
+            <div class="unit-progress-pill">${secDone} / ${secLevels.length}</div>
+          </div>
+          <div class="path-wrap">${nodesHtml}</div>`;
+      }).join("");
+
+      document.getElementById("parent-hint").textContent = state.parentMode
+        ? t("🔑 Ouder-modus AAN: alle 10 levels zijn vrij te kiezen.", "🔑 家长自由模式已开：可点击任意关卡直接进入。")
+        : t("🔒 Focus-modus: Ernst speelt één level per keer vrij (totaal ca. 45–55 min).", "🔒 专注解锁模式：一关解锁一关，全套 10 关约 45–55 分钟（可分 2–3 次完成）。");
+      const pmBtn = document.getElementById("btn-parent-mode");
+      pmBtn.textContent = state.parentMode ? t("🔑 Ouder-modus: AAN", "🔑 家长自由选关：开") : t("🔑 Ouder-modus", "🔑 家长自由选关");
+      pmBtn.classList.toggle("on", state.parentMode);
+      document.getElementById("btn-reset").textContent = t("🔄 Reset", "🔄 重置进度");
+    }
+
+    // =====================================================
+    // 5. 全 10 关关卡生成器（100% 覆盖 40 词 + 全部语法）
+    // =====================================================
+    let lesson = null;
+
+    function buildLevelSteps(lvId) {
+      const steps = [];
+
+      if (lvId === 1) {
+        // Level 1: 蔬菜启蒙（2 轮消消乐配对 + 5 选择）
+        const vShuf = shuffle(VEG_WORDS);
+        steps.push({ kind: "match", words: vShuf.slice(0, 5), tagNl: "Groente Koppelen 1/2", tagZh: "蔬菜消消乐 1/2" });
+        steps.push({ kind: "match", words: vShuf.slice(4, 9), tagNl: "Groente Koppelen 2/2", tagZh: "蔬菜消消乐 2/2" });
+        shuffle(VEG_WORDS).slice(0, 5).forEach(w => {
+          const opts = shuffle([w, ...shuffle(VEG_WORDS.filter(x => x.id !== w.id)).slice(0, 3)]);
+          steps.push({ kind: "word_choice", word: w, options: opts, tagNl: "Groente Meerkeuze", tagZh: "蔬菜快选" });
+        });
+      }
+      else if (lvId === 2) {
+        // Level 2: 9 个蔬菜词全拼写
+        shuffle(VEG_WORDS).forEach(w => {
+          steps.push({ kind: "word_spell", word: w, tagNl: "Groente Spellen", tagZh: "蔬菜拼写 Boss" });
+        });
+      }
+      else if (lvId === 3) {
+        // Level 3: Lesson 1 (10 词) + Lesson 2 非蔬菜 (5 词) = 15 词全覆盖！
+        const l12 = shuffle(VOCAB.filter(w => w.lesson === 1 || (w.lesson === 2 && !w.veg)));
+        steps.push({ kind: "match", words: l12.slice(0, 5), tagNl: "Lesson 1 & 2 · Koppelen", tagZh: "Lesson 1 & 2 消消乐" });
+        l12.slice(5, 10).forEach(w => {
+          const opts = shuffle([w, ...shuffle(NON_VEG_WORDS.filter(x => x.id !== w.id)).slice(0, 3)]);
+          steps.push({ kind: "word_choice", word: w, options: opts, tagNl: "Lesson 1 & 2 · Meerkeuze", tagZh: "词汇快选" });
+        });
+        l12.slice(10, 15).forEach(w => {
+          steps.push({ kind: "word_spell", word: w, tagNl: "Lesson 1 & 2 · Spellen", tagZh: "核心词拼写" });
+        });
+        // 把配对的 5 词中随机抽 2 个再拼写巩固
+        l12.slice(0, 2).forEach(w => {
+          steps.push({ kind: "word_spell", word: w, tagNl: "Lesson 1 & 2 · Extra Spellen", tagZh: "巩固拼写" });
+        });
+      }
+      else if (lvId === 4) {
+        // Level 4: Lesson 3 (10 词) + Lesson 4 非蔬菜 (6 词) = 16 词全覆盖！
+        const l34 = shuffle(VOCAB.filter(w => w.lesson === 3 || (w.lesson === 4 && !w.veg)));
+        steps.push({ kind: "match", words: l34.slice(0, 5), tagNl: "Lesson 3 & 4 · Koppelen", tagZh: "Lesson 3 & 4 消消乐" });
+        l34.slice(5, 10).forEach(w => {
+          const opts = shuffle([w, ...shuffle(NON_VEG_WORDS.filter(x => x.id !== w.id)).slice(0, 3)]);
+          steps.push({ kind: "word_choice", word: w, options: opts, tagNl: "Lesson 3 & 4 · Meerkeuze", tagZh: "词汇快选" });
+        });
+        l34.slice(10, 16).forEach(w => {
+          steps.push({ kind: "word_spell", word: w, tagNl: "Lesson 3 & 4 · Spellen", tagZh: "核心词拼写" });
+        });
+      }
+      else if (lvId === 5) {
+        // Level 5: Grammatica 1 & 2（词块拼句 4 题 + 选择填空 8 题）
+        SENTENCE_BUILDS.filter(s => s.group === "g1" || s.group === "g2").forEach(sb => {
+          steps.push({ kind: "sentence_build", sb, tagNl: "Zin Bouwen · Grammatica 1–2", tagZh: "多邻国词块拼句" });
+        });
+        shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "g1" || q.group === "g2")).slice(0, 8).forEach(q => {
+          steps.push({ kind: "grammar", q, tagNl: "Grammatica 1 & 2", tagZh: "语法实战" });
+        });
+      }
+      else if (lvId === 6) {
+        // Level 6: Do / Does / Did 3大法则时间机 + 全部 12 轮闪电反射！
+        steps.push({ kind: "teach_ddd", tagNl: "Stap 1 · Snap Do / Does / Did", tagZh: "第 1 步 · 时间机互动教学" });
+        shuffle(FLITS_BANK).forEach(f => {
+          steps.push({ kind: "flits", flits: f, tagNl: "Flits-Reflex", tagZh: "闪电反射训练" });
+        });
+      }
+      else if (lvId === 7) {
+        // Level 7: Do / Does / Did Boss（4 道词块拼句 + 10 道 Grammatica 3 真题）
+        SENTENCE_BUILDS.filter(s => s.group === "g3").forEach(sb => {
+          steps.push({ kind: "sentence_build", sb, tagNl: "Zin Bouwen · Do / Does / Did", tagZh: "拼句避坑实战" });
+        });
+        shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "g3")).slice(0, 10).forEach(q => {
+          steps.push({ kind: "grammar", q, tagNl: "Do / Does / Did Boss", tagZh: "时态与简答强化" });
+        });
+      }
+      else if (lvId === 8) {
+        // Level 8: Lesson 5 Phrases & Sunday Roast (3题) + 难拼蔬菜二刷回马枪 (6词)
+        GRAMMAR_QUESTIONS.filter(q => q.group === "phrases").forEach(q => {
+          steps.push({ kind: "grammar", q, tagNl: "Lesson 5 · Phrases & Sunday Roast", tagZh: "Lesson 5 句型与文化" });
+        });
+        const hardVegIds = ["w16", "w35", "w38", "w39", "w11", "w15"]; // cauliflower, lettuce, cucumber, cabbage, vegetables, spinach
+        shuffle(hardVegIds).forEach(id => {
+          const w = VOCAB.find(x => x.id === id);
+          steps.push({ kind: "word_spell", word: w, tagNl: "Groente Extra Check!", tagZh: "高危蔬菜二刷！" });
+        });
+      }
+      else if (lvId === 9) {
+        // Level 9: 个人错题大清零
+        const mEntries = shuffle(Object.values(state.mistakes));
+        if (mEntries.length > 0) {
+          mEntries.forEach(m => {
+            if (m.kind === "word") {
+              const w = VOCAB.find(x => x.id === m.id);
+              if (w) steps.push({ kind: "word_spell", word: w, tagNl: "Fouten-EHBO · Woord", tagZh: "错题清零 · 拼写" });
+            } else if (m.kind === "grammar") {
+              const q = GRAMMAR_QUESTIONS.find(x => x.id === m.id);
+              if (q) steps.push({ kind: "grammar", q, tagNl: "Fouten-EHBO · Grammatica", tagZh: "错题清零 · 语法" });
+            } else if (m.kind === "sb") {
+              const sb = SENTENCE_BUILDS.find(x => x.id === m.id);
+              if (sb) steps.push({ kind: "sentence_build", sb, tagNl: "Fouten-EHBO · Zin Bouwen", tagZh: "错题清零 · 拼句" });
+            }
+          });
+        } else {
+          // 零错题奖励：6 道考前黄金保底热身
+          ["w16", "w35", "w38"].forEach(id => steps.push({ kind: "word_spell", word: VOCAB.find(x => x.id === id), tagNl: "Topper-Check · Groente", tagZh: "考前保底 · 蔬菜" }));
+          ["g3_3", "g3_9", "g2_3"].forEach(id => steps.push({ kind: "grammar", q: GRAMMAR_QUESTIONS.find(x => x.id === id), tagNl: "Topper-Check · Grammatica", tagZh: "考前保底 · 语法" }));
+        }
+      }
+      else if (lvId === 10) {
+        // Level 10: 24 题终极模拟考（不重考，真实计分出 Cijfer！）
+        shuffle(VEG_WORDS).slice(0, 6).forEach(w => steps.push({ kind: "word_spell", word: w, tagNl: "Eindtoets · Deel A Groente", tagZh: "模拟考 · A 蔬菜拼写" }));
+        shuffle(NON_VEG_WORDS).slice(0, 6).forEach(w => steps.push({ kind: "word_spell", word: w, tagNl: "Eindtoets · Deel B Woorden", tagZh: "模拟考 · B 综合词汇" }));
+        const g1 = shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "g1")).slice(0, 2);
+        const g2 = shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "g2")).slice(0, 2);
+        const g3 = shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "g3")).slice(0, 6);
+        const ph = shuffle(GRAMMAR_QUESTIONS.filter(q => q.group === "phrases")).slice(0, 2);
+        [...g1, ...g2, ...g3, ...ph].forEach(q => steps.push({ kind: "grammar", q, tagNl: "Eindtoets · Deel C Grammatica", tagZh: "模拟考 · C 语法与句型" }));
+      }
+
+      return steps;
+    }
+
+    // =====================================================
+    // 6. 全屏多邻国闯关引擎
+    // =====================================================
+    function startLevel(lvId) {
+      const steps = buildLevelSteps(lvId);
+      lesson = {
+        active: true,
+        lvId,
+        isExam: lvId === 10,
+        queue: steps,
+        totalBase: steps.length,
+        doneCount: 0,
+        firstTryRight: 0,
+        examErrors: [],
+        selected: null,
+        sbPicked: [],    // indices into step._bank
+        checked: false,
+        lastOk: false,
+        lastFbTitle: "",
+        lastFbDetail: "",
+        hintShown: false,
+        matchState: null,
+        labTime: "today",
+        labPerson: "she",
+        labSpeech: ""
+      };
+      document.getElementById("map-shell").classList.add("hidden");
+      document.getElementById("lesson-shell").classList.add("active");
+      renderCurrentStep();
+    }
+
+    function exitLesson() {
+      lesson = null;
+      document.getElementById("lesson-shell").classList.remove("active");
+      document.getElementById("map-shell").classList.remove("hidden");
+      renderMap();
+    }
+
+    function renderCurrentStep() {
+      if (!lesson) return;
+      if (lesson.queue.length === 0) { renderVictoryScreen(); return; }
+
+      const step = lesson.queue[0];
+      const pct = Math.min(100, Math.round((lesson.doneCount / (lesson.doneCount + lesson.queue.length)) * 100));
+      document.getElementById("duo-bar-fill").style.width = `${pct}%`;
+      document.getElementById("lesson-counter").textContent = `${lesson.doneCount + 1} / ${lesson.doneCount + lesson.queue.length}`;
+
+      const body = document.getElementById("lesson-body");
+      const badgeHtml = `<div class="step-badge ${step.isRetry ? "retry" : ""}">
+        ${step.isRetry ? `🔁 ${t("Oefen nog een keer", "错题再练一次")}` : `✨ ${t(step.tagNl, step.tagZh)}`}
+      </div>`;
+
+      if (step.kind === "match") {
+        if (!lesson.matchState || lesson.matchState.stepRef !== step) {
+          lesson.matchState = { stepRef: step, left: shuffle(step.words), right: shuffle(step.words), selL: null, selR: null, matched: {}, lastTip: "" };
+        }
+        const ms = lesson.matchState;
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">${tBlock("Koppel Nederlands aan Engels!", "把荷兰语和对应的英语连连看配对！")}</h2>
+          <p class="q-sub">${ms.lastTip ? `💡 ${ms.lastTip}` : tBlock("Klik eerst links, daarna het goede woord rechts.", "先点左边荷兰语，再点右边对应的英文。")}</p>
+          <div class="match-cols">
+            <div class="match-col">
+              ${ms.left.map(w => `<button class="match-tile ${ms.matched[w.id] ? "matched" : (ms.selL === w.id ? "selected" : "")}" onclick="pickMatch('L','${w.id}')">${w.emoji} ${w.nl}${state.lang !== "nl" ? `<span class="bilingual-zh">${w.zh}</span>` : ""}</button>`).join("")}
+            </div>
+            <div class="match-col">
+              ${ms.right.map(w => `<button class="match-tile ${ms.matched[w.id] ? "matched" : (ms.selR === w.id ? "selected" : "")}" onclick="pickMatch('R','${w.id}')">${w.en}</button>`).join("")}
+            </div>
+          </div>`;
+        renderFooter();
+      }
+      else if (step.kind === "word_choice") {
+        const w = step.word;
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">${w.emoji} ${tBlock(`Wat is '${w.nl}' in het Engels?`, `“${w.nl}”的英语是哪一个？`)}</h2>
+          <p class="q-sub">${state.lang !== "nl" ? `🇨🇳 ${w.zh} · ` : ""}<button class="icon-btn" onclick="speakEn('${w.en}')">🔊 ${t("Luister", "听发音")}</button></p>
+          <div class="choice-grid">
+            ${step.options.map((o, i) => {
+              let cls = "";
+              if (lesson.checked) { if (o.id === w.id) cls = "correct"; else if (lesson.selected === o.id) cls = "wrong"; }
+              else if (lesson.selected === o.id) cls = "selected";
+              return `<button class="choice-tile ${cls}" ${lesson.checked ? "disabled" : ""} onclick="selectChoice('${o.id}', '${o.en}')"><span class="tile-num">${i + 1}</span><span>${o.en}</span></button>`;
+            }).join("")}
+          </div>`;
+        renderFooter();
+      }
+      else if (step.kind === "word_spell") {
+        const w = step.word;
+        const masked = w.en.split(" ").map(p => p[0] + "_".repeat(Math.max(0, p.length - 1))).join("  ");
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">${tBlock("Typ het goede Engelse woord:", "请拼出正确的英语单词：")}</h2>
+          <div class="spell-card">
+            <div>
+              <div style="font-size:1.45rem; font-weight:900;">${w.emoji} 🇳🇱 ${w.nl}</div>
+              ${state.lang !== "nl" ? `<div style="color:var(--muted); font-weight:700;">🇨🇳 ${w.zh}</div>` : ""}
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="icon-btn" onclick="speakEn('${w.en}')">🔊 ${t("Luister", "听发音")}</button>
+              ${!lesson.isExam ? `<button class="icon-btn" onclick="showSpellHint()">💡 ${t("Tip", "提示")}</button>` : ""}
+            </div>
+          </div>
+          ${lesson.hintShown ? `<div style="color:var(--orange-dark); font-weight:800; margin-bottom:10px; font-size:0.92rem;">💡 ${masked}${w.tipNl ? ` — ${state.lang === "zh" ? w.tipZh : w.tipNl}` : ""}</div>` : ""}
+          <input type="text" class="spell-input" id="duo-spell-input" autocomplete="off" spellcheck="false"
+            value="${escapeHtml(lesson.selected || "")}" ${lesson.checked ? "disabled" : ""}
+            placeholder="${t("Typ het Engelse woord...", "输入英文单词，按回车提交...")}" />`;
+        renderFooter();
+        const inp = document.getElementById("duo-spell-input");
+        if (inp && !lesson.checked) {
+          inp.focus();
+          inp.addEventListener("input", e => {
+            lesson.selected = e.target.value;
+            const b = document.getElementById("btn-check-step");
+            if (b) b.disabled = !lesson.selected.trim();
+          });
+        }
+      }
+      else if (step.kind === "sentence_build") {
+        const sb = step.sb;
+        if (!step._bank) step._bank = shuffle([...sb.target, ...sb.distractors]);
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🧩 ${tBlock("Bouw de goede Engelse zin:", "点击词块，拼出正确的英语句子：")}</h2>
+          <p class="q-sub">🇳🇱 <strong>${escapeHtml(sb.promptNl)}</strong>${state.lang !== "nl" ? `<span class="bilingual-zh">🇨🇳 ${escapeHtml(sb.promptZh)}</span>` : ""}</p>
+          <div class="sentence-slot ${lesson.sbPicked.length ? "has-words" : ""}">
+            ${lesson.sbPicked.length === 0
+              ? `<span style="color:#94a3b8; font-weight:700; font-size:0.92rem;">${t("Klik hieronder op de woorden in de goede volgorde (let op: er zitten instinkers bij!)", "按顺序点击下方词块拼成句子（注意：里面混了 1–2 个陷阱干扰词！）")}</span>`
+              : lesson.sbPicked.map((bi, pos) => `<button class="wb-chip placed" ${lesson.checked ? "disabled" : ""} onclick="unpickWord(${pos})">${escapeHtml(step._bank[bi])}</button>`).join("")}
+          </div>
+          <div class="word-bank">
+            ${step._bank.map((word, bi) => {
+              const used = lesson.sbPicked.includes(bi);
+              return `<button class="wb-chip ${used ? "used" : ""}" ${lesson.checked ? "disabled" : ""} onclick="pickWord(${bi})">${escapeHtml(word)}</button>`;
+            }).join("")}
+          </div>`;
+        renderFooter();
+      }
+      else if (step.kind === "teach_ddd") {
+        const isPast = lesson.labTime === "yesterday";
+        const isSTeam = ["he", "she", "it"].includes(lesson.labPerson);
+        const aux = isPast ? "Did" : (isSTeam ? "Does" : "Do");
+        const auxLow = aux.toLowerCase();
+        const auxNeg = isPast ? "didn't" : (isSTeam ? "doesn't" : "don't");
+        const auxPill = isPast ? "pill-did" : (isSTeam ? "pill-does" : "pill-do");
+        const ansSubj = lesson.labPerson === "you" ? "I" : lesson.labPerson;
+        const tail = isPast ? " yesterday" : "";
+        lesson.labSpeech = `${aux} ${lesson.labPerson} like spinach${tail}? Yes, ${ansSubj} ${auxLow}. No, ${ansSubj} ${auxNeg}.`;
+
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">⏰ ${tBlock("De 3 Super-Trucs voor Do / Does / Did", "先花 30 秒玩懂 Do / Does / Did 三个超级口诀")}</h2>
+          <div class="teach-card">
+            <div style="font-size:0.9rem; margin-bottom:10px;">
+              <strong>1. ⏰ ${t("Tijdmachine + S-team", "先看时间机，再看 S 小队")}</strong>:
+              <span class="pill pill-did">Yesterday → Did</span>
+              <span class="pill pill-does">Today + he/she/it → DoeS</span>
+              <span class="pill pill-do">Today + I/you/we → Do</span>
+            </div>
+            <div style="font-size:0.9rem; margin-bottom:10px;">
+              <strong>2. 🎒 ${t("Rugzak-regel", "背包法则")}</strong>:
+              ${tBlock("Does/Did dragen de -s of verleden tijd al → 'like' blijft altijd kaal!", "Does/Did 已经背走变化，问句里的 like 永远保持原形！")}
+              <span class="pill pill-bare">✅ Did she like?</span>
+              <span class="pill pill-err">❌ Did she liked?</span>
+            </div>
+            <div style="font-size:0.9rem; margin-bottom:14px;">
+              <strong>3. 🪞 ${t("Spiegel-regel", "镜子法则")}</strong>:
+              ${tBlock("Vraag met Does → Yes, ... does / No, ... doesn't. Vraag met Did → did / didn't.", "问句用什么开头，简短回答就照镜子回什么！")}
+            </div>
+            <div style="border-top:2px dashed #cbd5e1; padding-top:12px;">
+              <div style="font-weight:900; font-size:0.88rem; color:#5b21b6;">🎛️ ${t("Probeer de Tijdmachine zelf (klik op de knoppen):", "动手点点时间机，看句子怎么变：")}</div>
+              <div class="mini-switch">
+                <button class="${!isPast ? "active" : ""}" onclick="setLessonLab('time','today')">☀️ Today</button>
+                <button class="${isPast ? "active" : ""}" onclick="setLessonLab('time','yesterday')">⏪ Yesterday</button>
+                <span style="width:8px;"></span>
+                ${["you","we","he","she","it"].map(p => `<button class="${lesson.labPerson === p ? "active" : ""}" onclick="setLessonLab('person','${p}')">${p}${["he","she","it"].includes(p) ? " (S)" : ""}</button>`).join("")}
+              </div>
+              <div style="background:#fff; border:2px solid #e2e8f0; border-radius:14px; padding:12px 14px; margin-top:8px;">
+                <div style="font-size:1.22rem; font-weight:900;">
+                  ❓ <span class="pill ${auxPill}">${aux}</span> ${lesson.labPerson} <span class="pill pill-bare">like</span> spinach${tail}?
+                  <button class="icon-btn" style="float:right;" onclick="speakEn(lesson.labSpeech)">🔊</button>
+                </div>
+                <div style="margin-top:8px; font-weight:800; font-size:0.95rem;">
+                  🪞 <span style="color:#166534;">Yes, ${ansSubj} ${auxLow}.</span> &nbsp;|&nbsp;
+                  <span style="color:#991b1b;">No, ${ansSubj} ${auxNeg}.</span>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true;
+        renderFooter();
+      }
+      else if (step.kind === "flits") {
+        const f = step.flits;
+        let cluesHtml = "", opts = [], titleHtml = "";
+        if (f.mode === "aux") {
+          titleHtml = tBlock("Welk woord begint de vraag?", "这句问句开头选哪一个？");
+          cluesHtml = `<div class="clue-row"><span class="clue-pill ${f.time === "yesterday" ? "past" : "today"}">${f.time === "yesterday" ? "⏪ Yesterday" : "☀️ Today"}</span><span class="clue-pill person">${f.person}</span></div>`;
+          opts = f.opts.map(o => ({ val: o, label: o }));
+        } else if (f.mode === "mirror") {
+          titleHtml = `🪞 ${tBlock("Spiegel-regel: Maak het korte antwoord af!", "镜子法则：选出正确的简短回答！")}`;
+          cluesHtml = `<div class="clue-row"><span class="clue-pill today">${escapeHtml(f.q)}</span><span class="clue-pill person">${escapeHtml(f.yn)}</span></div>`;
+          opts = f.opts.map(o => ({ val: o, label: o }));
+        } else {
+          titleHtml = `🎒 ${tBlock("Rugzak-check: Is deze zin GOED of FOUT?", "背包找茬：这句话是对还是超载错了？")}`;
+          cluesHtml = `<div class="clue-row"><span class="clue-pill past">"${escapeHtml(f.sentence)}"</span></div>`;
+          opts = [{ val: "OK", label: `✅ ${t("Helemaal GOED", "完全正确")}` }, { val: "BUG", label: `🎒 ${t("FOUT! Dubbel!", "错了！背包超载！")}` }];
+        }
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">${titleHtml}</h2>
+          ${cluesHtml}
+          <div class="choice-grid">
+            ${opts.map((o, i) => {
+              let cls = "";
+              if (lesson.checked) { if (o.val === f.answer) cls = "correct"; else if (lesson.selected === o.val) cls = "wrong"; }
+              else if (lesson.selected === o.val) cls = "selected";
+              return `<button class="choice-tile ${cls}" ${lesson.checked ? "disabled" : ""} onclick="selectChoice(${JSON.stringify(o.val).replace(/"/g, '&quot;')})"><span class="tile-num">${i + 1}</span><span>${escapeHtml(o.label)}</span></button>`;
+            }).join("")}
+          </div>`;
+        renderFooter();
+      }
+      else if (step.kind === "grammar") {
+        const q = step.q;
+        const promptHtml = q.promptNl === q.promptZh ? escapeHtml(q.promptNl) : tBlock(q.promptNl, q.promptZh);
+        if (q.type === "choice") {
+          if (!step._opts) step._opts = shuffle(q.options);
+          body.innerHTML = `
+            ${badgeHtml}
+            <h2 class="q-title">${promptHtml}</h2>
+            <p class="q-sub">${tBlock(q.subNl, q.subZh)}</p>
+            <div class="choice-grid ${step._opts.some(x => x.length > 26) ? "single-col" : ""}">
+              ${step._opts.map((o, i) => {
+                let cls = "";
+                if (lesson.checked) { if (o === q.answer) cls = "correct"; else if (lesson.selected === o) cls = "wrong"; }
+                else if (lesson.selected === o) cls = "selected";
+                return `<button class="choice-tile ${cls}" ${lesson.checked ? "disabled" : ""} onclick="selectChoice(${JSON.stringify(o).replace(/"/g, '&quot;')})"><span class="tile-num">${i + 1}</span><span>${escapeHtml(o)}</span></button>`;
+              }).join("")}
+            </div>`;
+          renderFooter();
+        } else {
+          body.innerHTML = `
+            ${badgeHtml}
+            <h2 class="q-title">${promptHtml}</h2>
+            <p class="q-sub">${tBlock(q.subNl, q.subZh)}</p>
+            <input type="text" class="spell-input" id="duo-spell-input" autocomplete="off" spellcheck="false"
+              value="${escapeHtml(lesson.selected || "")}" ${lesson.checked ? "disabled" : ""}
+              placeholder="${t("Typ 1 Engels woord...", "填入空缺的 1 个英文词...")}" />`;
+          renderFooter();
+          const inp = document.getElementById("duo-spell-input");
+          if (inp && !lesson.checked) {
+            inp.focus();
+            inp.addEventListener("input", e => {
+              lesson.selected = e.target.value;
+              const b = document.getElementById("btn-check-step");
+              if (b) b.disabled = !lesson.selected.trim();
+            });
+          }
+        }
+      }
+    }
+
+    function setLessonLab(key, val) { if (key === "time") lesson.labTime = val; else lesson.labPerson = val; renderCurrentStep(); }
+    function showSpellHint() { lesson.hintShown = true; renderCurrentStep(); }
+    function selectChoice(val, speakText) { if (lesson.checked) return; lesson.selected = val; if (speakText) speakEn(speakText); renderCurrentStep(); }
+    function pickWord(bi) { if (lesson.checked || lesson.sbPicked.includes(bi)) return; lesson.sbPicked.push(bi); renderCurrentStep(); }
+    function unpickWord(pos) { if (lesson.checked) return; lesson.sbPicked.splice(pos, 1); renderCurrentStep(); }
+
+    function pickMatch(side, id) {
+      const ms = lesson.matchState;
+      if (!ms || ms.matched[id]) return;
+      if (side === "L") ms.selL = id;
+      else { ms.selR = id; const w = VOCAB.find(x => x.id === id); if (w) speakEn(w.en); }
+      if (ms.selL && ms.selR) {
+        if (ms.selL === ms.selR) {
+          const w = VOCAB.find(x => x.id === ms.selL);
+          ms.matched[ms.selL] = true; ms.selL = null; ms.selR = null;
+          state.xp += 2; if (w) state.mastered[w.id] = true;
+          playTone("ok");
+          ms.lastTip = w && w.tipNl ? `${w.en} = ${w.nl} (${state.lang === "zh" ? w.tipZh : w.tipNl})` : `✅ ${w.en} = ${w.nl}`;
+          saveState();
+          if (Object.keys(ms.matched).length === ms.left.length) {
+            lesson.checked = true; lesson.lastOk = true;
+            lesson.lastFbTitle = t("Alle paren gevonden! 🎉", "全部配对成功！🎉"); lesson.lastFbDetail = "";
+          }
+        } else {
+          playTone("err"); ms.selL = null; ms.selR = null;
+          ms.lastTip = t("Oeps, niet het juiste paar! Probeer nog eens.", "这两个不是一对，再试试！");
+        }
+      }
+      renderCurrentStep();
+    }
+
+    function renderFooter() {
+      const footer = document.getElementById("lesson-footer");
+      const inner = document.getElementById("footer-inner");
+      const step = lesson.queue[0];
+
+      if (step.kind === "teach_ddd") {
+        footer.className = "lesson-footer";
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${t("Klaar voor 12 snelle Flits-rondes?", "准备好了吗？马上开始 12 轮闪电反射挑战！")}</div></div>
+          <button class="duo-btn purple" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始挑战 →")}</button>`;
+        return;
+      }
+      if (step.kind === "match" && !lesson.checked) {
+        footer.className = "lesson-footer";
+        const leftCnt = lesson.matchState.left.length - Object.keys(lesson.matchState.matched).length;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🧩 ${t(`Nog ${leftCnt} paren te koppelen...`, `还剩 ${leftCnt} 组待配对...`)}</div></div>`;
+        return;
+      }
+      if (!lesson.checked) {
+        footer.className = "lesson-footer";
+        const canCheck = step.kind === "sentence_build"
+          ? lesson.sbPicked.length > 0
+          : (lesson.selected !== null && String(lesson.selected).trim().length > 0);
+        inner.innerHTML = `<div class="fb-text"></div>
+          <button class="duo-btn" id="btn-check-step" ${canCheck ? "" : "disabled"} onclick="checkCurrentStep()">${t("CONTROLEER", "检查答案")}</button>`;
+      } else {
+        footer.className = `lesson-footer ${lesson.lastOk ? "ok" : "err"}`;
+        inner.innerHTML = `
+          <div class="fb-text">
+            <div class="fb-title">${lesson.lastOk ? "✅" : "❌"} ${lesson.lastFbTitle}</div>
+            <div class="fb-detail">${lesson.lastFbDetail}</div>
+          </div>
+          <button class="duo-btn ${lesson.lastOk ? "" : "red"}" onclick="nextStep()">${t("GA DOOR", "下一题")} →</button>`;
+      }
+    }
+
+    function checkCurrentStep() {
+      if (!lesson || lesson.checked) return;
+      const step = lesson.queue[0];
+      lesson.checked = true;
+      let ok = false, fbTitle = "", fbDetail = "";
+
+      if (step.kind === "word_choice") {
+        const w = step.word;
+        ok = lesson.selected === w.id;
+        speakEn(w.en);
+        if (ok) {
+          fbTitle = t("Supergoed!", "太棒了！");
+          fbDetail = `${w.en} = ${w.nl}${w.tipNl ? ` · 💡 ${state.lang === "zh" ? w.tipZh : w.tipNl}` : ""}`;
+          handleRecord(true, "word", w.id, step);
+        } else {
+          fbTitle = t(`Goede antwoord: ${w.en}`, `正确答案：${w.en}`);
+          fbDetail = w.tipNl ? `💡 ${tBlock(w.tipNl, w.tipZh)}` : `${w.en} = ${w.nl}`;
+          handleRecord(false, "word", w.id, step, `${w.nl} → ${w.en}`);
+        }
+      }
+      else if (step.kind === "word_spell") {
+        const w = step.word;
+        const typed = String(lesson.selected || "");
+        ok = normalizeAns(typed) === normalizeAns(w.en);
+        speakEn(w.en);
+        if (ok) {
+          fbTitle = t("Helemaal goed gespeld!", "拼写完美！");
+          fbDetail = `${w.en} = ${w.nl}`;
+          handleRecord(true, "word", w.id, step);
+        } else {
+          fbTitle = t(`Goede spelling: ${w.en}`, `正确拼写：${w.en}`);
+          fbDetail = `${renderLetterDiff(typed, w.en)}${w.tipNl ? `<div style="margin-top:4px;">💡 ${tBlock(w.tipNl, w.tipZh)}</div>` : ""}`;
+          handleRecord(false, "word", w.id, step, `${w.nl} → ${w.en}`);
+        }
+      }
+      else if (step.kind === "sentence_build") {
+        const sb = step.sb;
+        const built = lesson.sbPicked.map(bi => step._bank[bi]).join(" ");
+        const expected = sb.target.join(" ");
+        ok = built === expected;
+        speakEn(expected);
+        if (ok) {
+          fbTitle = t("Perfecte zin gebouwd!", "拼句完美！");
+          fbDetail = tBlock(sb.explainNl, sb.explainZh);
+          handleRecord(true, "sb", sb.id, step);
+        } else {
+          fbTitle = t(`Goede zin: ${expected}`, `正确句子：${expected}`);
+          fbDetail = `💡 ${tBlock(sb.explainNl, sb.explainZh)}`;
+          handleRecord(false, "sb", sb.id, step, `${sb.promptNl} → ${expected}`);
+        }
+      }
+      else if (step.kind === "flits") {
+        const f = step.flits;
+        ok = lesson.selected === f.answer;
+        if (ok) {
+          fbTitle = t("Supersnel goed!", "闪电答对！"); fbDetail = tBlock(f.exNl, f.exZh);
+          state.xp += 10; state.streak += 1; if (!step.isRetry) lesson.firstTryRight++;
+          playTone("ok"); saveState();
+        } else {
+          fbTitle = t("Bijna! Kijk goed:", "差一点，看解析："); fbDetail = tBlock(f.exNl, f.exZh);
+          state.streak = 0; playTone("err"); saveState();
+          lesson.queue.push({ ...step, isRetry: true });
+        }
+      }
+      else if (step.kind === "grammar") {
+        const q = step.q;
+        ok = normalizeAns(lesson.selected) === normalizeAns(q.answer);
+        if (ok) {
+          fbTitle = t("Top! Helemaal goed!", "完全正确！"); fbDetail = tBlock(q.explainNl, q.explainZh);
+          handleRecord(true, "grammar", q.id, step);
+        } else {
+          fbTitle = t(`Goede antwoord: ${q.answer}`, `正确答案：${q.answer}`);
+          fbDetail = `💡 ${tBlock(q.explainNl, q.explainZh)}`;
+          handleRecord(false, "grammar", q.id, step, `${q.promptNl} → ${q.answer}`);
+        }
+      }
+
+      lesson.lastOk = ok; lesson.lastFbTitle = fbTitle; lesson.lastFbDetail = fbDetail;
+      renderCurrentStep();
+    }
+
+    function handleRecord(ok, kind, id, step, examSummary) {
+      if (ok) {
+        state.xp += 10; state.streak += 1;
+        if (kind === "word") state.mastered[id] = true;
+        delete state.mistakes[`${kind}:${id}`];
+        if (!step.isRetry) lesson.firstTryRight++;
+        playTone("ok");
+      } else {
+        state.streak = 0;
+        state.mistakes[`${kind}:${id}`] = { kind, id };
+        playTone("err");
+        if (lesson.isExam) lesson.examErrors.push(examSummary);
+        else lesson.queue.push({ ...step, isRetry: true });
+      }
+      saveState();
+    }
+
+    function nextStep() {
+      if (!lesson) return;
+      lesson.queue.shift();
+      lesson.doneCount++;
+      lesson.selected = null;
+      lesson.sbPicked = [];
+      lesson.checked = false;
+      lesson.hintShown = false;
+      lesson.matchState = null;
+      renderCurrentStep();
+    }
+
+    function renderVictoryScreen() {
+      playTone("win");
+      const lvId = lesson.lvId;
+      state.completedLevels[lvId] = true;
+      const unlockedNew = lvId === state.unlockedLevel && lvId < 10;
+      if (unlockedNew) state.unlockedLevel = lvId + 1;
+      state.xp += 30;
+
+      document.getElementById("duo-bar-fill").style.width = "100%";
+      document.getElementById("lesson-counter").textContent = "✓";
+
+      const body = document.getElementById("lesson-body");
+      const footer = document.getElementById("lesson-footer");
+      const inner = document.getElementById("footer-inner");
+      footer.className = "lesson-footer ok";
+
+      if (lesson.isExam) {
+        const score = lesson.firstTryRight, total = lesson.totalBase;
+        const cijfer = (1 + (score / total) * 9).toFixed(1);
+        if (!state.bestCijfer || parseFloat(cijfer) > parseFloat(state.bestCijfer)) state.bestCijfer = cijfer;
+        saveState();
+
+        const msgNl = cijfer >= 8.5 ? "Wauw Ernst! Helemaal klaar voor morgen! 🌟"
+          : (cijfer >= 7.0 ? "Knap gedaan! Werk je fouten weg in Level 9 voor een 10!" : "Goed geoefend! Ga even naar Level 9 (Fouten-EHBO) en doe de toets nog een keer!");
+        const msgZh = cijfer >= 8.5 ? "太棒了 Ernst！明天稳拿高分！🌟"
+          : (cijfer >= 7.0 ? "很不错！去第 9 关把错题清零就能冲满分！" : "错题已收进第 9 关急救包，清零后再考一次一定大涨分！");
+
+        body.innerHTML = `
+          <div class="victory-box">
+            <h2 class="q-title">🏆 ${t("Eindtoets klaar!", "终极模拟考完成！")}</h2>
+            <div class="cijfer-circle">${cijfer}<span>/ 10 Cijfer</span></div>
+            <p class="q-sub" style="margin-bottom:8px;"><strong>${score} / ${total}</strong> ${t("goed", "题答对")} · ${t(msgNl, msgZh)}</p>
+            ${lesson.examErrors.length ? `
+              <div class="review-list">
+                <strong style="color:#b91c1c;">🩹 ${t("Even terugkijken (staan nu in Level 9 Fouten-EHBO):", "本次错题速览（已存入第 9 关急救包）：")}</strong>
+                ${lesson.examErrors.map(e => `<div class="review-item">❌ ${escapeHtml(e)}</div>`).join("")}
+              </div>` : `<div style="color:#166534; font-weight:900; font-size:1.1rem; margin-top:10px;">✨ ${t("FOUTLOOS! Een echte 10!", "零失误满分 10 分！")}</div>`}
+          </div>`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">🎉 +30 XP</div></div>
+          <button class="duo-btn" onclick="exitLesson()">${t("TERUG NAAR KAART", "返回闯关地图")}</button>`;
+      } else {
+        saveState();
+        const nextLv = LEVELS.find(x => x.id === lvId + 1);
+        body.innerHTML = `
+          <div class="victory-box">
+            <div style="font-size:4.2rem;">🏆✨</div>
+            <h2 class="q-title">${t(`Level ${lvId} gehaald, Ernst!`, `第 ${lvId} 关通关成功！`)}</h2>
+            <p class="q-sub">+30 XP · 🔥 ${t(`Reeks: ${state.streak}`, `当前连击：${state.streak}`)}</p>
+            ${unlockedNew && nextLv ? `
+              <div style="display:inline-block; background:var(--gold-soft); border:2px solid var(--gold); border-radius:16px; padding:12px 18px; font-weight:900; color:#854d0e; margin-top:8px;">
+                🔓 ${t(`Nieuw level ontgrendeld: ${nextLv.icon} ${nextLv.titleNl}`, `已解锁下一关：${nextLv.icon} ${nextLv.titleZh}`)}
+              </div>` : ""}
+          </div>`;
+        inner.innerHTML = `
+          <div class="fb-text"><div class="fb-title">🌟 ${t("Goed bezig!", "升级成功！")}</div></div>
+          <div style="display:flex; gap:10px;">
+            <button class="duo-btn outline" onclick="exitLesson()">${t("KAART", "回地图")}</button>
+            ${nextLv ? `<button class="duo-btn" onclick="startLevel(${nextLv.id})">${t(`LEVEL ${nextLv.id} →`, `进第 ${nextLv.id} 关 →`)}</button>` : ""}
+          </div>`;
+      }
+    }
+
+    document.addEventListener("keydown", e => {
+      if (!lesson || !lesson.active || e.key !== "Enter") return;
+      const step = lesson.queue[0];
+      if (!step) return;
+      if (step.kind === "teach_ddd") { nextStep(); return; }
+      if (step.kind === "match") { if (lesson.checked) nextStep(); return; }
+      if (!lesson.checked) {
+        const ready = step.kind === "sentence_build"
+          ? lesson.sbPicked.length > 0
+          : (lesson.selected !== null && String(lesson.selected).trim().length > 0);
+        if (ready) checkCurrentStep();
+      } else {
+        nextStep();
+      }
+    });
+
+    loadState();
+    renderMap();
+  </script>
+</body>
+</html>
