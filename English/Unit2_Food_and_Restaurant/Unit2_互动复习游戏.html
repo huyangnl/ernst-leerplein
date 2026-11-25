@@ -600,6 +600,7 @@
           <button class="icon-btn on" id="btn-speech" onclick="toggleSpeech()">🔊</button>
           <button class="icon-btn on" id="btn-sfx" onclick="toggleSfx()">🎵</button>
           <button class="icon-btn" id="btn-guide-map" onclick="openGuide()">📘</button>
+          <button class="icon-btn" id="btn-cloud" onclick="openCloudSettings()">☁️</button>
         </div>
       </div>
     </div>
@@ -1381,9 +1382,13 @@
     ];
 
     // =====================================================
-    // 3. 状态与工具函数
+    // 3. 状态、本地存储 & Supabase 云端自动同步
     // =====================================================
     const STORAGE_KEY = "ernst_unit2_duo_v2";
+    const PROFILE_KEY = "ernst_unit2_profile_id";
+    const SUPABASE_URL = "https://ejemztgsopsrzyhvrppo.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqZW16dGdzb3Bzcnp5aHZycHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2MTcxODcsImV4cCI6MjExMTE5MzE4N30.8JA6psNYdWTi3td3xizOsEchFg7vZEKRHeXqFDcqTKQ";
+
     let state = {
       lang: "nl",
       xp: 0,
@@ -1395,8 +1400,125 @@
       parentMode: false,
       speechOn: true,
       sfxOn: true,
-      bestCijfer: null
+      bestCijfer: null,
+      updatedAt: 0
     };
+
+    let cloudStatus = "syncing"; // 'syncing' | 'synced' | 'offline'
+    let pushTimer = null;
+
+    function getProfileId() {
+      try {
+        return localStorage.getItem(PROFILE_KEY) || "ernst-unit2";
+      } catch (e) {
+        return "ernst-unit2";
+      }
+    }
+
+    function updateCloudBadge() {
+      const btn = document.getElementById("btn-cloud");
+      if (!btn) return;
+      if (cloudStatus === "synced") {
+        btn.textContent = t("☁️ Opgeslagen", "☁️ 已云端同步");
+        btn.classList.add("on");
+      } else if (cloudStatus === "syncing") {
+        btn.textContent = t("☁️ Bezig...", "☁️ 同步中...");
+        btn.classList.remove("on");
+      } else {
+        btn.textContent = t("☁️ Lokaal", "☁️ 仅本机");
+        btn.classList.remove("on");
+      }
+    }
+
+    async function syncCloudPull() {
+      if (typeof fetch !== "function") return;
+      cloudStatus = "syncing";
+      updateCloudBadge();
+      const pid = encodeURIComponent(getProfileId());
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?profile_id=eq.${pid}&select=data,updated_at`, {
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const rows = await res.json();
+        if (rows && rows.length > 0 && rows[0].data) {
+          const cloudData = rows[0].data;
+          const cloudTs = cloudData.updatedAt || Date.parse(rows[0].updated_at) || 0;
+          const localTs = state.updatedAt || 0;
+          if (cloudTs > localTs || (state.xp === 0 && (cloudData.xp || 0) > 0)) {
+            state = { ...state, ...cloudData, updatedAt: cloudTs };
+            if (state.unlockedLevel > 10) state.unlockedLevel = 10;
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+            cloudStatus = "synced";
+            renderMap();
+            return;
+          }
+        }
+        // If local has progress that cloud doesn't have yet, push it up
+        if (state.xp > 0 || Object.keys(state.completedLevels).length > 0) {
+          await syncCloudPush(true);
+        } else {
+          cloudStatus = "synced";
+          updateCloudBadge();
+        }
+      } catch (e) {
+        cloudStatus = "offline";
+        updateCloudBadge();
+      }
+    }
+
+    async function syncCloudPush(immediate) {
+      if (typeof fetch !== "function") return;
+      if (!immediate) {
+        clearTimeout(pushTimer);
+        pushTimer = setTimeout(() => syncCloudPush(true), 600);
+        return;
+      }
+      cloudStatus = "syncing";
+      updateCloudBadge();
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?on_conflict=profile_id`, {
+          method: "POST",
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json",
+            "Prefer": "resolution=merge-duplicates"
+          },
+          body: JSON.stringify({
+            profile_id: getProfileId(),
+            data: state,
+            updated_at: new Date().toISOString()
+          })
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        cloudStatus = "synced";
+      } catch (e) {
+        cloudStatus = "offline";
+      }
+      updateCloudBadge();
+    }
+
+    function openCloudSettings() {
+      const cur = getProfileId();
+      const msg = state.lang === "zh"
+        ? `当前云端同步码：${cur}\n所有使用相同同步码的设备（iPad / 电脑）会自动共享学习进度！\n\n如需切换同步码请输入新名称，或直接点确定立即同步：`
+        : `Huidige Cloud-code: ${cur}\nAlle apparaten (iPad / laptop) met dezelfde code delen automatisch Ernst's voortgang!\n\nTyp een nieuwe code om te wisselen, of klik OK om nu te synchroniseren:`;
+      const next = prompt(msg, cur);
+      if (next === null) return;
+      const clean = next.trim();
+      if (clean && clean !== cur) {
+        try { localStorage.setItem(PROFILE_KEY, clean); } catch (e) {}
+        state.xp = 0; state.streak = 0; state.unlockedLevel = 1;
+        state.completedLevels = {}; state.mastered = {}; state.mistakes = {}; state.bestCijfer = null; state.updatedAt = 0;
+        syncCloudPull();
+      } else {
+        syncCloudPull();
+      }
+    }
 
     function loadState() {
       try {
@@ -1408,7 +1530,11 @@
         }
       } catch (e) {}
     }
-    function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+    function saveState(immediateCloud) {
+      state.updatedAt = Date.now();
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      syncCloudPush(!!immediateCloud);
+    }
 
     function t(nl, zh) { return state.lang === "nl" ? nl : (state.lang === "zh" ? zh : `${nl} / ${zh}`); }
     function tBlock(nl, zh) {
@@ -1472,7 +1598,7 @@
       if (!confirm(t("Alle voortgang en levels opnieuw starten?", "确定要重置所有闯关进度和 XP 吗？"))) return;
       state.xp = 0; state.streak = 0; state.unlockedLevel = 1;
       state.completedLevels = {}; state.mastered = {}; state.mistakes = {}; state.bestCijfer = null;
-      saveState(); renderMap();
+      saveState(true); renderMap();
     }
 
     // =====================================================
@@ -1494,6 +1620,7 @@
       if (gm) gm.textContent = t("📘 Uitleg", "📘 秘籍");
       const gl = document.getElementById("btn-guide-lesson");
       if (gl) gl.textContent = t("📘 Uitleg", "📘 秘籍");
+      updateCloudBadge();
 
       const mCount = Object.keys(state.mistakes).length;
       const secWrap = document.getElementById("map-sections");
@@ -2243,7 +2370,7 @@
         const score = lesson.firstTryRight, total = lesson.totalBase;
         const cijfer = (1 + (score / total) * 9).toFixed(1);
         if (!state.bestCijfer || parseFloat(cijfer) > parseFloat(state.bestCijfer)) state.bestCijfer = cijfer;
-        saveState();
+        saveState(true);
 
         const msgNl = cijfer >= 8.5 ? "Wauw Ernst! Helemaal klaar voor morgen! 🌟"
           : (cijfer >= 7.0 ? "Knap gedaan! Werk je fouten weg in Level 9 voor een 10!" : "Goed geoefend! Ga even naar Level 9 (Fouten-EHBO) en doe de toets nog een keer!");
@@ -2264,7 +2391,7 @@
         inner.innerHTML = `<div class="fb-text"><div class="fb-title">🎉 +30 XP</div></div>
           <button class="duo-btn" onclick="exitLesson()">${t("TERUG NAAR KAART", "返回闯关地图")}</button>`;
       } else {
-        saveState();
+        saveState(true);
         const nextLv = LEVELS.find(x => x.id === lvId + 1);
         body.innerHTML = `
           <div class="victory-box">
@@ -2339,6 +2466,7 @@
 
     loadState();
     renderMap();
+    syncCloudPull();
   </script>
 </body>
 </html>
