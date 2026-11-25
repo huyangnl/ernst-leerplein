@@ -510,6 +510,73 @@
     .cijfer-circle span { font-size: 0.85rem; color: #fff; font-weight: 700; }
     .review-list { text-align: left; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
     .review-item { padding: 10px 14px; border-radius: 12px; border: 1.5px solid #fecaca; background: #fff5f5; font-size: 0.9rem; }
+
+    /* Guide Modal & Teach Grids */
+    .guide-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(15, 23, 42, 0.55);
+      padding: 16px;
+      overflow-y: auto;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .guide-modal.open { display: flex; }
+    .guide-sheet {
+      background: #fff;
+      border-radius: 22px;
+      max-width: 720px;
+      width: 100%;
+      margin: 18px auto 36px;
+      padding: 20px;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.25);
+    }
+    .guide-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .guide-sec {
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+      background: #fafcff;
+    }
+    .guide-sec h3 { margin: 0 0 8px; font-size: 1rem; color: #1e3a8a; }
+    .veg-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .veg-mini-card {
+      border: 1.5px solid #bbf7d0;
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 0.86rem;
+    }
+    .veg-mini-card strong { font-size: 1rem; color: #14532d; }
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 8px;
+      background: #fff;
+    }
+    .mini-table th, .mini-table td {
+      border: 1px solid #ddd6fe;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .mini-table th { background: #ede9fe; color: #4c1d95; }
   </style>
 </head>
 <body>
@@ -532,6 +599,7 @@
           </div>
           <button class="icon-btn on" id="btn-speech" onclick="toggleSpeech()">🔊</button>
           <button class="icon-btn on" id="btn-sfx" onclick="toggleSfx()">🎵</button>
+          <button class="icon-btn" id="btn-guide-map" onclick="openGuide()">📘</button>
         </div>
       </div>
     </div>
@@ -555,12 +623,27 @@
       <button class="close-btn" onclick="exitLesson()" title="Terug / 返回地图">✕</button>
       <div class="duo-bar-track"><div class="duo-bar-fill" id="duo-bar-fill"></div></div>
       <div class="lesson-counter" id="lesson-counter">1 / 10</div>
+      <button class="icon-btn" id="btn-guide-lesson" onclick="openGuide()" title="Spiekbriefje / 秘籍">📘</button>
     </div>
 
     <div class="lesson-body" id="lesson-body"></div>
 
     <div class="lesson-footer" id="lesson-footer">
       <div class="footer-inner" id="footer-inner"></div>
+    </div>
+  </div>
+
+  <!-- ================= GLOBAL GUIDE MODAL ================= -->
+  <div class="guide-modal" id="guide-modal" onclick="if(event.target===this) closeGuide()">
+    <div class="guide-sheet">
+      <div class="guide-head">
+        <h2 id="guide-modal-title" style="margin:0; font-size:1.18rem;"></h2>
+        <button class="close-btn" onclick="closeGuide()">✕</button>
+      </div>
+      <div id="guide-modal-body"></div>
+      <div style="text-align:right; margin-top:12px;">
+        <button class="duo-btn" onclick="closeGuide()" id="btn-guide-close">OK</button>
+      </div>
     </div>
   </div>
 
@@ -1407,6 +1490,10 @@
       sp.textContent = state.speechOn ? "🔊" : "🔇"; sp.classList.toggle("on", state.speechOn);
       const sf = document.getElementById("btn-sfx");
       sf.textContent = state.sfxOn ? "🎵" : "🔕"; sf.classList.toggle("on", state.sfxOn);
+      const gm = document.getElementById("btn-guide-map");
+      if (gm) gm.textContent = t("📘 Uitleg", "📘 秘籍");
+      const gl = document.getElementById("btn-guide-lesson");
+      if (gl) gl.textContent = t("📘 Uitleg", "📘 秘籍");
 
       const mCount = Object.keys(state.mistakes).length;
       const secWrap = document.getElementById("map-sections");
@@ -1471,7 +1558,8 @@
       const steps = [];
 
       if (lvId === 1) {
-        // Level 1: 蔬菜启蒙（2 轮消消乐配对 + 5 选择）
+        // Level 1: 先看蔬菜口诀卡，再玩 2 轮消消乐配对 + 5 选择
+        steps.push({ kind: "teach_veg", tagNl: "Stap 1 · Groente-ezelsbruggetjes", tagZh: "第 1 步 · 先看 9 个蔬菜拆词秘籍" });
         const vShuf = shuffle(VEG_WORDS);
         steps.push({ kind: "match", words: vShuf.slice(0, 5), tagNl: "Groente Koppelen 1/2", tagZh: "蔬菜消消乐 1/2" });
         steps.push({ kind: "match", words: vShuf.slice(4, 9), tagNl: "Groente Koppelen 2/2", tagZh: "蔬菜消消乐 2/2" });
@@ -1515,7 +1603,8 @@
         });
       }
       else if (lvId === 5) {
-        // Level 5: Grammatica 1 & 2（词块拼句 4 题 + 选择填空 8 题）
+        // Level 5: 先学 Grammatica 1 & 2 秘籍卡，再拼句 + 做题
+        steps.push({ kind: "teach_g12", tagNl: "Uitleg · Grammatica 1 & 2", tagZh: "课前秘籍 · would like & have" });
         SENTENCE_BUILDS.filter(s => s.group === "g1" || s.group === "g2").forEach(sb => {
           steps.push({ kind: "sentence_build", sb, tagNl: "Zin Bouwen · Grammatica 1–2", tagZh: "多邻国词块拼句" });
         });
@@ -1531,7 +1620,8 @@
         });
       }
       else if (lvId === 7) {
-        // Level 7: Do / Does / Did Boss（4 道词块拼句 + 10 道 Grammatica 3 真题）
+        // Level 7: 先快速温习 3 大口诀，再打 Do / Does / Did Boss
+        steps.push({ kind: "teach_ddd", tagNl: "Snelle check · 3 Trucs", tagZh: "战前温习 · Do/Does/Did 3 大口诀" });
         SENTENCE_BUILDS.filter(s => s.group === "g3").forEach(sb => {
           steps.push({ kind: "sentence_build", sb, tagNl: "Zin Bouwen · Do / Does / Did", tagZh: "拼句避坑实战" });
         });
@@ -1540,11 +1630,12 @@
         });
       }
       else if (lvId === 8) {
-        // Level 8: Lesson 5 Phrases & Sunday Roast (3题) + 难拼蔬菜二刷回马枪 (6词)
+        // Level 8: 先看 Lesson 5 Phrases & Sunday Roast 小故事，再做题 + 蔬菜二刷
+        steps.push({ kind: "teach_l5", tagNl: "Uitleg · Phrases & Sunday Roast", tagZh: "课前秘籍 · Lesson 5 句型与故事" });
         GRAMMAR_QUESTIONS.filter(q => q.group === "phrases").forEach(q => {
           steps.push({ kind: "grammar", q, tagNl: "Lesson 5 · Phrases & Sunday Roast", tagZh: "Lesson 5 句型与文化" });
         });
-        const hardVegIds = ["w16", "w35", "w38", "w39", "w11", "w15"]; // cauliflower, lettuce, cucumber, cabbage, vegetables, spinach
+        const hardVegIds = ["w16", "w35", "w38", "w39", "w11", "w15"];
         shuffle(hardVegIds).forEach(id => {
           const w = VOCAB.find(x => x.id === id);
           steps.push({ kind: "word_spell", word: w, tagNl: "Groente Extra Check!", tagZh: "高危蔬菜二刷！" });
@@ -1724,6 +1815,78 @@
           </div>`;
         renderFooter();
       }
+      else if (step.kind === "teach_veg") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🥦 ${tBlock("9 Groente-ezelsbruggetjes (even bekijken vóór je start!)", "开战前先看 1 分钟：9 个蔬菜「秒记秘籍」")}</h2>
+          <p class="q-sub">${tBlock("Klik op 🔊 om te luisteren, en bekijk de ezelsbruggetjes!", "点 🔊 听英式发音，顺便记住拆词小口诀，待会儿配对和拼写就稳了！")}</p>
+          <div class="veg-mini-grid">
+            ${VEG_WORDS.map(w => `
+              <div class="veg-mini-card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong>${w.emoji} ${w.en}</strong>
+                  <button class="icon-btn" onclick="speakEn('${w.en}')">🔊</button>
+                </div>
+                <div style="color:var(--blue-dark); font-weight:800;">🇳🇱 ${w.nl}${state.lang !== "nl" ? ` <span style="color:var(--muted); font-weight:600;">(${w.zh})</span>` : ""}</div>
+                <div style="margin-top:4px; color:#334155; font-size:0.8rem;">💡 ${tBlock(w.tipNl, w.tipZh)}</div>
+              </div>
+            `).join("")}
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true;
+        renderFooter();
+      }
+      else if (step.kind === "teach_g12") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🍽️ ${tBlock("Grammatica 1 & 2: Beleefd bestellen & Eten", "课前秘籍：Grammatica 1（礼貌点餐）& 2（三餐搭配）")}</h2>
+          <div class="teach-card">
+            <div style="margin-bottom:14px;">
+              <strong style="color:#1e40af;">1️⃣ Grammatica 1: 'would like' (${t("beleefd vragen & bestellen", "礼貌点餐想要")})</strong>
+              <ul style="margin:6px 0 0; padding-left:18px; font-size:0.92rem;">
+                <li><strong>What would you like</strong> to have / drink? <button class="icon-btn" onclick="speakEn('What would you like to have for lunch?')">🔊</button></li>
+                <li><strong>Would you like</strong> a sandwich? — <strong>Yes, please.</strong> / <strong>No, thank you.</strong></li>
+                <li><strong>I would like</strong> a salad. / <strong>I'd like</strong> orange juice, please.</li>
+                <li>💡 ${tBlock("'I like' = vind ik lekker (altijd). 'I would like / I'd like' = wil ik graag (nu bestellen)!", "I like 是平时喜欢；I would like / I'd like 才是现在点餐想要！")}</li>
+              </ul>
+            </div>
+            <div style="border-top:2px dashed #cbd5e1; padding-top:12px;">
+              <strong style="color:#c2410c;">2️⃣ Grammatica 2: 'have' bij breakfast / lunch / dinner</strong>
+              <ul style="margin:6px 0 0; padding-left:18px; font-size:0.92rem;">
+                <li>💡 ${tBlock("In het Engels gebruik je bij ontbijt/lunch normaal 'have' (niet eat/make)!", "英语说吃早/午/晚饭固定用 have（不用 eat/make），介词用 FOR！")}</li>
+                <li><strong>To have breakfast</strong> = ontbijten <button class="icon-btn" onclick="speakEn('What do you normally have for breakfast?')">🔊</button></li>
+                <li>What do you normally <strong>have for</strong> breakfast? — We only <strong>have</strong> a sandwich <strong>for</strong> lunch.</li>
+              </ul>
+            </div>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true;
+        renderFooter();
+      }
+      else if (step.kind === "teach_l5") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🇬🇧 ${tBlock("Lesson 5: Phrases & Sunday Roast", "课前秘籍：Lesson 5 必背句型 & 英国 Sunday Roast")}</h2>
+          <div class="teach-card">
+            <div style="margin-bottom:14px;">
+              <strong style="color:#1e40af;">💬 Phrases to know</strong>
+              <ul style="margin:6px 0 0; padding-left:18px; font-size:0.92rem;">
+                <li><strong>What would you like (to have)?</strong> = Wat wil je hebben? <button class="icon-btn" onclick="speakEn('What would you like to have?')">🔊</button></li>
+                <li><strong>I would like an orange juice.</strong> = Ik wil graag sinaasappelsap.</li>
+                <li><strong>To have breakfast</strong> = ontbijten</li>
+              </ul>
+            </div>
+            <div style="border-top:2px dashed #cbd5e1; padding-top:12px;">
+              <strong style="color:#15803d;">🍖 Nice to know: Sunday roast</strong>
+              <p style="margin:6px 0 0; font-size:0.9rem; line-height:1.5;">
+                ${tBlock(
+                  "Veel gezinnen in het VK eten op zondag een traditionele 'Sunday roast': gebraden vlees (chicken, turkey, lamb, pork of beef) met roast potatoes, groente, gravy (jus) en soms stuffing en Yorkshire puddings.",
+                  "很多英国家庭每周日会吃传统大餐 Sunday roast：烤肉（鸡、火鸡、羊、猪或牛肉）配烤土豆（roast potatoes）、蔬菜、肉汁（gravy），有时还有 stuffing 和约克郡布丁（Yorkshire puddings）。"
+                )}
+              </p>
+            </div>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true;
+        renderFooter();
+      }
       else if (step.kind === "teach_ddd") {
         const isPast = lesson.labTime === "yesterday";
         const isSTeam = ["he", "she", "it"].includes(lesson.labPerson);
@@ -1773,6 +1936,11 @@
                   <span style="color:#991b1b;">No, ${ansSubj} ${auxNeg}.</span>
                 </div>
               </div>
+              <table class="mini-table">
+                <tr><th>${t("Tijd", "时间")}</th><th>I / you / we</th><th>he / she / it (S-team)</th></tr>
+                <tr><td><strong>☀️ Today</strong></td><td><strong>Do</strong> / don't</td><td><strong>Does</strong> / doesn't</td></tr>
+                <tr><td><strong>⏪ Yesterday</strong></td><td><strong>Did</strong> / didn't</td><td><strong>Did</strong> / didn't</td></tr>
+              </table>
             </div>
           </div>`;
         lesson.checked = true; lesson.lastOk = true;
@@ -1884,10 +2052,13 @@
       const inner = document.getElementById("footer-inner");
       const step = lesson.queue[0];
 
-      if (step.kind === "teach_ddd") {
+      if (step.kind.startsWith("teach_")) {
         footer.className = "lesson-footer";
-        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${t("Klaar voor 12 snelle Flits-rondes?", "准备好了吗？马上开始 12 轮闪电反射挑战！")}</div></div>
-          <button class="duo-btn purple" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始挑战 →")}</button>`;
+        const msg = step.kind === "teach_ddd"
+          ? t("Snap je de Tijdmachine, Rugzak en Spiegel? Starten maar!", "看懂时间机、背包和镜子法则了吗？开始挑战！")
+          : t("Alles duidelijk? Dan beginnen we met de oefeningen!", "看明白口诀了吗？现在开始闯关！");
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${msg}</div></div>
+          <button class="duo-btn purple" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始闯关 →")}</button>`;
         return;
       }
       if (step.kind === "match" && !lesson.checked) {
@@ -2114,11 +2285,47 @@
       }
     }
 
+    function openGuide() {
+      document.getElementById("guide-modal-title").textContent = t("📘 Ernst's Unit 2 Spiekbriefje (Alle Trucs)", "📘 Unit 2 考前秘籍手册（随时可看）");
+      document.getElementById("btn-guide-close").textContent = t("TERUG NAAR OEFENEN", "关闭并继续");
+      document.getElementById("guide-modal-body").innerHTML = `
+        <div class="guide-sec">
+          <h3>⏰ 1. Grammatica 3: Do / Does / Did — 3 Super-Trucs</h3>
+          <p style="margin:4px 0; font-size:0.88rem;"><strong>⏰ ${t("Truc 1: Tijdmachine + S-team", "口诀 1：时间机 + S 小队")}</strong> — ${tBlock("Zie je Yesterday? Altijd Did / didn't (ook bij he/she/it!). Alleen bij Today krijgt het S-team (he/she/it) DoeS / doeSn't.", "看见 Yesterday 一律用 Did / didn't！只有 Today 遇到 S 小队（he/she/it）才用 Does / doesn't。")}</p>
+          <p style="margin:4px 0; font-size:0.88rem;"><strong>🎒 ${t("Truc 2: Rugzak-regel", "口诀 2：大力士背包法则")}</strong> — ${tBlock("Does en Did dragen de -s of verleden tijd al! In een vraag blijft 'like' kaal (✅ Did she like? / ❌ Did she liked?). Zonder Did: Yesterday I liked.", "Does/Did 已经背走变化，问句里 like 永远用原形！没有 Did 的肯定句才变 Yesterday I liked。")}</p>
+          <p style="margin:4px 0; font-size:0.88rem;"><strong>🪞 ${t("Truc 3: Spiegel-regel", "口诀 3：镜子法则")}</strong> — ${tBlock("Do → do/don't · Does → does/doesn't · Did → did/didn't.", "问句用什么开头，简短回答就照镜子回什么！")}</p>
+          <table class="mini-table">
+            <tr><th>${t("Tijd", "时间")}</th><th>I / you / we</th><th>he / she / it (S-team)</th></tr>
+            <tr><td><strong>☀️ Today</strong></td><td>Do / don't</td><td><strong>Does / doesn't</strong></td></tr>
+            <tr><td><strong>⏪ Yesterday</strong></td><td><strong>Did / didn't</strong></td><td><strong>Did / didn't</strong></td></tr>
+          </table>
+        </div>
+        <div class="guide-sec">
+          <h3>🍽️ 2. Grammatica 1 &amp; 2: 'would like' &amp; 'have'</h3>
+          <p style="margin:4px 0; font-size:0.88rem;">• <strong>would like</strong>: What <strong>would you like</strong> to have? — <strong>I would like / I'd like</strong> a salad. (Yes, please. / No, thank you.)</p>
+          <p style="margin:4px 0; font-size:0.88rem;">• <strong>have + maaltijd</strong>: <strong>To have breakfast</strong> = ontbijten. What do you normally <strong>have for</strong> lunch?</p>
+        </div>
+        <div class="guide-sec">
+          <h3>🥦 3. 9 Groente-ezelsbruggetjes</h3>
+          <div class="veg-mini-grid">
+            ${VEG_WORDS.map(w => `<div class="veg-mini-card"><strong>${w.emoji} ${w.en}</strong> = ${w.nl}<br><small>💡 ${tBlock(w.tipNl, w.tipZh)}</small></div>`).join("")}
+          </div>
+        </div>
+        <div class="guide-sec" style="margin-bottom:0;">
+          <h3>🇬🇧 4. Sunday Roast (Lesson 5)</h3>
+          <p style="margin:4px 0; font-size:0.88rem;">${tBlock("Traditionele zondagse maaltijd in het VK met gebraden vlees, roast potatoes, groente, gravy en soms stuffing en Yorkshire puddings.", "英国周日传统家庭聚餐：烤肉、烤土豆、蔬菜、肉汁（gravy），有时配 stuffing 和 Yorkshire puddings。")}</p>
+        </div>`;
+      document.getElementById("guide-modal").classList.add("open");
+    }
+    function closeGuide() { document.getElementById("guide-modal").classList.remove("open"); }
+
     document.addEventListener("keydown", e => {
+      if (e.key === "Escape") { closeGuide(); return; }
+      if (document.getElementById("guide-modal").classList.contains("open")) return;
       if (!lesson || !lesson.active || e.key !== "Enter") return;
       const step = lesson.queue[0];
       if (!step) return;
-      if (step.kind === "teach_ddd") { nextStep(); return; }
+      if (step.kind.startsWith("teach_")) { nextStep(); return; }
       if (step.kind === "match") { if (lesson.checked) nextStep(); return; }
       if (!lesson.checked) {
         const ready = step.kind === "sentence_build"
