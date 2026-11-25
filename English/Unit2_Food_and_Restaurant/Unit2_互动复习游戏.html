@@ -1430,6 +1430,13 @@
       }
     }
 
+    function healUnlockedLevel() {
+      let u = 1;
+      while (state.completedLevels[u] && u < 10) u++;
+      if (u > (state.unlockedLevel || 1)) state.unlockedLevel = u;
+      if (state.unlockedLevel > 10) state.unlockedLevel = 10;
+    }
+
     async function syncCloudPull() {
       if (typeof fetch !== "function") return;
       cloudStatus = "syncing";
@@ -1450,7 +1457,7 @@
           const localTs = state.updatedAt || 0;
           if (cloudTs > localTs || (state.xp === 0 && (cloudData.xp || 0) > 0)) {
             state = { ...state, ...cloudData, updatedAt: cloudTs };
-            if (state.unlockedLevel > 10) state.unlockedLevel = 10;
+            healUnlockedLevel();
             try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
             cloudStatus = "synced";
             renderMap();
@@ -1526,7 +1533,7 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           state = { ...state, ...parsed };
-          if (state.unlockedLevel > 10) state.unlockedLevel = 10;
+          healUnlockedLevel();
         }
       } catch (e) {}
     }
@@ -1630,7 +1637,7 @@
         const secDone = secLevels.filter(l => state.completedLevels[l.id]).length;
         const nodesHtml = secLevels.map((lv, idx) => {
           const isDone = !!state.completedLevels[lv.id];
-          const isUnlocked = state.parentMode || lv.id <= state.unlockedLevel;
+          const isUnlocked = state.parentMode || lv.id <= state.unlockedLevel || !!state.completedLevels[lv.id - 1];
           const isCurrent = !isDone && lv.id === state.unlockedLevel;
           const cls = isDone ? "done" : (isUnlocked ? `current ${lv.kind}` : "locked");
           const title = state.lang === "zh" ? lv.titleZh : (state.lang === "nl" ? lv.titleNl : `${lv.titleNl} · ${lv.titleZh}`);
@@ -2354,8 +2361,10 @@
       playTone("win");
       const lvId = lesson.lvId;
       state.completedLevels[lvId] = true;
-      const unlockedNew = lvId === state.unlockedLevel && lvId < 10;
-      if (unlockedNew) state.unlockedLevel = lvId + 1;
+      const prevUnlocked = state.unlockedLevel;
+      if (lvId >= state.unlockedLevel && lvId < 10) state.unlockedLevel = lvId + 1;
+      healUnlockedLevel();
+      const unlockedNew = state.unlockedLevel > prevUnlocked;
       state.xp += 30;
 
       document.getElementById("duo-bar-fill").style.width = "100%";
