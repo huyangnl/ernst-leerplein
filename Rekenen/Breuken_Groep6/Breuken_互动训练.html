@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Ernst Rekenen" />
+  <meta name="theme-color" content="#1cb0f6" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231cb0f6'/%3E%3Ctext x='90' y='122' font-size='100' text-anchor='middle'%3E%F0%9F%8D%95%3C/text%3E%3C/svg%3E" />
+  <title>Ernst's Rekenen · Breuken Quest (Groep 6)</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --green: #58cc02; --green-dark: #46a302; --green-soft: #e9fad9;
+      --blue: #1cb0f6; --blue-dark: #0095db; --blue-soft: #e6f7ff;
+      --purple: #ce82ff; --purple-dark: #9b51e0; --purple-soft: #f5ebff;
+      --gold: #ffc800; --gold-dark: #e09f00; --gold-soft: #fff8d6;
+      --orange: #ff9600; --orange-dark: #e07b00;
+      --red: #ff4b4b; --red-dark: #d93636; --red-soft: #ffecec;
+      --gray: #e5e5e5; --gray-dark: #afafaf;
+      --text: #3c3c3c; --muted: #777777; --border: #e5e5e5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Nunito", "Segoe UI", "PingFang SC", system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar { position: sticky; top: 0; z-index: 20; background: #fff; border-bottom: 2px solid var(--border); padding: 10px 16px; }
+    .topbar-inner { max-width: 780px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand-mini { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 1.02rem; color: var(--blue-dark); }
+    .back-home { text-decoration: none; border: 2px solid var(--border); border-radius: 10px; padding: 4px 9px; font-size: 0.82rem; font-weight: 800; color: var(--text); background: #fff; }
+    .stats-row { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.88rem; }
+    .stat-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; background: #f1f5f9; }
+    .controls-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .lang-group { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 2px; }
+    .lang-btn { border: none; background: transparent; padding: 5px 9px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; color: var(--muted); }
+    .lang-btn.active { background: #fff; color: var(--blue-dark); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .icon-btn { border: 2px solid var(--border); background: #fff; border-radius: 10px; padding: 4px 9px; font-size: 0.8rem; font-weight: 800; cursor: pointer; color: var(--text); }
+    .icon-btn.on { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+
+    /* MAP */
+    .map-container { max-width: 640px; margin: 20px auto 64px; padding: 0 16px; }
+    .unit-banner { color: #fff; border-radius: 20px; padding: 16px 20px; margin: 22px 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .unit-banner.sec1 { background: linear-gradient(135deg, #1cb0f6, #0095db); box-shadow: 0 5px 0 #0077b3; margin-top: 4px; }
+    .unit-banner.sec2 { background: linear-gradient(135deg, #58cc02, #3cb300); box-shadow: 0 5px 0 var(--green-dark); }
+    .unit-banner.sec3 { background: linear-gradient(135deg, #9333ea, #7c3aed); box-shadow: 0 5px 0 #5b21b6; }
+    .unit-banner h2 { margin: 0; font-size: 1.12rem; }
+    .unit-banner p { margin: 3px 0 0; font-size: 0.84rem; opacity: 0.95; }
+    .unit-progress-pill { background: rgba(255,255,255,0.22); border-radius: 12px; padding: 6px 12px; font-weight: 900; font-size: 0.88rem; white-space: nowrap; }
+
+    .path-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 6px 0 8px; }
+    .path-step { display: flex; flex-direction: column; align-items: center; position: relative; }
+    .path-connector { width: 6px; height: 18px; border-radius: 99px; background: var(--gray); }
+    .path-connector.done { background: var(--green); }
+    .node-row { display: flex; align-items: center; gap: 14px; }
+    .node-btn {
+      width: 80px; height: 74px; border-radius: 50%; border: none; font-size: 1.9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; position: relative; transition: transform 0.12s; user-select: none;
+    }
+    .node-btn:active:not(:disabled) { transform: translateY(4px); }
+    .node-btn.locked { background: var(--gray); box-shadow: 0 7px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .node-btn.current { background: var(--blue); box-shadow: 0 7px 0 var(--blue-dark); color: #fff; animation: gentlePulse 1.8s infinite; }
+    .node-btn.current.boss { background: #9333ea; box-shadow: 0 7px 0 #6b21a8; }
+    .node-btn.current.exam { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); }
+    .node-btn.done { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); color: #fff; }
+    .node-check {
+      position: absolute; top: -4px; right: -4px; background: var(--green); color: #fff; border: 3px solid #fff;
+      width: 26px; height: 26px; border-radius: 50%; font-size: 0.82rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+    }
+    .start-bubble {
+      position: absolute; top: -34px; background: #fff; color: var(--blue-dark); border: 2px solid var(--border);
+      border-radius: 12px; padding: 3px 12px; font-size: 0.76rem; font-weight: 900; letter-spacing: 0.6px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08); white-space: nowrap; animation: floatY 1.6s ease-in-out infinite;
+    }
+    .node-label { margin-top: 9px; text-align: center; max-width: 260px; }
+    .node-title { font-weight: 900; font-size: 0.94rem; color: var(--text); }
+    .node-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .robot-buddy { font-size: 2.2rem; animation: floatY 2.2s ease-in-out infinite; }
+    @keyframes gentlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    .parent-bar {
+      margin-top: 28px; padding: 12px 16px; background: #fff; border: 2px dashed var(--border); border-radius: 14px;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.83rem; color: var(--muted);
+    }
+
+    /* FULLSCREEN LESSON */
+    .lesson-shell { display: none; min-height: 100vh; flex-direction: column; background: #fff; }
+    .lesson-shell.active { display: flex; }
+    .map-shell.hidden { display: none; }
+    .lesson-top { max-width: 720px; width: 100%; margin: 0 auto; padding: 18px 18px 10px; display: flex; align-items: center; gap: 14px; }
+    .close-btn { border: none; background: transparent; font-size: 1.5rem; font-weight: 900; color: var(--gray-dark); cursor: pointer; padding: 4px 8px; border-radius: 10px; }
+    .close-btn:hover { background: #f1f5f9; color: var(--text); }
+    .duo-bar-track { flex: 1; height: 16px; background: var(--gray); border-radius: 999px; overflow: hidden; }
+    .duo-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--blue), #58cc02); border-radius: 999px; transition: width 0.3s ease; }
+    .lesson-counter { font-weight: 900; font-size: 0.9rem; color: var(--muted); min-width: 56px; text-align: right; }
+
+    .lesson-body { flex: 1; max-width: 680px; width: 100%; margin: 0 auto; padding: 16px 20px 175px; display: flex; flex-direction: column; justify-content: center; }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue-dark); margin-bottom: 8px; }
+    .step-badge.retry { color: var(--orange-dark); }
+    .q-title { font-size: 1.38rem; font-weight: 900; margin: 0 0 8px; color: var(--text); line-height: 1.38; }
+    .q-sub { font-size: 0.96rem; color: var(--muted); margin: 0 0 18px; }
+    .bilingual-zh { display: block; font-size: 0.85em; font-weight: 600; color: #64748b; margin-top: 3px; }
+
+    .duo-btn {
+      border: none; border-radius: 16px; padding: 14px 26px; font-size: 1rem; font-weight: 900;
+      cursor: pointer; transition: transform 0.1s; color: #fff; background: var(--green); box-shadow: 0 5px 0 var(--green-dark);
+    }
+    .duo-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--green-dark); }
+    .duo-btn:disabled { background: var(--gray); box-shadow: 0 5px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .duo-btn.blue { background: var(--blue); box-shadow: 0 5px 0 var(--blue-dark); }
+    .duo-btn.red { background: var(--red); box-shadow: 0 5px 0 var(--red-dark); }
+    .duo-btn.outline { background: #fff; color: var(--text); border: 2px solid var(--border); box-shadow: 0 4px 0 var(--border); }
+
+    .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+    @media (max-width: 520px) { .choice-grid { grid-template-columns: 1fr; } }
+    .choice-tile {
+      border: 2px solid var(--border); border-bottom-width: 5px; background: #fff; border-radius: 16px;
+      padding: 15px 16px; font-size: 1.1rem; font-weight: 800; text-align: left; cursor: pointer;
+      color: var(--text); transition: all 0.12s; display: flex; align-items: center; gap: 10px;
+    }
+    .choice-tile:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
+    .choice-tile.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .choice-tile.correct { border-color: var(--green); background: var(--green-soft); color: #2b7000; }
+    .choice-tile.wrong { border-color: var(--red); background: var(--red-soft); color: #a81c1c; }
+    .tile-num { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--muted); flex-shrink: 0; }
+
+    .spell-input {
+      width: 100%; padding: 15px 18px; font-size: 1.25rem; font-weight: 800;
+      border: 2px solid #cbd5e1; border-bottom-width: 5px; border-radius: 16px; outline: none;
+    }
+    .spell-input:focus { border-color: var(--blue); background: #fcfeff; }
+
+    /* Teach & Pizza Lab */
+    .teach-card { border: 2px solid #e2e8f0; border-radius: 18px; padding: 18px; background: #fafcff; }
+    .pizza-lab {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+      background: #fff; border: 2px solid #bae6fd; border-radius: 16px; padding: 14px; margin-top: 10px;
+    }
+    .pizza-controls { flex: 1; min-width: 220px; }
+    .mini-switch { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+    .mini-switch button { padding: 6px 11px; border-radius: 10px; border: 2px solid var(--border); background: #fff; font-weight: 800; cursor: pointer; }
+    .mini-switch button.active { border-color: var(--blue-dark); background: var(--blue-soft); color: var(--blue-dark); }
+
+    /* Footer */
+    .lesson-footer { position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid var(--border); background: #fff; padding: 14px 20px; z-index: 30; }
+    .lesson-footer.ok { background: var(--green-soft); border-top-color: #b7eb8f; }
+    .lesson-footer.err { background: var(--red-soft); border-top-color: #ffa39e; }
+    .footer-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .fb-text { flex: 1; min-width: 220px; }
+    .fb-title { font-size: 1.08rem; font-weight: 900; margin-bottom: 3px; }
+    .lesson-footer.ok .fb-title { color: #2b7000; }
+    .lesson-footer.err .fb-title { color: #b91c1c; }
+    .fb-detail { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+    .fb-why {
+      margin-top: 6px; padding: 7px 10px; border-radius: 10px;
+      background: rgba(255,255,255,0.78); border-left: 4px solid var(--red);
+      font-size: 0.86rem; line-height: 1.4;
+    }
+    .lesson-footer.ok .fb-why { border-left-color: var(--green); }
+
+    /* Victory */
+    .victory-box { text-align: center; padding: 16px 10px; }
+    .cijfer-circle {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #1cb0f6); color: #fff;
+      font-size: 2.7rem; font-weight: 900; margin: 14px 0; box-shadow: 0 10px 26px rgba(28,176,246,0.28);
+    }
+    .cijfer-circle span { font-size: 0.85rem; font-weight: 700; }
+    .review-list { text-align: left; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .review-item { padding: 10px 14px; border-radius: 12px; border: 1.5px solid #fecaca; background: #fff5f5; font-size: 0.9rem; }
+
+    /* Guide Modal */
+    .guide-modal { display: none; position: fixed; inset: 0; z-index: 60; background: rgba(15,23,42,0.55); padding: 16px; overflow-y: auto; align-items: flex-start; justify-content: center; }
+    .guide-modal.open { display: flex; }
+    .guide-sheet { background: #fff; border-radius: 22px; max-width: 720px; width: 100%; margin: 18px auto 36px; padding: 20px; box-shadow: 0 20px 48px rgba(15,23,42,0.25); }
+    .guide-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--border); margin-bottom: 14px; }
+    .guide-sec { border: 2px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 12px; background: #fafcff; }
+    .guide-sec h3 { margin: 0 0 6px; font-size: 0.98rem; color: #0369a1; }
+  </style>
+</head>
+<body>
+  <div class="map-shell" id="map-shell">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-mini">
+          <a class="back-home" href="../../index.html">🏠</a>
+          <span>🍕 <span id="brand-txt"></span></span>
+        </div>
+        <div class="stats-row">
+          <span class="stat-chip">⚡ <span id="stat-xp">0</span> XP</span>
+          <span class="stat-chip">🔥 <span id="stat-streak">0</span></span>
+        </div>
+        <div class="controls-row">
+          <div class="lang-group">
+            <button class="lang-btn active" id="lang-nl" onclick="setLang('nl')">🇳🇱 NL</button>
+            <button class="lang-btn" id="lang-both" onclick="setLang('both')">🌐 NL+中</button>
+            <button class="lang-btn" id="lang-zh" onclick="setLang('zh')">🇨🇳 中文</button>
+          </div>
+          <button class="icon-btn on" id="btn-sfx" onclick="toggleSfx()">🎵</button>
+          <button class="icon-btn" id="btn-guide-map" onclick="openGuide()">📘</button>
+          <button class="icon-btn" id="btn-cloud" onclick="openCloudSettings()">☁️</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div id="map-sections"></div>
+      <div class="parent-bar">
+        <span id="parent-hint"></span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="icon-btn" id="btn-parent-mode" onclick="toggleParentMode()"></button>
+          <button class="icon-btn" id="btn-reset" onclick="resetProgress()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-shell" id="lesson-shell">
+    <div class="lesson-top">
+      <button class="close-btn" onclick="exitLesson()" title="Terug">✕</button>
+      <div class="duo-bar-track"><div class="duo-bar-fill" id="duo-bar-fill"></div></div>
+      <div class="lesson-counter" id="lesson-counter">1 / 10</div>
+      <button class="icon-btn" id="btn-guide-lesson" onclick="openGuide()">📘</button>
+    </div>
+    <div class="lesson-body" id="lesson-body"></div>
+    <div class="lesson-footer" id="lesson-footer"><div class="footer-inner" id="footer-inner"></div></div>
+  </div>
+
+  <div class="guide-modal" id="guide-modal" onclick="if(event.target===this) closeGuide()">
+    <div class="guide-sheet">
+      <div class="guide-head">
+        <h2 id="guide-modal-title" style="margin:0; font-size:1.15rem;"></h2>
+        <button class="close-btn" onclick="closeGuide()">✕</button>
+      </div>
+      <div id="guide-modal-body"></div>
+      <div style="text-align:right; margin-top:12px;">
+        <button class="duo-btn" onclick="closeGuide()" id="btn-guide-close">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =====================================================
+    // 1. 数学分数题库：完全对应 Groep 6 Werkblad Niveau 1 (8大类) + 拓展变式
+    // =====================================================
+    const MATH_QUESTIONS = [
+      // 1. Vereenvoudigen (约分)
+      { id: "v1", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 2/6 zo ver mogelijk.", promptZh: "把分数 2/6 约分到最简：",
+        subNl: "Deel teller én noemer door hetzelfde getal!", subZh: "分子和分母同时除以同一个数！",
+        options: ["1/3", "1/2", "2/3", "1/6"], answer: "1/3",
+        explainNl: "Deel boven en onder door 2: 2÷2 = 1 en 6÷2 = 3 → 1/3.",
+        explainZh: "分子分母同时除以 2：2÷2 = 1，6÷2 = 3 → 1/3。",
+        wrongNl: {
+          "1/2": "6 ÷ 2 is 3, geen 2! Controleer: 1/2 = 3/6, niet 2/6.",
+          "2/3": "Je hebt 6 door 2 gedeeld (3), maar je vergat de bovenkant (2) ook door 2 te delen!",
+          "1/6": "Als je de bovenkant door 2 deelt (1), moet de onderkant (6) ook door 2 → 3!"
+        },
+        wrongZh: {
+          "1/2": "6 除以 2 等于 3，不是 2！1/2 等于 3/6，不是 2/6。",
+          "2/3": "分母除以了 2，但忘了把分子 2 也除以 2！",
+          "1/6": "分子除以 2 变成 1，分母 6 也要除以 2 变成 3！"
+        } },
+      { id: "v2", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 6/10 zo ver mogelijk.", promptZh: "把分数 6/10 约分到最简：",
+        subNl: "Beide getallen zijn even — deel door 2!", subZh: "两个都是偶数，先同时除以 2！",
+        options: ["3/5", "2/5", "3/10", "1/2"], answer: "3/5",
+        explainNl: "6÷2 = 3 en 10÷2 = 5 → 3/5 (verder delen kan niet).",
+        explainZh: "6÷2 = 3，10÷2 = 5 → 3/5。",
+        wrongNl: {
+          "2/5": "6 ÷ 2 is 3, geen 2!",
+          "3/10": "Je vergat de onderkant (10) ook door 2 te delen!",
+          "1/2": "1/2 = 5/10, maar we hadden 6/10."
+        },
+        wrongZh: {
+          "2/5": "6 ÷ 2 等于 3，不是 2！",
+          "3/10": "忘了把分母 10 也除以 2！",
+          "1/2": "1/2 是 5/10，不是 6/10。"
+        } },
+      { id: "v3", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 4/12 zo ver mogelijk.", promptZh: "把分数 4/12 约分到最简：",
+        subNl: "Tip: deel meteen door 4 (of 2x door 2)!", subZh: "提示：上下同时除以 4（或连除两次 2）！",
+        options: ["1/3", "1/4", "2/6", "2/3"], answer: "1/3",
+        explainNl: "4÷4 = 1 en 12÷4 = 3 → 1/3!",
+        explainZh: "4÷4 = 1，12÷4 = 3 → 1/3！",
+        wrongNl: {
+          "2/6": "⚠️ Nog niet ver genoeg! 2/6 kun je nog een keer door 2 delen → 1/3!",
+          "1/4": "12 ÷ 4 = 3, geen 4! (1/4 = 3/12)",
+          "2/3": "2/3 = 8/12, dat is te groot!"
+        },
+        wrongZh: {
+          "2/6": "⚠️ 还没约到最简！2/6 还能继续同时除以 2 变成 1/3！",
+          "1/4": "12 ÷ 4 等于 3，不是 4！",
+          "2/3": "2/3 等于 8/12，太大了！"
+        } },
+      { id: "v4", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 6/8 zo ver mogelijk.", promptZh: "把分数 6/8 约分到最简：",
+        subNl: "Extra oefening", subZh: "巩固练习",
+        options: ["3/4", "2/4", "1/2", "3/8"], answer: "3/4",
+        explainNl: "Deel boven en onder door 2: 6÷2 = 3 en 8÷2 = 4 → 3/4.",
+        explainZh: "上下同时除以 2 → 3/4。",
+        wrongNl: {
+          "2/4": "6 ÷ 2 = 3, geen 2.",
+          "1/2": "1/2 = 4/8, niet 6/8.",
+          "3/8": "Je vergat 8 door 2 te delen!"
+        },
+        wrongZh: {
+          "2/4": "6 ÷ 2 等于 3，不是 2。",
+          "1/2": "1/2 是 4/8，不是 6/8。",
+          "3/8": "忘了把分母 8 也除以 2！"
+        } },
+
+      // 2. Hele uithalen (假分数化带分数)
+      { id: "h1", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 7/4.", promptZh: "把假分数 7/4 化成带分数：",
+        subNl: "Hoe vaak past 4 in 7? En hoeveel blijft er over?", subZh: "7 里面有几个 4？还剩几分之几？",
+        options: ["1 3/4", "1 1/4", "2 1/4", "1 3/7"], answer: "1 3/4",
+        explainNl: "1 hele pizza = 4/4. Van 7/4 blijft er 7 - 4 = 3 stukjes over → 1 3/4!",
+        explainZh: "1 个整块 = 4/4，7 - 4 = 3，所以是 1 3/4！",
+        wrongNl: {
+          "1 1/4": "7 - 4 = 3, geen 1!",
+          "2 1/4": "2 helen = 8/4, maar je hebt maar 7/4!",
+          "1 3/7": "De noemer blijft altijd hetzelfde (vierden = /4), niet /7!"
+        },
+        wrongZh: {
+          "1 1/4": "7 减去 4 剩 3，不是 1！",
+          "2 1/4": "2 个整块需要 8/4，7/4 不够 2 个整块！",
+          "1 3/7": "分母不变，依然是 4，不能变成 7！"
+        } },
+      { id: "h2", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 8/3.", promptZh: "把假分数 8/3 化成带分数：",
+        subNl: "1 hele = 3/3, dus 2 helen = 6/3...", subZh: "1 整块 = 3/3，2 整块 = 6/3...",
+        options: ["2 2/3", "2 1/3", "1 5/3", "3 1/3"], answer: "2 2/3",
+        explainNl: "2 × 3 = 6 (dat zijn 2 helen). Er blijft 8 - 6 = 2/3 over → 2 2/3!",
+        explainZh: "8 ÷ 3 = 2 余 2，所以是 2 2/3！",
+        wrongNl: {
+          "2 1/3": "2 helen = 6/3. 8 - 6 = 2, geen 1!",
+          "1 5/3": "Je kunt er nóg een hele (3/3) uithalen, want 5/3 is nog groter dan 1!",
+          "3 1/3": "3 helen = 9/3, maar je hebt maar 8/3."
+        },
+        wrongZh: {
+          "2 1/3": "8 减去 6 剩 2，不是 1！",
+          "1 5/3": "5/3 还能再提出 1 个整块（3/3）！",
+          "3 1/3": "3 个整块需要 9/3，8/3 不够。"
+        } },
+      { id: "h3", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 13/5.", promptZh: "把假分数 13/5 化成带分数：",
+        subNl: "1 hele = 5/5, 2 helen = 10/5...", subZh: "13 里面有几个 5？",
+        options: ["2 3/5", "2 2/5", "3 2/5", "1 8/5"], answer: "2 3/5",
+        explainNl: "10/5 = 2 helen. 13 - 10 = 3/5 over → 2 3/5!",
+        explainZh: "13 ÷ 5 = 2 余 3 → 2 3/5！",
+        wrongNl: {
+          "2 2/5": "13 - 10 = 3, geen 2!",
+          "3 2/5": "3 helen = 15/5, dat is meer dan 13/5!",
+          "1 8/5": "8/5 is nog groter dan 1 hele (5/5), dus haal er 2 helen uit!"
+        },
+        wrongZh: {
+          "2 2/5": "13 减 10 等于 3，不是 2！",
+          "3 2/5": "3 个整块要 15/5，13/5 不够 3 个整块！",
+          "1 8/5": "8/5 里还能再拿出 1 个整块！"
+        } },
+      { id: "h4", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 9/4.", promptZh: "把假分数 9/4 化成带分数：",
+        subNl: "Extra oefening", subZh: "巩固练习",
+        options: ["2 1/4", "2 3/4", "1 5/4", "3 1/4"], answer: "2 1/4",
+        explainNl: "2 × 4 = 8 (2 helen), 9 - 8 = 1/4 over → 2 1/4.",
+        explainZh: "9 ÷ 4 = 2 余 1 → 2 1/4。",
+        wrongNl: {
+          "2 3/4": "9 - 8 = 1, geen 3!",
+          "1 5/4": "5/4 is nog meer dan 1 hele!",
+          "3 1/4": "3 helen = 12/4, te veel!"
+        },
+        wrongZh: {
+          "2 3/4": "9 减 8 余 1，不是 3！",
+          "1 5/4": "5/4 还能再化出 1 个整块！",
+          "3 1/4": "3 个整块要 12/4，太大了！"
+        } },
+
+      // 3. Hele samenvoegen (带分数化假分数)
+      { id: "s1", cat: 3, type: "choice",
+        promptNl: "Schrijf 1 2/3 als één breuk.", promptZh: "把带分数 1 2/3 化成假分数：",
+        subNl: "Truc: hele × noemer + teller!", subZh: "口诀：整数 × 分母 + 分子！",
+        options: ["5/3", "3/3", "4/3", "12/3"], answer: "5/3",
+        explainNl: "1 hele = 3/3. Samen met 2/3 is dat: (1 × 3 + 2)/3 = 5/3!",
+        explainZh: "(1 × 3 + 2)/3 = 5/3！",
+        wrongNl: {
+          "12/3": "⚠️ Trap! Plak '1' en '2' niet zomaar aan elkaar als 12! 1 hele is 3/3, en 3/3 + 2/3 = 5/3!",
+          "3/3": "3/3 is alleen de 1 hele, je vergat + 2/3!",
+          "4/3": "1 × 3 + 2 = 5, geen 4!"
+        },
+        wrongZh: {
+          "12/3": "⚠️ 陷阱！不能把 1 和 2 直接拼成 12！1 个整块是 3/3，加上 2/3 是 5/3！",
+          "3/3": "3/3 只是 1 个整块，忘了加后面的 2/3！",
+          "4/3": "1 × 3 + 2 = 5，不是 4！"
+        } },
+      { id: "s2", cat: 3, type: "choice",
+        promptNl: "Schrijf 2 1/5 als één breuk.", promptZh: "把带分数 2 1/5 化成假分数：",
+        subNl: "2 helen = 2 × 5/5 = 10/5...", subZh: "口诀：整数 × 分母 + 分子！",
+        options: ["11/5", "10/5", "7/5", "21/5"], answer: "11/5",
+        explainNl: "(2 × 5 + 1)/5 = 11/5!",
+        explainZh: "(2 × 5 + 1)/5 = 11/5！",
+        wrongNl: {
+          "21/5": "⚠️ Trap! 2 en 1 aan elkaar plakken als 21 is fout! 2 helen = 10/5, en 10/5 + 1/5 = 11/5!",
+          "10/5": "10/5 zijn alleen de 2 helen, vergeet + 1/5 niet!",
+          "7/5": "Je moet 2 × 5 doen (10), niet 2 + 5!"
+        },
+        wrongZh: {
+          "21/5": "⚠️ 不能把 2 和 1 拼成 21！2 个整块是 10/5，加上 1/5 是 11/5！",
+          "10/5": "10/5 忘了加剩下的 1/5！",
+          "7/5": "整数 2 要乘以分母 5（得 10），不是相加！"
+        } },
+      { id: "s3", cat: 3, type: "choice",
+        promptNl: "Schrijf 3 1/4 als één breuk.", promptZh: "把带分数 3 1/4 化成假分数：",
+        subNl: "3 helen = 3 × 4/4 = 12/4...", subZh: "口诀：3 × 4 + 1 = ?",
+        options: ["13/4", "12/4", "7/4", "15/4"], answer: "13/4",
+        explainNl: "(3 × 4 + 1)/4 = 13/4!",
+        explainZh: "(3 × 4 + 1)/4 = 13/4！",
+        wrongNl: {
+          "12/4": "12/4 = 3 helen, je vergat de + 1/4!",
+          "7/4": "3 × 4 = 12 (niet 3 + 4)!",
+          "15/4": "3 × 4 + 1 = 13, geen 15!"
+        },
+        wrongZh: {
+          "12/4": "12/4 只是 3，忘了加 1/4！",
+          "7/4": "要算 3 × 4 = 12，不是 3 + 4！",
+          "15/4": "3 × 4 + 1 = 13，不是 15！"
+        } },
+
+      // 4. Gelijknamig maken (通分)
+      { id: "g1", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 1/2 en 1/6 gelijknamig.", promptZh: "把 1/2 和 1/6 通分（化成同分母）：",
+        subNl: "Kies dezelfde noemer (/6):", subZh: "把 1/2 变成几分之六？",
+        options: ["3/6 en 1/6", "2/6 en 1/6", "1/6 en 1/6", "3/6 en 2/6"], answer: "3/6 en 1/6",
+        explainNl: "Van /2 naar /6 is ×3: 1×3=3 en 2×3=6 → 3/6 en 1/6!",
+        explainZh: "2 变成 6 要乘以 3，分子 1 也乘以 3 → 3/6 和 1/6！",
+        wrongNl: {
+          "2/6 en 1/6": "Om van 2 naar 6 te gaan doe je ×3 (niet ×2)!",
+          "1/6 en 1/6": "Je vergat de teller (1) van 1/2 ook ×3 te doen!",
+          "3/6 en 2/6": "1/6 hoeft niet te veranderen (blijft 1/6)!"
+        },
+        wrongZh: {
+          "2/6 en 1/6": "2 变成 6 是乘以 3，不是乘以 2！",
+          "1/6 en 1/6": "分母乘了 3，分子 1 忘了乘 3！",
+          "3/6 en 2/6": "1/6 分母已经是 6 了，不用变！"
+        } },
+      { id: "g2", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 1/3 en 2/9 gelijknamig.", promptZh: "把 1/3 和 2/9 通分：",
+        subNl: "Kies noemer /9:", subZh: "把 1/3 变成几分之九？",
+        options: ["3/9 en 2/9", "2/9 en 2/9", "1/9 en 2/9", "6/9 en 2/9"], answer: "3/9 en 2/9",
+        explainNl: "Van /3 naar /9 is ×3 → 1×3=3 → 3/9 en 2/9!",
+        explainZh: "3 变成 9 乘以 3，分子 1×3=3 → 3/9 和 2/9！",
+        wrongNl: {
+          "2/9 en 2/9": "3 × 3 = 9, dus doe de teller ook ×3 (niet ×2)!",
+          "1/9 en 2/9": "Vergeet niet de teller 1 ook ×3 te doen!",
+          "6/9 en 2/9": "1 × 3 = 3, geen 6 (6/9 = 2/3)!"
+        },
+        wrongZh: {
+          "2/9 en 2/9": "3 变 9 乘了 3，分子也要乘 3！",
+          "1/9 en 2/9": "忘了把分子 1 乘以 3！",
+          "6/9 en 2/9": "1 × 3 = 3，不是 6！"
+        } },
+      { id: "g3", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 3/4 en 1/8 gelijknamig.", promptZh: "把 3/4 和 1/8 通分：",
+        subNl: "Van /4 naar /8 is ×2:", subZh: "4 变成 8 乘以 2：",
+        options: ["6/8 en 1/8", "3/8 en 1/8", "4/8 en 1/8", "6/8 en 2/8"], answer: "6/8 en 1/8",
+        explainNl: "3×2 = 6 en 4×2 = 8 → 6/8 en 1/8!",
+        explainZh: "分子分母同时乘以 2：3×2=6，4×2=8 → 6/8 和 1/8！",
+        wrongNl: {
+          "3/8 en 1/8": "Je deed alleen 4 × 2 = 8, maar vergat de bovenkant (3 × 2 = 6)!",
+          "4/8 en 1/8": "Je moet 3 × 2 doen (= 6), niet +1!",
+          "6/8 en 2/8": "1/8 heeft al noemer 8, die blijft gewoon 1/8!"
+        },
+        wrongZh: {
+          "3/8 en 1/8": "忘了把分子 3 也乘以 2！",
+          "4/8 en 1/8": "分子 3 要乘以 2 得 6，不是加 1！",
+          "6/8 en 2/8": "1/8 不用变！"
+        } },
+
+      // 5. Breuk optellen en aftrekken (同分母加减)
+      { id: "o1", cat: 5, type: "choice",
+        promptNl: "Reken uit: 1/5 + 3/5 =", promptZh: "计算：1/5 + 3/5 =",
+        subNl: "Noemers zijn gelijk → alleen tellers optellen!", subZh: "分母相同，分母不变，分子相加！",
+        options: ["4/5", "4/10", "3/5", "2/5"], answer: "4/5",
+        explainNl: "1 + 3 = 4, de noemer blijft 5 → 4/5!",
+        explainZh: "1 + 3 = 4，分母 5 不变 → 4/5！",
+        wrongNl: {
+          "4/10": "⚠️ Trap! Noemers tel je NOOIT bij elkaar op (5+5=10 is fout)!",
+          "3/5": "1 + 3 = 4, geen 3!",
+          "2/5": "Het is optellen (+), geen aftrekken (-)!"
+        },
+        wrongZh: {
+          "4/10": "⚠️ 陷阱！分母绝对不能相加（5+5=10 是错的）！",
+          "3/5": "1 + 3 = 4！",
+          "2/5": "看清是加号（+），不是减号！"
+        } },
+      { id: "o2", cat: 5, type: "choice",
+        promptNl: "Reken uit: 7/8 - 2/8 =", promptZh: "计算：7/8 - 2/8 =",
+        subNl: "Noemers zijn gelijk → tellers aftrekken:", subZh: "分母不变，分子相减：",
+        options: ["5/8", "9/8", "4/8", "5/16"], answer: "5/8",
+        explainNl: "7 - 2 = 5, noemer blijft 8 → 5/8!",
+        explainZh: "7 - 2 = 5，分母 8 不变 → 5/8！",
+        wrongNl: {
+          "9/8": "Het is min (-), geen plus (+)!",
+          "4/8": "7 - 2 = 5, geen 4.",
+          "5/16": "De noemer blijft altijd 8!"
+        },
+        wrongZh: {
+          "9/8": "这是减法，不是加法！",
+          "4/8": "7 - 2 = 5，不是 4。",
+          "5/16": "分母保持不变（8），不能相加！"
+        } },
+      { id: "o3", cat: 5, type: "choice",
+        promptNl: "Reken uit: 4/9 + 3/9 =", promptZh: "计算：4/9 + 3/9 =",
+        subNl: "Deel /9 blijft hetzelfde:", subZh: "分母 9 不变：",
+        options: ["7/9", "7/18", "1/9", "6/9"], answer: "7/9",
+        explainNl: "4 + 3 = 7 → 7/9!",
+        explainZh: "4 + 3 = 7 → 7/9！",
+        wrongNl: {
+          "7/18": "⚠️ Noemers tel je nooit bij elkaar op (9+9=18 is fout)!",
+          "1/9": "Het is plus (+), geen min (-)!",
+          "6/9": "4 + 3 = 7, geen 6!"
+        },
+        wrongZh: {
+          "7/18": "⚠️ 分母不能相加！",
+          "1/9": "是加法不是减法！",
+          "6/9": "4 + 3 = 7，不是 6！"
+        } },
+
+      // 6. Ongelijknamige breuken (异分母加减)
+      { id: "u1", cat: 6, type: "choice",
+        promptNl: "Reken uit: 1/2 + 1/6 =", promptZh: "计算：1/2 + 1/6 =",
+        subNl: "Stap 1: maak gelijknamig (1/2 = 3/6). Stap 2: tel op!", subZh: "先通分（1/2 = 3/6），再相加！",
+        options: ["4/6", "2/8", "2/6", "3/6"], answer: "4/6",
+        explainNl: "1/2 = 3/6. Dan: 3/6 + 1/6 = 4/6 (vereenvoudigd: 2/3)!",
+        explainZh: "1/2 = 3/6，所以 3/6 + 1/6 = 4/6（约分后是 2/3）！",
+        wrongNl: {
+          "2/8": "⚠️ Grote trap! Je mag 1+1 en 2+6 niet zomaar optellen! Maak eerst /6: 1/2 = 3/6!",
+          "2/6": "Je vergat 1/2 eerst om te rekenen naar 3/6!",
+          "3/6": "3/6 is alleen 1/2, vergeet + 1/6 niet!"
+        },
+        wrongZh: {
+          "2/8": "⚠️ 大陷阱！不能直接分子加分子、分母加分母（1+1=2, 2+6=8 是错的）！必须先通分：1/2 = 3/6！",
+          "2/6": "忘了先把 1/2 通分成 3/6！",
+          "3/6": "3/6 只是 1/2，忘了加 1/6！"
+        } },
+      { id: "u2", cat: 6, type: "choice",
+        promptNl: "Reken uit: 3/4 - 1/8 =", promptZh: "计算：3/4 - 1/8 =",
+        subNl: "Maak eerst /8: 3/4 = 6/8...", subZh: "先把 3/4 通分成几分之八：",
+        options: ["5/8", "2/4", "2/8", "4/8"], answer: "5/8",
+        explainNl: "3/4 = 6/8. Dan: 6/8 - 1/8 = 5/8!",
+        explainZh: "3/4 = 6/8，然后 6/8 - 1/8 = 5/8！",
+        wrongNl: {
+          "2/4": "Je mag tellers en noemers niet zomaar van elkaar aftrekken (3-1 en 8-4)!",
+          "2/8": "3/4 is 6/8 (niet 3/8)!",
+          "4/8": "6/8 - 1/8 = 5/8, geen 4/8."
+        },
+        wrongZh: {
+          "2/4": "不能直接分母减分母！必须先通分成同分母。",
+          "2/8": "3/4 通分后是 6/8，不是 3/8！",
+          "4/8": "6 - 1 = 5，不是 4。"
+        } },
+      { id: "u3", cat: 6, type: "choice",
+        promptNl: "Reken uit: 1/3 + 1/6 =", promptZh: "计算：1/3 + 1/6 =",
+        subNl: "Maak eerst /6: 1/3 = 2/6...", subZh: "先把 1/3 通分成 2/6：",
+        options: ["3/6", "2/9", "2/6", "1/6"], answer: "3/6",
+        explainNl: "1/3 = 2/6. Dan: 2/6 + 1/6 = 3/6 (= 1/2)!",
+        explainZh: "1/3 = 2/6，所以 2/6 + 1/6 = 3/6（= 1/2）！",
+        wrongNl: {
+          "2/9": "⚠️ Trap! 1+1=2 en 3+6=9 mag nooit! Maak eerst gelijknamig (/6)!",
+          "2/6": "1/3 = 2/6, dus 2/6 + 1/6 = 3/6!",
+          "1/6": "Tel 2/6 en 1/6 bij elkaar op!"
+        },
+        wrongZh: {
+          "2/9": "⚠️ 陷阱！不能直接 1+1 和 3+6！必须先通分成 2/6 + 1/6！",
+          "2/6": "1/3 已经是 2/6 了，加上 1/6 得 3/6！",
+          "1/6": "2/6 + 1/6 = 3/6。"
+        } },
+
+      // 7. Breuk keer getal I (总量求部分)
+      { id: "k1", cat: 7, type: "choice",
+        promptNl: "Een klas heeft 24 leerlingen. Hoeveel is 1/3 deel daarvan?", promptZh: "一个班有 24 个学生。其中 1/3 是多少人？",
+        subNl: "Totaal is bekend → deel door de noemer (24 ÷ 3)!", subZh: "已知总数求部分：24 ÷ 3 = ?",
+        options: ["8", "6", "12", "3"], answer: "8",
+        explainNl: "1/3 van 24 = 24 ÷ 3 = 8 leerlingen!",
+        explainZh: "24 的 1/3 = 24 ÷ 3 = 8 人！",
+        wrongNl: {
+          "6": "24 ÷ 4 = 6, maar de noemer is 3 (24 ÷ 3 = 8)!",
+          "12": "12 is 1/2 van 24, niet 1/3!",
+          "3": "3 is de noemer, niet het antwoord!"
+        },
+        wrongZh: {
+          "6": "24 ÷ 4 才等于 6，这题分母是 3（24 ÷ 3 = 8）！",
+          "12": "12 是 1/2，不是 1/3！",
+          "3": "3 是分母，不是人数！"
+        } },
+      { id: "k2", cat: 7, type: "choice",
+        promptNl: "Een boek heeft 40 bladzijden. Hoeveel is 3/4 deel van het boek?", promptZh: "一本书有 40 页。这本书的 3/4 是多少页？",
+        subNl: "Stap 1: 1/4 = 40 ÷ 4. Stap 2: × 3!", subZh: "两步走：先算 1/4（40÷4），再乘以 3！",
+        options: ["30", "10", "20", "35"], answer: "30",
+        explainNl: "Stap 1: 40 ÷ 4 = 10 (= 1/4 deel). Stap 2: 10 × 3 = 30 bladzijden!",
+        explainZh: "第 1 步：40 ÷ 4 = 10 页（1/4）；第 2 步：10 × 3 = 30 页！",
+        wrongNl: {
+          "10": "10 is pas 1/4 deel! Je moet nog × 3 doen voor 3/4 deel!",
+          "20": "20 is 2/4 (de helft), maar we zoeken 3/4!",
+          "35": "10 × 3 = 30, geen 35!"
+        },
+        wrongZh: {
+          "10": "10 只是 1/4！别忘了第二步还要乘以分子 3！",
+          "20": "20 是 2/4（一半），题目问的是 3/4！",
+          "35": "10 × 3 = 30，不是 35！"
+        } },
+      { id: "k3", cat: 7, type: "choice",
+        promptNl: "Een doos heeft 25 koekjes. Hoeveel is 2/5 deel van de koekjes?", promptZh: "一盒有 25 块饼干。其中 2/5 是多少块？",
+        subNl: "Stap 1: 25 ÷ 5. Stap 2: × 2!", subZh: "先除以 5，再乘以 2！",
+        options: ["10", "5", "15", "20"], answer: "10",
+        explainNl: "25 ÷ 5 = 5 (= 1/5 deel). En 2 × 5 = 10 koekjes!",
+        explainZh: "25 ÷ 5 = 5 块（1/5），5 × 2 = 10 块！",
+        wrongNl: {
+          "5": "5 is alleen 1/5 deel — vergeet niet × 2 te doen!",
+          "15": "15 is 3/5 deel, wij zoeken 2/5!",
+          "20": "20 is 4/5 deel!"
+        },
+        wrongZh: {
+          "5": "5 只是 1/5，忘了乘以 2！",
+          "15": "15 是 3/5，不是 2/5！",
+          "20": "20 是 4/5！"
+        } },
+
+      // 8. Breuk keer getal II (已知部分求整体)
+      { id: "p1", cat: 8, type: "choice",
+        promptNl: "1/4 deel van een bedrag is € 12,-. Hoeveel is het hele bedrag?", promptZh: "一笔钱的 1/4 是 €12。全部多少钱？",
+        subNl: "⚠️ Omgekeerd! Je weet een DEEL, zoek het HEEL (12 × 4)!", subZh: "⚠️ 逆向题！已知 1 份是 €12，求全部 4 份！",
+        options: ["€ 48,-", "€ 3,-", "€ 24,-", "€ 36,-"], answer: "€ 48,-",
+        explainNl: "1 stukje (van de 4) = € 12. Dan is het hele bedrag (4/4): 4 × 12 = € 48,-!",
+        explainZh: "1 份是 €12，总共 4 份，所以 12 × 4 = €48！",
+        wrongNl: {
+          "€ 3,-": "⚠️ Trap! 12 ÷ 4 doe je als € 12 het HEEL was. Maar € 12 is pas 1/4 stukje!",
+          "€ 24,-": "2 × 12 = € 24 is pas 2/4 (de helft), niet 4/4!",
+          "€ 36,-": "3 × 12 = € 36 is 3/4, maar we zoeken het hele bedrag (4/4)!"
+        },
+        wrongZh: {
+          "€ 3,-": "⚠️ 陷阱！12 不是总数，12 只是 1/4 份，不能除以 4，要乘以 4！",
+          "€ 24,-": "24 只是 2/4（一半），全部是 4 份！",
+          "€ 36,-": "36 只是 3/4，全部是 4/4！"
+        } },
+      { id: "p2", cat: 8, type: "choice",
+        promptNl: "2/3 deel van een lint is 18 cm. Hoe lang is het hele lint?", promptZh: "一条彩带的 2/3 是 18 cm。整条彩带多长？",
+        subNl: "Stap 1: bereken 1/3 (18 ÷ 2 = 9 cm). Stap 2: 3/3 = × 3!", subZh: "两步走：先除以分子 2 求出 1 份，再乘以分母 3！",
+        options: ["27 cm", "9 cm", "36 cm", "54 cm"], answer: "27 cm",
+        explainNl: "2 stukjes = 18 cm → 1 stukje (1/3) = 18 ÷ 2 = 9 cm → hele lint (3/3) = 9 × 3 = 27 cm!",
+        explainZh: "2 份 = 18 cm → 1 份 = 18 ÷ 2 = 9 cm → 全部 3 份 = 9 × 3 = 27 cm！",
+        wrongNl: {
+          "9 cm": "9 cm is alleen 1/3 deel! Vergeet Stap 2 (× 3) niet!",
+          "36 cm": "18 × 2 = 36 klopt niet, want 18 is 2/3 (niet 1/2)!",
+          "54 cm": "Je vergat eerst door 2 te delen! (18 × 3 = 54 is als 18 = 1/3 was)."
+        },
+        wrongZh: {
+          "9 cm": "9 cm 只是 1 份（1/3），别忘了第二步乘以 3！",
+          "36 cm": "18 是 2/3，不是 1/2，不能直接 18 × 2！",
+          "54 cm": "忘了先除以分子 2！（只有当 18 是 1/3 时才直接乘以 3）。"
+        } },
+      { id: "p3", cat: 8, type: "choice",
+        promptNl: "3/5 van een zak appels weegt 15 kg. Hoeveel weegt de hele zak?", promptZh: "一袋苹果的 3/5 重 15 kg。整袋重多少 kg？",
+        subNl: "Stap 1: 1/5 = 15 ÷ 3. Stap 2: × 5!", subZh: "第 1 步：15 ÷ 3 = 5 kg（1 份）；第 2 步：× 5！",
+        options: ["25 kg", "9 kg", "20 kg", "45 kg"], answer: "25 kg",
+        explainNl: "3 stukjes = 15 kg → 1 stukje (1/5) = 15 ÷ 3 = 5 kg → hele zak (5/5) = 5 × 5 = 25 kg!",
+        explainZh: "3 份 = 15 kg → 1 份 = 5 kg → 全部 5 份 = 5 × 5 = 25 kg！",
+        wrongNl: {
+          "9 kg": "15 ÷ 5 × 3 doe je als 15 kg de HELE zak was. Hier is 15 kg maar 3/5 deel!",
+          "20 kg": "5 × 5 = 25 kg, geen 20 kg!",
+          "45 kg": "Je vergat eerst door 3 te delen!"
+        },
+        wrongZh: {
+          "9 kg": "如果整袋重 15 kg 才算 15÷5×3=9；但这里 15 kg 只是 3/5！",
+          "20 kg": "5 × 5 = 25 kg，不是 20 kg！",
+          "45 kg": "忘了先除以分子 3！"
+        } }
+    ];
+
+    // =====================================================
+    // 2. 8 关路线定义
+    // =====================================================
+    const SECTIONS = [
+      { id: 1, cls: "sec1", titleNl: "Deel 1 · 🍕 Vereenvoudigen & Helen", titleZh: "第一篇章 · 🍕 约分 & 假分数/带分数互化",
+        subNl: "Onderdeel 1, 2 en 3 + interactieve Pizza-lab (~12 min)", subZh: "含交互式披萨切块图解 + 第 1–3 部分" },
+      { id: 2, cls: "sec2", titleNl: "Deel 2 · ➕ Gelijknamig, Optellen & Aftrekken", titleZh: "第二篇章 · ➕ 通分 & 同/异分母加减",
+        subNl: "Onderdeel 4, 5 en 6 (~12 min)", subZh: "先通分再加减，彻底告别“分母相加”错误" },
+      { id: 3, cls: "sec3", titleNl: "Deel 3 · 🎯 Breuk keer Getal & Eindtoets", titleZh: "第三篇章 · 🎯 分数应用题 & 模拟考",
+        subNl: "Onderdeel 7 & 8 + Fouten-EHBO + Cijfer 1–10 (~15 min)", subZh: "分清“求部分”与“求整体” + 错题清零 + 模拟考" }
+    ];
+
+    const LEVELS = [
+      { id: 1, sec: 1, icon: "🍕", offset: 0, kind: "normal",
+        titleNl: "Level 1 · Pizza-Lab & Vereenvoudigen", titleZh: "第 1 关 · 披萨图解 & 约分",
+        subNl: "Deel 1: 2/6 = 1/3", subZh: "交互披萨实验 + 约分训练" },
+      { id: 2, sec: 1, icon: "🔄", offset: -40, kind: "normal",
+        titleNl: "Level 2 · Helen uithalen", titleZh: "第 2 关 · 假分数化带分数",
+        subNl: "Deel 2: 7/4 → 1 3/4", subZh: "先看图解再练 7/4, 8/3, 13/5" },
+      { id: 3, sec: 1, icon: "🧩", offset: 18, kind: "boss",
+        titleNl: "Level 3 · Helen samenvoegen", titleZh: "第 3 关 · 带分数化假分数",
+        subNl: "Deel 3: 1 2/3 → 5/3 (pas op 12/3!)", subZh: "口诀：整数×分母+分子（避开拼数陷阱）" },
+
+      { id: 4, sec: 2, icon: "⚖️", offset: 40, kind: "normal",
+        titleNl: "Level 4 · Gelijknamig & Optellen", titleZh: "第 4 关 · 通分 & 同分母加减",
+        subNl: "Deel 4 & 5", subZh: "第 4、5 部分专项" },
+      { id: 5, sec: 2, icon: "➕", offset: -36, kind: "boss",
+        titleNl: "Level 5 · Ongelijknamige breuken", titleZh: "第 5 关 · 异分母加减 Boss",
+        subNl: "Deel 6: Eerst gelijknamig maken!", subZh: "第 6 部分：先通分再计算" },
+
+      { id: 6, sec: 3, icon: "🎯", offset: 20, kind: "boss",
+        titleNl: "Level 6 · Breuk keer getal I & II", titleZh: "第 6 关 · 分数应用题 I & II 对比突破",
+        subNl: "Deel 7 & 8: Deel van heel vs Heel zoeken", subZh: "分清“已知总数求部分”与“已知部分求总数”" },
+      { id: 7, sec: 3, icon: "🩹", offset: -30, kind: "normal",
+        titleNl: "Level 7 · Fouten-EHBO", titleZh: "第 7 关 · 个人错题清零",
+        subNl: "Werk al je fouten weg", subZh: "清零前 6 关所有错题" },
+      { id: 8, sec: 3, icon: "🏆", offset: 0, kind: "exam",
+        titleNl: "Level 8 · Breuken Eindtoets (16 vragen)", titleZh: "第 8 关 · 16 题终极模拟考（出 Cijfer）",
+        subNl: "Cijfer 1–10", subZh: "覆盖全 8 类题型，交卷打分" }
+    ];
+
+    // =====================================================
+    // 3. 状态 & Supabase 云端同步
+    // =====================================================
+    const STORAGE_KEY = "ernst_rekenen_breuken_v1";
+    const PROFILE_KEY = "ernst_rekenen_profile_id";
+    const SUPABASE_URL = "https://ejemztgsopsrzyhvrppo.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqZW16dGdzb3Bzcnp5aHZycHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2MTcxODcsImV4cCI6MjExMTE5MzE4N30.8JA6psNYdWTi3td3xizOsEchFg7vZEKRHeXqFDcqTKQ";
+
+    let state = {
+      lang: "nl", xp: 0, streak: 0, unlockedLevel: 1, completedLevels: {},
+      mistakes: {}, parentMode: false, sfxOn: true, bestCijfer: null, updatedAt: 0
+    };
+    let cloudStatus = "syncing", pushTimer = null;
+
+    function getProfileId() { try { return localStorage.getItem(PROFILE_KEY) || "ernst-rekenen-breuken"; } catch (e) { return "ernst-rekenen-breuken"; } }
+    function healUnlockedLevel() {
+      let u = 1; while (state.completedLevels[u] && u < LEVELS.length) u++;
+      if (u > (state.unlockedLevel || 1)) state.unlockedLevel = u;
+      if (state.unlockedLevel > LEVELS.length) state.unlockedLevel = LEVELS.length;
+    }
+    function updateCloudBadge() {
+      const btn = document.getElementById("btn-cloud"); if (!btn) return;
+      if (cloudStatus === "synced") { btn.textContent = t("☁️ Opgeslagen", "☁️ 已云端同步"); btn.classList.add("on"); }
+      else if (cloudStatus === "syncing") { btn.textContent = t("☁️ Bezig...", "☁️ 同步中..."); btn.classList.remove("on"); }
+      else { btn.textContent = t("☁️ Lokaal", "☁️ 仅本机"); btn.classList.remove("on"); }
+    }
+    async function syncCloudPull() {
+      if (typeof fetch !== "function") return;
+      cloudStatus = "syncing"; updateCloudBadge();
+      const pid = encodeURIComponent(getProfileId());
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?profile_id=eq.${pid}&select=data,updated_at`, {
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const rows = await res.json();
+        if (rows && rows.length && rows[0].data) {
+          const cd = rows[0].data, cts = cd.updatedAt || Date.parse(rows[0].updated_at) || 0;
+          if (cts > (state.updatedAt || 0) || (state.xp === 0 && (cd.xp || 0) > 0)) {
+            state = { ...state, ...cd, updatedAt: cts }; healUnlockedLevel();
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+            cloudStatus = "synced"; renderMap(); return;
+          }
+        }
+        if (state.xp > 0 || Object.keys(state.completedLevels).length > 0) await syncCloudPush(true);
+        else { cloudStatus = "synced"; updateCloudBadge(); }
+      } catch (e) { cloudStatus = "offline"; updateCloudBadge(); }
+    }
+    async function syncCloudPush(immediate) {
+      if (typeof fetch !== "function") return;
+      if (!immediate) { clearTimeout(pushTimer); pushTimer = setTimeout(() => syncCloudPush(true), 600); return; }
+      cloudStatus = "syncing"; updateCloudBadge();
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?on_conflict=profile_id`, {
+          method: "POST",
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates" },
+          body: JSON.stringify({ profile_id: getProfileId(), data: state, updated_at: new Date().toISOString() })
+        });
+        cloudStatus = res.ok ? "synced" : "offline";
+      } catch (e) { cloudStatus = "offline"; }
+      updateCloudBadge();
+    }
+    function openCloudSettings() {
+      const cur = getProfileId();
+      const next = prompt(t(`Huidige Cloud-code: ${cur}\nTyp een nieuwe code of klik OK om te synchroniseren:`, `当前同步码：${cur}\n输入新同步码，或直接点确定立即同步：`), cur);
+      if (next === null) return;
+      const clean = next.trim();
+      if (clean && clean !== cur) {
+        try { localStorage.setItem(PROFILE_KEY, clean); } catch (e) {}
+        state.xp = 0; state.streak = 0; state.unlockedLevel = 1; state.completedLevels = {}; state.mistakes = {}; state.bestCijfer = null; state.updatedAt = 0;
+      }
+      syncCloudPull();
+    }
+
+    function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) { state = { ...state, ...JSON.parse(raw) }; healUnlockedLevel(); } } catch (e) {} }
+    function saveState(imm) { state.updatedAt = Date.now(); try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} syncCloudPush(!!imm); }
+    function t(nl, zh) { return state.lang === "nl" ? nl : (state.lang === "zh" ? zh : `${nl} / ${zh}`); }
+    function tBlock(nl, zh) { return state.lang === "nl" ? escapeHtml(nl) : (state.lang === "zh" ? escapeHtml(zh) : `${escapeHtml(nl)}<span class="bilingual-zh">${escapeHtml(zh)}</span>`); }
+    function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function shuffle(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+    let audioCtx = null;
+    function playTone(type) {
+      if (!state.sfxOn) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const notes = type === "win" ? [523, 659, 784, 1046] : (type === "ok" ? [523, 659] : [220, 175]);
+        notes.forEach((freq, i) => {
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.connect(g); g.connect(audioCtx.destination);
+          o.type = type === "err" ? "sawtooth" : "triangle";
+          o.frequency.setValueAtTime(freq, now + i * 0.08);
+          g.gain.setValueAtTime(0.12, now + i * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.18);
+          o.start(now + i * 0.08); o.stop(now + i * 0.08 + 0.18);
+        });
+      } catch (e) {}
+    }
+
+    function setLang(l) { state.lang = l; saveState(); renderMap(); if (lesson && lesson.active) renderCurrentStep(); }
+    function toggleSfx() { state.sfxOn = !state.sfxOn; saveState(); renderMap(); }
+    function toggleParentMode() { state.parentMode = !state.parentMode; saveState(); renderMap(); }
+    function resetProgress() {
+      if (!confirm(t("Alle voortgang opnieuw starten?", "确定重置所有进度吗？"))) return;
+      state.xp = 0; state.streak = 0; state.unlockedLevel = 1; state.completedLevels = {}; state.mistakes = {}; state.bestCijfer = null;
+      saveState(true); renderMap();
+    }
+
+    // SVG 披萨分数生成器
+    function renderPizzaSvg(num, den, color) {
+      const r = 56, cx = 64, cy = 64;
+      let paths = "";
+      for (let i = 0; i < den; i++) {
+        const a1 = (i / den) * 2 * Math.PI - Math.PI / 2;
+        const a2 = ((i + 1) / den) * 2 * Math.PI - Math.PI / 2;
+        const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+        const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+        const large = (1 / den) > 0.5 ? 1 : 0;
+        const fill = i < num ? (color || "#ff9600") : "#f1f5f9";
+        paths += `<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${fill}" stroke="#334155" stroke-width="2"/>`;
+      }
+      return `<svg width="128" height="128" viewBox="0 0 128 128">${paths}</svg>`;
+    }
+
+    // =====================================================
+    // 4. 地图渲染
+    // =====================================================
+    function renderMap() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "nl";
+      document.getElementById("brand-txt").textContent = t("Rekenen · Breuken", "数学 · 分数（Breuken）");
+      document.getElementById("stat-xp").textContent = state.xp;
+      document.getElementById("stat-streak").textContent = state.streak;
+
+      ["nl", "both", "zh"].forEach(l => document.getElementById(`lang-${l}`).classList.toggle("active", state.lang === l));
+      const sf = document.getElementById("btn-sfx"); sf.textContent = state.sfxOn ? "🎵" : "🔕"; sf.classList.toggle("on", state.sfxOn);
+      document.getElementById("btn-guide-map").textContent = t("📘 Uitleg", "📘 秘籍");
+      document.getElementById("btn-guide-lesson").textContent = t("📘 Uitleg", "📘 秘籍");
+      updateCloudBadge();
+
+      const mCount = Object.keys(state.mistakes).length;
+      document.getElementById("map-sections").innerHTML = SECTIONS.map(sec => {
+        const secLevels = LEVELS.filter(l => l.sec === sec.id);
+        const secDone = secLevels.filter(l => state.completedLevels[l.id]).length;
+        const nodesHtml = secLevels.map((lv, idx) => {
+          const isDone = !!state.completedLevels[lv.id];
+          const isUnlocked = state.parentMode || lv.id <= state.unlockedLevel || !!state.completedLevels[lv.id - 1];
+          const isCurrent = !isDone && lv.id === state.unlockedLevel;
+          const cls = isDone ? "done" : (isUnlocked ? `current ${lv.kind}` : "locked");
+          const title = state.lang === "zh" ? lv.titleZh : (state.lang === "nl" ? lv.titleNl : `${lv.titleNl} · ${lv.titleZh}`);
+          let sub = state.lang === "zh" ? lv.subZh : lv.subNl;
+          if (lv.id === 7 && mCount > 0) sub = t(`${mCount} fouten klaar om weg te werken!`, `当前有 ${mCount} 道待清零错题`);
+          if (lv.id === 8 && state.bestCijfer) sub = `${sub} · 🏆 ${state.bestCijfer}/10`;
+          const conn = idx > 0 ? `<div class="path-connector ${state.completedLevels[secLevels[idx-1].id] ? "done" : ""}"></div>` : "";
+          return `
+            ${conn}
+            <div class="path-step" style="transform: translateX(${lv.offset}px);">
+              <div class="node-row">
+                ${isCurrent ? `<div class="robot-buddy">🤖</div>` : ""}
+                <button class="node-btn ${cls}" ${isUnlocked ? "" : "disabled"} onclick="startLevel(${lv.id})">
+                  ${isCurrent ? `<div class="start-bubble">START!</div>` : ""}
+                  ${isUnlocked ? lv.icon : "🔒"}
+                  ${isDone ? `<span class="node-check">✓</span>` : ""}
+                </button>
+              </div>
+              <div class="node-label">
+                <div class="node-title">${escapeHtml(title)}</div>
+                <div class="node-sub">${escapeHtml(sub)}</div>
+              </div>
+            </div>`;
+        }).join("");
+        return `
+          <div class="unit-banner ${sec.cls}">
+            <div><h2>${escapeHtml(state.lang === "zh" ? sec.titleZh : sec.titleNl)}</h2><p>${escapeHtml(state.lang === "zh" ? sec.subZh : sec.subNl)}</p></div>
+            <div class="unit-progress-pill">${secDone} / ${secLevels.length}</div>
+          </div>
+          <div class="path-wrap">${nodesHtml}</div>`;
+      }).join("");
+
+      document.getElementById("parent-hint").textContent = state.parentMode
+        ? t("🔑 Ouder-modus AAN: alle 8 levels vrij te kiezen.", "🔑 家长自由模式已开：可点击任意关卡。")
+        : t("🔒 Focus-modus: één level per keer vrijspelen.", "🔒 专注解锁模式：通关自动解锁下一关。");
+      const pmBtn = document.getElementById("btn-parent-mode");
+      pmBtn.textContent = state.parentMode ? t("🔑 Ouder-modus: AAN", "🔑 家长自由选关：开") : t("🔑 Ouder-modus", "🔑 家长自由选关");
+      pmBtn.classList.toggle("on", state.parentMode);
+      document.getElementById("btn-reset").textContent = t("🔄 Reset", "🔄 重置进度");
+    }
+
+    // =====================================================
+    // 5. 关卡生成
+    // =====================================================
+    let lesson = null;
+    function byCat(c) { return MATH_QUESTIONS.filter(q => q.cat === c); }
+
+    function buildLevelSteps(lvId) {
+      const steps = [];
+      if (lvId === 1) {
+        steps.push({ kind: "teach_pizza", tagNl: "Pizza-Lab · Vereenvoudigen", tagZh: "披萨实验室 · 约分原理" });
+        byCat(1).forEach(q => steps.push({ kind: "q", q, tagNl: "1. Vereenvoudigen", tagZh: "1. 约分" }));
+      } else if (lvId === 2) {
+        steps.push({ kind: "teach_helen", tagNl: "Uitleg · Helen uithalen", tagZh: "课前秘籍 · 假分数化带分数" });
+        byCat(2).forEach(q => steps.push({ kind: "q", q, tagNl: "2. Helen uithalen", tagZh: "2. 假分数化带分数" }));
+      } else if (lvId === 3) {
+        steps.push({ kind: "teach_samen", tagNl: "Uitleg · Helen samenvoegen", tagZh: "课前秘籍 · 带分数化假分数" });
+        byCat(3).forEach(q => steps.push({ kind: "q", q, tagNl: "3. Helen samenvoegen", tagZh: "3. 带分数化假分数" }));
+      } else if (lvId === 4) {
+        steps.push({ kind: "teach_optel", tagNl: "Uitleg · Gelijknamig & Optellen", tagZh: "课前秘籍 · 通分与同分母加减" });
+        [...byCat(4), ...byCat(5)].forEach(q => steps.push({ kind: "q", q, tagNl: "4 & 5. Gelijknamig & Optellen", tagZh: "4 & 5. 通分与加减" }));
+      } else if (lvId === 5) {
+        [...byCat(6), ...shuffle(byCat(4)).slice(0, 2)].forEach(q => steps.push({ kind: "q", q, tagNl: "6. Ongelijknamige breuken", tagZh: "6. 异分母加减" }));
+      } else if (lvId === 6) {
+        steps.push({ kind: "teach_keer", tagNl: "Uitleg · Deel van heel vs Heel zoeken!", tagZh: "课前秘籍 · 分清“求部分”和“求整体”" });
+        [...byCat(7), ...byCat(8)].forEach(q => steps.push({ kind: "q", q, tagNl: "7 & 8. Breuk keer getal", tagZh: "7 & 8. 分数应用题" }));
+      } else if (lvId === 7) {
+        const mEntries = shuffle(Object.values(state.mistakes));
+        if (mEntries.length > 0) {
+          mEntries.forEach(m => {
+            const q = MATH_QUESTIONS.find(x => x.id === m.id);
+            if (q) steps.push({ kind: "q", q, tagNl: "Fouten-EHBO", tagZh: "错题清零" });
+          });
+        } else {
+          ["v3", "s1", "u1", "k2", "p2", "p3"].forEach(id => steps.push({ kind: "q", q: MATH_QUESTIONS.find(x => x.id === id), tagNl: "Topper-Check", tagZh: "考前保底" }));
+        }
+      } else if (lvId === 8) {
+        for (let c = 1; c <= 8; c++) {
+          shuffle(byCat(c)).slice(0, 2).forEach(q => steps.push({ kind: "q", q, tagNl: `Eindtoets · Onderdeel ${c}`, tagZh: `模拟考 · 第 ${c} 类` }));
+        }
+      }
+      return steps;
+    }
+
+    function startLevel(lvId) {
+      const steps = buildLevelSteps(lvId);
+      lesson = {
+        active: true, lvId, isExam: lvId === 8, queue: steps, totalBase: steps.length,
+        doneCount: 0, firstTryRight: 0, examErrors: [], selected: null,
+        checked: false, lastOk: false, lastFbTitle: "", lastFbDetail: "",
+        pizzaNum: 2, pizzaDen: 6
+      };
+      document.getElementById("map-shell").classList.add("hidden");
+      document.getElementById("lesson-shell").classList.add("active");
+      renderCurrentStep();
+    }
+    function exitLesson() {
+      lesson = null;
+      document.getElementById("lesson-shell").classList.remove("active");
+      document.getElementById("map-shell").classList.remove("hidden");
+      renderMap();
+    }
+    function setPizza(n, d) { lesson.pizzaNum = n; lesson.pizzaDen = d; renderCurrentStep(); }
+
+    function renderCurrentStep() {
+      if (!lesson) return;
+      if (lesson.queue.length === 0) { renderVictoryScreen(); return; }
+      const step = lesson.queue[0];
+      const pct = Math.min(100, Math.round((lesson.doneCount / (lesson.doneCount + lesson.queue.length)) * 100));
+      document.getElementById("duo-bar-fill").style.width = `${pct}%`;
+      document.getElementById("lesson-counter").textContent = `${lesson.doneCount + 1} / ${lesson.doneCount + lesson.queue.length}`;
+
+      const body = document.getElementById("lesson-body");
+      const badgeHtml = `<div class="step-badge ${step.isRetry ? "retry" : ""}">${step.isRetry ? `🔁 ${t("Oefen nog een keer", "错题再练一次")}` : `✨ ${t(step.tagNl, step.tagZh)}`}</div>`;
+
+      if (step.kind === "teach_pizza") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🍕 ${tBlock("Pizza-Lab: Waarom is 2/6 hetzelfde als 1/3?", "披萨实验室：为什么 2/6 和 1/3 一样多？")}</h2>
+          <div class="teach-card">
+            <p style="margin:0 0 8px; font-size:0.92rem;">${tBlock("Vereenvoudigen betekent: minder stukjes snijden, maar evenveel pizza houden! Deel boven en onder door hetzelfde getal.", "约分就是把小块拼成大块，吃到的披萨一样多！分子分母同时除以相同的数。")}</p>
+            <div class="pizza-lab">
+              <div style="text-align:center;">
+                ${renderPizzaSvg(lesson.pizzaNum, lesson.pizzaDen, "#ff9600")}
+                <div style="font-weight:900; font-size:1.2rem; color:var(--orange-dark);">${lesson.pizzaNum}/${lesson.pizzaDen}</div>
+              </div>
+              <div class="pizza-controls">
+                <strong>${t("Klik en vergelijk:", "点按钮对比看看：")}</strong>
+                <div class="mini-switch">
+                  <button class="${lesson.pizzaDen===6 && lesson.pizzaNum===2 ? "active":""}" onclick="setPizza(2,6)">2/6</button>
+                  <button class="${lesson.pizzaDen===3 && lesson.pizzaNum===1 ? "active":""}" onclick="setPizza(1,3)">= 1/3</button>
+                  <button class="${lesson.pizzaDen===12 && lesson.pizzaNum===4 ? "active":""}" onclick="setPizza(4,12)">= 4/12</button>
+                  <button class="${lesson.pizzaDen===10 && lesson.pizzaNum===6 ? "active":""}" onclick="setPizza(6,10)">6/10</button>
+                  <button class="${lesson.pizzaDen===5 && lesson.pizzaNum===3 ? "active":""}" onclick="setPizza(3,5)">= 3/5</button>
+                </div>
+                <div style="font-size:0.86rem; color:var(--muted);">${tBlock("Zie je dat 2/6, 1/3 en 4/12 precies dezelfde hoek pizza zijn?", "看！2/6、1/3 和 4/12 占的披萨面积完全一模一样！")}</div>
+              </div>
+            </div>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_helen") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🍕 ${tBlock("Helen uithalen (bijv. 7/4 → 1 3/4)", "课前秘籍：假分数化带分数（比如 7/4 → 1 3/4）")}</h2>
+          <div class="teach-card">
+            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+              ${renderPizzaSvg(4, 4, "#58cc02")}
+              ${renderPizzaSvg(3, 4, "#ff9600")}
+              <div style="font-size:1.1rem; font-weight:900;">4/4 + 3/4 = 7/4 = <span style="color:var(--green-dark);">1 3/4</span></div>
+            </div>
+            <p style="margin:0; font-size:0.92rem;">💡 ${tBlock("Tel hoeveel hele pizza's je hebt (1 hele = 4/4), en schrijf wat overblijft als breuk (7 - 4 = 3 → 1 3/4). De noemer (/4) verandert nooit!", "看分子里面能凑出几个整块（如 4/4），剩下的做分子（7 - 4 = 3），分母永远不变！")}</p>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_samen") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🧩 ${tBlock("Helen samenvoegen (bijv. 2 1/5 → 11/5)", "课前秘籍：带分数化假分数（避开 21/5 陷阱！）")}</h2>
+          <div class="teach-card">
+            <p style="font-size:0.95rem; font-weight:800; color:#b91c1c;">⚠️ ${tBlock("PAS OP: Plak de cijfers NOOIT aan elkaar (1 2/3 is GEEN 12/3, en 2 1/5 is GEEN 21/5)!", "⚠️ 最容易错：绝对不能把整数和分子直接拼在一起（1 2/3 不是 12/3，2 1/5 不是 21/5）！")}</p>
+            <p style="font-size:0.94rem;">✅ ${tBlock("Gouden truc: (hele × noemer) + teller! Voor 2 1/5: (2 × 5) + 1 = 11 → 11/5!", "黄金口诀：（整数 × 分母）+ 分子！比如 2 1/5 = (2 × 5 + 1)/5 = 11/5！")}</p>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_optel") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">⚖️ ${tBlock("Optellen & Aftrekken: Noemers NOOIT optellen!", "课前秘籍：通分与加减（分母绝对不能相加！）")}</h2>
+          <div class="teach-card">
+            <p style="font-size:0.92rem;">• <strong>1/5 + 3/5 = 4/5</strong> (${tBlock("NIET 4/10!", "不是 4/10！")})</p>
+            <p style="font-size:0.92rem;">• <strong>1/2 + 1/6 = ?</strong> → ${tBlock("Maak de stukjes eerst even groot (×3): 1/2 = 3/6. Dan 3/6 + 1/6 = 4/6!", "先通分让披萨块一样大：1/2 = 3/6，再算 3/6 + 1/6 = 4/6！")}</p>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_keer") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🎯 ${tBlock("Let op het verschil: Type I vs Type II!", "课前秘籍：分清“求部分”和“求整体”！")}</h2>
+          <div class="teach-card">
+            <p style="font-size:0.92rem;"><strong>1️⃣ ${tBlock("Totaal is bekend (bijv. 3/4 van 40):", "已知总数求部分（如 40 页的 3/4）：")}</strong><br>
+              ${tBlock("÷ noemer (40 ÷ 4 = 10), dan × teller (10 × 3 = 30)!", "先除以分母（40÷4=10），再乘以分子（10×3=30）！")}</p>
+            <p style="font-size:0.92rem; margin-bottom:0;"><strong>2️⃣ ${tBlock("Deel is bekend, zoek het HEEL (bijv. 2/3 = 18 cm):", "已知部分求整体（如 2/3 是 18 cm，求整条）：")}</strong><br>
+              ${tBlock("Omgekeerd! Eerst ÷ teller (18 ÷ 2 = 9 cm = 1 stukje), dan × noemer (9 × 3 = 27 cm)!", "反过来！先除以分子求 1 份（18÷2=9），再乘以分母求全部（9×3=27）！")}</p>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "q") {
+        const q = step.q;
+        if (!step._opts) step._opts = shuffle(q.options);
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">${tBlock(q.promptNl, q.promptZh)}</h2>
+          <p class="q-sub">${tBlock(q.subNl, q.subZh)}</p>
+          <div class="choice-grid">
+            ${step._opts.map((o, i) => {
+              let cls = "";
+              if (lesson.checked) { if (o === q.answer) cls = "correct"; else if (lesson.selected === o) cls = "wrong"; }
+              else if (lesson.selected === o) cls = "selected";
+              return `<button class="choice-tile ${cls}" ${lesson.checked ? "disabled" : ""} onclick="selectChoice(${JSON.stringify(o).replace(/"/g, '&quot;')})"><span class="tile-num">${i + 1}</span><span>${escapeHtml(o)}</span></button>`;
+            }).join("")}
+          </div>`;
+        renderFooter();
+      }
+    }
+
+    function selectChoice(val) { if (lesson.checked) return; lesson.selected = val; renderCurrentStep(); }
+
+    function renderFooter() {
+      const footer = document.getElementById("lesson-footer"), inner = document.getElementById("footer-inner"), step = lesson.queue[0];
+      if (step.kind.startsWith("teach_")) {
+        footer.className = "lesson-footer";
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${t("Truc begrepen? Starten maar!", "看懂方法了吗？开始做题！")}</div></div>
+          <button class="duo-btn blue" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始闯关 →")}</button>`;
+        return;
+      }
+      if (!lesson.checked) {
+        footer.className = "lesson-footer";
+        inner.innerHTML = `<div class="fb-text"></div><button class="duo-btn" id="btn-check-step" ${lesson.selected !== null ? "" : "disabled"} onclick="checkCurrentStep()">${t("CONTROLEER", "检查答案")}</button>`;
+      } else {
+        footer.className = `lesson-footer ${lesson.lastOk ? "ok" : "err"}`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">${lesson.lastOk ? "✅" : "❌"} ${lesson.lastFbTitle}</div><div class="fb-detail">${lesson.lastFbDetail}</div></div>
+          <button class="duo-btn ${lesson.lastOk ? "" : "red"}" onclick="nextStep()">${t("GA DOOR", "下一题")} →</button>`;
+      }
+    }
+
+    function checkCurrentStep() {
+      if (!lesson || lesson.checked) return;
+      const step = lesson.queue[0], q = step.q;
+      lesson.checked = true;
+      const ok = lesson.selected === q.answer;
+      let fbTitle = "", fbDetail = "";
+
+      if (ok) {
+        fbTitle = t("Supergoed!", "算对啦！");
+        fbDetail = `<div class="fb-why">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
+        state.xp += 10; state.streak += 1; delete state.mistakes[q.id];
+        if (!step.isRetry) lesson.firstTryRight++;
+        playTone("ok");
+      } else {
+        fbTitle = t(`Goede antwoord: ${q.answer}`, `正确答案：${q.answer}`);
+        const wNl = q.wrongNl && q.wrongNl[lesson.selected];
+        const wZh = q.wrongZh && q.wrongZh[lesson.selected];
+        const whyHtml = wNl ? `<div class="fb-why">❌ <strong>${escapeHtml(lesson.selected)}</strong>: ${tBlock(wNl, wZh)}</div>` : "";
+        fbDetail = `${whyHtml}<div style="margin-top:5px;">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
+        state.streak = 0; state.mistakes[q.id] = { id: q.id }; playTone("err");
+        if (lesson.isExam) lesson.examErrors.push(`${q.promptNl} → ${q.answer}`);
+        else lesson.queue.push({ ...step, isRetry: true });
+      }
+      saveState();
+      lesson.lastOk = ok; lesson.lastFbTitle = fbTitle; lesson.lastFbDetail = fbDetail;
+      renderCurrentStep();
+    }
+
+    function nextStep() {
+      if (!lesson) return;
+      lesson.queue.shift(); lesson.doneCount++; lesson.selected = null; lesson.checked = false;
+      renderCurrentStep();
+    }
+
+    function renderVictoryScreen() {
+      playTone("win");
+      const lvId = lesson.lvId;
+      state.completedLevels[lvId] = true;
+      const prev = state.unlockedLevel;
+      if (lvId >= state.unlockedLevel && lvId < LEVELS.length) state.unlockedLevel = lvId + 1;
+      healUnlockedLevel();
+      const unlockedNew = state.unlockedLevel > prev;
+      state.xp += 30;
+      document.getElementById("duo-bar-fill").style.width = "100%";
+      document.getElementById("lesson-counter").textContent = "✓";
+      const body = document.getElementById("lesson-body"), footer = document.getElementById("lesson-footer"), inner = document.getElementById("footer-inner");
+      footer.className = "lesson-footer ok";
+
+      if (lesson.isExam) {
+        const cijfer = (1 + (lesson.firstTryRight / lesson.totalBase) * 9).toFixed(1);
+        if (!state.bestCijfer || parseFloat(cijfer) > parseFloat(state.bestCijfer)) state.bestCijfer = cijfer;
+        saveState(true);
+        body.innerHTML = `<div class="victory-box"><h2 class="q-title">🏆 ${t("Eindtoets klaar!", "模拟考完成！")}</h2>
+          <div class="cijfer-circle">${cijfer}<span>/ 10 Cijfer</span></div>
+          <p class="q-sub"><strong>${lesson.firstTryRight} / ${lesson.totalBase}</strong> ${t("goed", "题答对")}</p>
+          ${lesson.examErrors.length ? `<div class="review-list">${lesson.examErrors.map(e => `<div class="review-item">❌ ${escapeHtml(e)}</div>`).join("")}</div>` : `<div style="color:#166534; font-weight:900;">✨ 10!</div>`}</div>`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">🎉 +30 XP</div></div><button class="duo-btn" onclick="exitLesson()">${t("TERUG NAAR KAART", "返回地图")}</button>`;
+      } else {
+        saveState(true);
+        const nextLv = LEVELS.find(x => x.id === lvId + 1);
+        body.innerHTML = `<div class="victory-box"><div style="font-size:4rem;">🏆✨</div>
+          <h2 class="q-title">${t(`Level ${lvId} gehaald, Ernst!`, `第 ${lvId} 关通关！`)}</h2>
+          <p class="q-sub">+30 XP · 🔥 ${state.streak}</p>
+          ${unlockedNew && nextLv ? `<div style="display:inline-block; background:var(--gold-soft); border:2px solid var(--gold); border-radius:16px; padding:12px 18px; font-weight:900; color:#854d0e;">🔓 ${t(`Ontgrendeld: ${nextLv.icon} ${nextLv.titleNl}`, `已解锁：${nextLv.icon} ${nextLv.titleZh}`)}</div>` : ""}</div>`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">🌟 +30 XP</div></div>
+          <div style="display:flex; gap:10px;"><button class="duo-btn outline" onclick="exitLesson()">${t("KAART", "回地图")}</button>
+          ${nextLv ? `<button class="duo-btn blue" onclick="startLevel(${nextLv.id})">LEVEL ${nextLv.id} →</button>` : ""}</div>`;
+      }
+    }
+
+    function openGuide() {
+      document.getElementById("guide-modal-title").textContent = t("📘 Rekenen Spiekbriefje: Breuken", "📘 数学秘籍：分数 8 大口诀");
+      document.getElementById("btn-guide-close").textContent = t("SLUITEN", "关闭并继续");
+      document.getElementById("guide-modal-body").innerHTML = `
+        <div class="guide-sec"><h3>1. Vereenvoudigen &amp; Helen</h3>
+          <p style="font-size:0.88rem;">• <strong>Vereenvoudigen</strong>: Deel boven én onder door hetzelfde getal (4/12 → 1/3).</p>
+          <p style="font-size:0.88rem;">• <strong>Helen uithalen</strong>: 7/4 = 4/4 + 3/4 = 1 3/4 (noemer blijft altijd hetzelfde!).</p>
+          <p style="font-size:0.88rem;">• <strong>Helen samenvoegen</strong>: (hele × noemer) + teller → 2 1/5 = (2×5+1)/5 = 11/5 (❌ niet 21/5!).</p>
+        </div>
+        <div class="guide-sec"><h3>2. Gelijknamig, Optellen &amp; Aftrekken</h3>
+          <p style="font-size:0.88rem;">• <strong>Noemers optellen mag NOOIT!</strong> (1/5 + 3/5 = 4/5, ❌ niet 4/10).</p>
+          <p style="font-size:0.88rem;">• <strong>Ongelijknamig</strong>: Maak eerst dezelfde noemer (1/2 + 1/6 = 3/6 + 1/6 = 4/6).</p>
+        </div>
+        <div class="guide-sec" style="margin-bottom:0;"><h3>3. Breuk keer getal I &amp; II</h3>
+          <p style="font-size:0.88rem;">• <strong>Totaal → Deel</strong> (3/4 van 40): ÷ noemer (40÷4=10), dan × teller (10×3=30).</p>
+          <p style="font-size:0.88rem;">• <strong>Deel → Heel</strong> (2/3 = 18 cm): ÷ teller (18÷2=9), dan × noemer (9×3=27 cm).</p>
+        </div>`;
+      document.getElementById("guide-modal").classList.add("open");
+    }
+    function closeGuide() { document.getElementById("guide-modal").classList.remove("open"); }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") { closeGuide(); return; }
+      if (document.getElementById("guide-modal").classList.contains("open") || !lesson || !lesson.active || e.key !== "Enter") return;
+      const step = lesson.queue[0]; if (!step) return;
+      if (step.kind.startsWith("teach_")) { nextStep(); return; }
+      if (!lesson.checked) { if (lesson.selected !== null) checkCurrentStep(); } else nextStep();
+    });
+
+    loadState(); renderMap(); syncCloudPull();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Ernst NL" />
+  <meta name="theme-color" content="#ff9600" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23ff9600'/%3E%3Ctext x='90' y='122' font-size='100' text-anchor='middle'%3E%F0%9F%87%B3%F0%9F%87%B1%3C/text%3E%3C/svg%3E" />
+  <title>Ernst's Nederlands · Doel &amp; Middel Quest</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --green: #58cc02;
+      --green-dark: #46a302;
+      --green-soft: #e9fad9;
+      --blue: #1cb0f6;
+      --blue-dark: #0095db;
+      --blue-soft: #e6f7ff;
+      --purple: #ce82ff;
+      --purple-dark: #9b51e0;
+      --purple-soft: #f5ebff;
+      --gold: #ffc800;
+      --gold-dark: #e09f00;
+      --gold-soft: #fff8d6;
+      --orange: #ff9600;
+      --orange-dark: #e07b00;
+      --red: #ff4b4b;
+      --red-dark: #d93636;
+      --red-soft: #ffecec;
+      --gray: #e5e5e5;
+      --gray-dark: #afafaf;
+      --text: #3c3c3c;
+      --muted: #777777;
+      --border: #e5e5e5;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: #fff; border-bottom: 2px solid var(--border); padding: 10px 16px;
+    }
+    .topbar-inner {
+      max-width: 780px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .brand-mini { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 1.02rem; color: var(--orange-dark); }
+    .back-home {
+      text-decoration: none; border: 2px solid var(--border); border-radius: 10px;
+      padding: 4px 9px; font-size: 0.82rem; font-weight: 800; color: var(--text); background: #fff;
+    }
+    .stats-row { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.88rem; }
+    .stat-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; background: #f1f5f9; }
+    .controls-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .lang-group { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 2px; }
+    .lang-btn {
+      border: none; background: transparent; padding: 5px 9px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 800; cursor: pointer; color: var(--muted);
+    }
+    .lang-btn.active { background: #fff; color: var(--blue-dark); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .icon-btn {
+      border: 2px solid var(--border); background: #fff; border-radius: 10px;
+      padding: 4px 9px; font-size: 0.8rem; font-weight: 800; cursor: pointer; color: var(--text);
+    }
+    .icon-btn.on { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+
+    /* MAP */
+    .map-container { max-width: 640px; margin: 20px auto 64px; padding: 0 16px; }
+    .unit-banner {
+      color: #fff; border-radius: 20px; padding: 16px 20px; margin: 22px 0;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .unit-banner.sec1 { background: linear-gradient(135deg, #ff9600, #e07b00); box-shadow: 0 5px 0 #b86200; margin-top: 4px; }
+    .unit-banner.sec2 { background: linear-gradient(135deg, #1cb0f6, #0095db); box-shadow: 0 5px 0 #0077b3; }
+    .unit-banner.sec3 { background: linear-gradient(135deg, #9333ea, #7c3aed); box-shadow: 0 5px 0 #5b21b6; }
+    .unit-banner h2 { margin: 0; font-size: 1.12rem; }
+    .unit-banner p { margin: 3px 0 0; font-size: 0.84rem; opacity: 0.95; }
+    .unit-progress-pill { background: rgba(255,255,255,0.22); border-radius: 12px; padding: 6px 12px; font-weight: 900; font-size: 0.88rem; white-space: nowrap; }
+
+    .path-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 6px 0 8px; }
+    .path-step { display: flex; flex-direction: column; align-items: center; position: relative; }
+    .path-connector { width: 6px; height: 18px; border-radius: 99px; background: var(--gray); }
+    .path-connector.done { background: var(--green); }
+    .node-row { display: flex; align-items: center; gap: 14px; }
+    .node-btn {
+      width: 80px; height: 74px; border-radius: 50%; border: none; font-size: 1.9rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      position: relative; transition: transform 0.12s; user-select: none;
+    }
+    .node-btn:active:not(:disabled) { transform: translateY(4px); }
+    .node-btn.locked { background: var(--gray); box-shadow: 0 7px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .node-btn.current { background: var(--orange); box-shadow: 0 7px 0 var(--orange-dark); color: #fff; animation: gentlePulse 1.8s infinite; }
+    .node-btn.current.boss { background: var(--blue); box-shadow: 0 7px 0 var(--blue-dark); }
+    .node-btn.current.exam { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); }
+    .node-btn.done { background: var(--gold); box-shadow: 0 7px 0 var(--gold-dark); color: #fff; }
+    .node-check {
+      position: absolute; top: -4px; right: -4px; background: var(--green); color: #fff;
+      border: 3px solid #fff; width: 26px; height: 26px; border-radius: 50%;
+      font-size: 0.82rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+    }
+    .start-bubble {
+      position: absolute; top: -34px; background: #fff; color: var(--orange-dark);
+      border: 2px solid var(--border); border-radius: 12px; padding: 3px 12px;
+      font-size: 0.76rem; font-weight: 900; letter-spacing: 0.6px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08); white-space: nowrap; animation: floatY 1.6s ease-in-out infinite;
+    }
+    .node-label { margin-top: 9px; text-align: center; max-width: 260px; }
+    .node-title { font-weight: 900; font-size: 0.94rem; color: var(--text); }
+    .node-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .robot-buddy { font-size: 2.2rem; animation: floatY 2.2s ease-in-out infinite; }
+    @keyframes gentlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    .parent-bar {
+      margin-top: 28px; padding: 12px 16px; background: #fff; border: 2px dashed var(--border);
+      border-radius: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 10px; font-size: 0.83rem; color: var(--muted);
+    }
+
+    /* FULLSCREEN LESSON */
+    .lesson-shell { display: none; min-height: 100vh; flex-direction: column; background: #fff; }
+    .lesson-shell.active { display: flex; }
+    .map-shell.hidden { display: none; }
+    .lesson-top {
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 18px 18px 10px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .close-btn { border: none; background: transparent; font-size: 1.5rem; font-weight: 900; color: var(--gray-dark); cursor: pointer; padding: 4px 8px; border-radius: 10px; }
+    .close-btn:hover { background: #f1f5f9; color: var(--text); }
+    .duo-bar-track { flex: 1; height: 16px; background: var(--gray); border-radius: 999px; overflow: hidden; }
+    .duo-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--orange), #ffc800); border-radius: 999px; transition: width 0.3s ease; }
+    .lesson-counter { font-weight: 900; font-size: 0.9rem; color: var(--muted); min-width: 56px; text-align: right; }
+
+    .lesson-body {
+      flex: 1; max-width: 680px; width: 100%; margin: 0 auto; padding: 16px 20px 175px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .step-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange-dark); margin-bottom: 8px; }
+    .step-badge.retry { color: var(--red-dark); }
+    .q-title { font-size: 1.38rem; font-weight: 900; margin: 0 0 8px; color: var(--text); line-height: 1.38; }
+    .q-sub { font-size: 0.96rem; color: var(--muted); margin: 0 0 18px; }
+    .bilingual-zh { display: block; font-size: 0.85em; font-weight: 600; color: #64748b; margin-top: 3px; }
+
+    .duo-btn {
+      border: none; border-radius: 16px; padding: 14px 26px; font-size: 1rem; font-weight: 900;
+      cursor: pointer; transition: transform 0.1s; color: #fff; background: var(--green); box-shadow: 0 5px 0 var(--green-dark);
+    }
+    .duo-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--green-dark); }
+    .duo-btn:disabled { background: var(--gray); box-shadow: 0 5px 0 #cfcfcf; color: #999; cursor: not-allowed; }
+    .duo-btn.orange { background: var(--orange); box-shadow: 0 5px 0 var(--orange-dark); }
+    .duo-btn.red { background: var(--red); box-shadow: 0 5px 0 var(--red-dark); }
+    .duo-btn.outline { background: #fff; color: var(--text); border: 2px solid var(--border); box-shadow: 0 4px 0 var(--border); }
+
+    .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+    .choice-grid.single-col { grid-template-columns: 1fr; }
+    @media (max-width: 560px) { .choice-grid { grid-template-columns: 1fr; } }
+    .choice-tile {
+      border: 2px solid var(--border); border-bottom-width: 5px; background: #fff; border-radius: 16px;
+      padding: 14px 16px; font-size: 1rem; font-weight: 800; text-align: left; cursor: pointer;
+      color: var(--text); transition: all 0.12s; display: flex; align-items: center; gap: 10px;
+    }
+    .choice-tile:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
+    .choice-tile.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .choice-tile.correct { border-color: var(--green); background: var(--green-soft); color: #2b7000; }
+    .choice-tile.wrong { border-color: var(--red); background: var(--red-soft); color: #a81c1c; }
+    .tile-num { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--muted); flex-shrink: 0; }
+
+    /* Sentence Builder */
+    .sentence-slot {
+      min-height: 68px; border: 2.5px dashed #cbd5e1; border-radius: 16px; padding: 10px 12px;
+      background: #f8fafc; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .sentence-slot.has-words { border-style: solid; border-color: var(--blue); background: #fcfeff; }
+    .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 6px 0; }
+    .wb-chip {
+      border: 2px solid var(--border); border-bottom-width: 4px; background: #fff; border-radius: 14px;
+      padding: 10px 14px; font-size: 1rem; font-weight: 800; cursor: pointer; color: var(--text);
+    }
+    .wb-chip.placed { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .wb-chip.used { opacity: 0.22; pointer-events: none; }
+
+    .spell-input {
+      width: 100%; padding: 15px 18px; font-size: 1.2rem; font-weight: 800;
+      border: 2px solid #cbd5e1; border-bottom-width: 5px; border-radius: 16px; outline: none;
+    }
+    .spell-input:focus { border-color: var(--blue); background: #fcfeff; }
+
+    /* Teach cards */
+    .teach-card { border: 2px solid #e2e8f0; border-radius: 18px; padding: 18px; background: #fafcff; }
+    .teach-card ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.92rem; }
+    .teach-card li { margin-bottom: 6px; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 8px; font-weight: 900; font-size: 0.88rem; }
+    .pill-doel { background: #ffedd5; color: #9a3412; }
+    .pill-mid { background: #dbeafe; color: #1e40af; }
+    .pill-warn { background: #fee2e2; color: #991b1b; }
+    .mini-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 8px; background: #fff; }
+    .mini-table th, .mini-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+    .mini-table th { background: #eff6ff; color: #1e3a8a; }
+
+    /* Footer */
+    .lesson-footer { position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid var(--border); background: #fff; padding: 14px 20px; z-index: 30; }
+    .lesson-footer.ok { background: var(--green-soft); border-top-color: #b7eb8f; }
+    .lesson-footer.err { background: var(--red-soft); border-top-color: #ffa39e; }
+    .footer-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .fb-text { flex: 1; min-width: 220px; }
+    .fb-title { font-size: 1.08rem; font-weight: 900; margin-bottom: 3px; }
+    .lesson-footer.ok .fb-title { color: #2b7000; }
+    .lesson-footer.err .fb-title { color: #b91c1c; }
+    .fb-detail { font-size: 0.9rem; color: var(--text); font-weight: 600; }
+    .fb-why {
+      margin-top: 6px; padding: 7px 10px; border-radius: 10px;
+      background: rgba(255,255,255,0.78); border-left: 4px solid var(--red);
+      font-size: 0.86rem; line-height: 1.4;
+    }
+    .lesson-footer.ok .fb-why { border-left-color: var(--green); }
+
+    /* Victory */
+    .victory-box { text-align: center; padding: 16px 10px; }
+    .cijfer-circle {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: linear-gradient(135deg, #c2410c, #f97316); color: #fff;
+      font-size: 2.7rem; font-weight: 900; margin: 14px 0; box-shadow: 0 10px 26px rgba(234,88,12,0.28);
+    }
+    .cijfer-circle span { font-size: 0.85rem; font-weight: 700; }
+    .review-list { text-align: left; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .review-item { padding: 10px 14px; border-radius: 12px; border: 1.5px solid #fecaca; background: #fff5f5; font-size: 0.9rem; }
+
+    /* Guide Modal */
+    .guide-modal { display: none; position: fixed; inset: 0; z-index: 60; background: rgba(15,23,42,0.55); padding: 16px; overflow-y: auto; align-items: flex-start; justify-content: center; }
+    .guide-modal.open { display: flex; }
+    .guide-sheet { background: #fff; border-radius: 22px; max-width: 720px; width: 100%; margin: 18px auto 36px; padding: 20px; box-shadow: 0 20px 48px rgba(15,23,42,0.25); }
+    .guide-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--border); margin-bottom: 14px; }
+    .guide-sec { border: 2px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 14px; background: #fafcff; }
+    .guide-sec h3 { margin: 0 0 8px; font-size: 1rem; color: #9a3412; }
+  </style>
+</head>
+<body>
+  <div class="map-shell" id="map-shell">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-mini">
+          <a class="back-home" href="../../index.html">🏠</a>
+          <span>🇳🇱 <span id="brand-txt"></span></span>
+        </div>
+        <div class="stats-row">
+          <span class="stat-chip">⚡ <span id="stat-xp">0</span> XP</span>
+          <span class="stat-chip">🔥 <span id="stat-streak">0</span></span>
+        </div>
+        <div class="controls-row">
+          <div class="lang-group">
+            <button class="lang-btn active" id="lang-nl" onclick="setLang('nl')">🇳🇱 NL</button>
+            <button class="lang-btn" id="lang-both" onclick="setLang('both')">🌐 NL+中</button>
+            <button class="lang-btn" id="lang-zh" onclick="setLang('zh')">🇨🇳 中文</button>
+          </div>
+          <button class="icon-btn on" id="btn-speech" onclick="toggleSpeech()">🔊</button>
+          <button class="icon-btn on" id="btn-sfx" onclick="toggleSfx()">🎵</button>
+          <button class="icon-btn" id="btn-guide-map" onclick="openGuide()">📘</button>
+          <button class="icon-btn" id="btn-cloud" onclick="openCloudSettings()">☁️</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div id="map-sections"></div>
+      <div class="parent-bar">
+        <span id="parent-hint"></span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="icon-btn" id="btn-parent-mode" onclick="toggleParentMode()"></button>
+          <button class="icon-btn" id="btn-reset" onclick="resetProgress()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-shell" id="lesson-shell">
+    <div class="lesson-top">
+      <button class="close-btn" onclick="exitLesson()" title="Terug">✕</button>
+      <div class="duo-bar-track"><div class="duo-bar-fill" id="duo-bar-fill"></div></div>
+      <div class="lesson-counter" id="lesson-counter">1 / 10</div>
+      <button class="icon-btn" id="btn-guide-lesson" onclick="openGuide()">📘</button>
+    </div>
+    <div class="lesson-body" id="lesson-body"></div>
+    <div class="lesson-footer" id="lesson-footer"><div class="footer-inner" id="footer-inner"></div></div>
+  </div>
+
+  <div class="guide-modal" id="guide-modal" onclick="if(event.target===this) closeGuide()">
+    <div class="guide-sheet">
+      <div class="guide-head">
+        <h2 id="guide-modal-title" style="margin:0; font-size:1.15rem;"></h2>
+        <button class="close-btn" onclick="closeGuide()">✕</button>
+      </div>
+      <div id="guide-modal-body"></div>
+      <div style="text-align:right; margin-top:12px;">
+        <button class="duo-btn" onclick="closeGuide()" id="btn-guide-close">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =====================================================
+    // 1. 荷兰语题库：完全对应课堂讲义 & 8道课后练习
+    // =====================================================
+    const QUESTIONS = [
+      // --- DOEL (目的信号词: om...te, opdat, zodat + 陷阱) ---
+      { id: "d1", group: "doel", type: "choice",
+        promptNl: "Ik moet naar de supermarkt ______ melk ______ kopen.",
+        promptZh: "我去超市买牛奶。（表示目的）",
+        subNl: "Kies de goede constructie voor een doel:", subZh: "选择表示目的的固定结构：",
+        options: ["om ... te", "zodat ... te", "door ... te", "met ... te"],
+        answer: "om ... te",
+        explainNl: "'om ... te + hele werkwoord' geeft een doel aan: waarom ga je naar de supermarkt? Om melk te kopen!",
+        explainZh: "om ... te + 动词原形表示做某事的目的。",
+        wrongNl: {
+          "zodat ... te": "Na 'zodat' komt een hele bijzin (met onderwerp + werkwoord achteraan), NOOIT 'te'!",
+          "door ... te": "'door ... te' geeft een MIDDEL (hoe?) aan, geen DOEL (waarom?)!",
+          "met ... te": "Na 'met' komt altijd een zelfstandig naamwoord (bijv. met de fiets), nooit 'te'!"
+        },
+        wrongZh: {
+          "zodat ... te": "zodat 后面接完整从句（主语+动词放句尾），绝不加 te！",
+          "door ... te": "door ... te 表示途径/方法（怎么做），不是目的（为什么）！",
+          "met ... te": "met 后面只能接名词（如 met de fiets），不能接 te + 动词！"
+        } },
+
+      { id: "d2", group: "doel", type: "choice",
+        promptNl: "We beginnen met leuke activiteiten, ______ de groep elkaar beter leert kennen.",
+        promptZh: "我们用有趣的活动开场，以便大家更好地互相了解。",
+        subNl: "Kies het goede signaalwoord van doel (let op: er staat een bijzin met onderwerp!):",
+        subZh: "注意后面是带主语 de groep 的完整从句：",
+        options: ["zodat", "om", "door", "met behulp van"],
+        answer: "zodat",
+        explainNl: "Na 'zodat' volgt een bijzin met onderwerp ('de groep') en het werkwoord achteraan ('leert kennen').",
+        explainZh: "zodat 后面接带主语的从句，动词放最后！",
+        wrongNl: {
+          "om": "Bij 'om' gebruik je '... te + hele werkwoord' (zonder nieuw onderwerp), geen bijzin met 'de groep'!",
+          "door": "'door' geeft een middel aan (en heeft geen bijzin met onderwerp).",
+          "met behulp van": "Na 'met behulp van' komt alleen een naamwoord/persoon, geen hele bijzin!"
+        },
+        wrongZh: {
+          "om": "om 要搭配 te + 动词原形，后面不能接带主语 de groep 的完整从句！",
+          "door": "door 表示途径，且不接完整从句。",
+          "met behulp van": "met behulp van 后面只能接名词或人，不能接完整句子！"
+        } },
+
+      { id: "d3", group: "doel", type: "choice",
+        promptNl: "Welk woord is formele schrijftaal voor 'zodat' (als signaalwoord van doel)?",
+        promptZh: "表示目的时，哪个词是 zodat 的正式书面语？",
+        subNl: "Tip: in het boek staat 'We herdenken op 4 mei de oorlog, ... we de geschiedenis niet vergeten.'",
+        subZh: "提示：讲义中“每年5月4日纪念战争，以免忘记历史”用的词：",
+        options: ["opdat", "middels", "daarmee", "omdat"],
+        answer: "opdat",
+        explainNl: "'opdat' betekent hetzelfde als 'zodat' (doel), maar is formele schrijftaal!",
+        explainZh: "opdat 和 zodat 意思相同，但 opdat 是正式书面语！",
+        wrongNl: {
+          "middels": "'middels' is wel schrijftaal, maar betekent 'met' (MIDDEL), geen doel!",
+          "daarmee": "'daarmee' (= met dat) is een signaalwoord van MIDDEL, geen doel!",
+          "omdat": "'omdat' geeft een REDEN (oorzaak) aan, geen doel!"
+        },
+        wrongZh: {
+          "middels": "middels 虽是书面语，但它是途径信号词（= met），不是目的！",
+          "daarmee": "daarmee（= met dat）是途径信号词，不是目的！",
+          "omdat": "omdat（因为）表示原因，不是目的！"
+        } },
+
+      { id: "d4", group: "doel", type: "choice",
+        promptNl: "⚠️ Instinker! In welke zin geeft 'om ... te' GEEN doel aan (maar is het een vaste constructie)?",
+        promptZh: "⚠️ 陷阱题！哪句话里的 om ... te 不表示目的（而是固定搭配）？",
+        subNl: "Vraag jezelf af: 'Waarom?' Klopt dat niet, dan is het een vaste constructie!",
+        subZh: "用“为什么？”测试一下，答非所问的就是固定搭配！",
+        options: [
+          "Ik vind het leuk om piano te spelen.",
+          "Ik ga naar de supermarkt om melk te kopen.",
+          "Ik eet fruit om gezond te blijven.",
+          "Ik lees veel om mijn cijfers te verbeteren."
+        ],
+        answer: "Ik vind het leuk om piano te spelen.",
+        explainNl: "'Ik vind het leuk om...' (of 'Ik heb zin om...', 'Het is te warm om...') is een vaste constructie, géén doel!",
+        explainZh: "Ik vind het leuk om...（以及 Ik heb zin om... / Het is te warm om...）是固定搭配，不表示目的！",
+        wrongNl: {
+          "Ik ga naar de supermarkt om melk te kopen.": "Waarom ga je naar de supermarkt? → Om melk te kopen! (Wel een doel!)",
+          "Ik eet fruit om gezond te blijven.": "Waarom eet je fruit? → Om gezond te blijven! (Wel een doel!)",
+          "Ik lees veel om mijn cijfers te verbeteren.": "Waarom lees je veel? → Om je cijfers te verbeteren! (Wel een doel!)"
+        },
+        wrongZh: {
+          "Ik ga naar de supermarkt om melk te kopen.": "为什么去超市？为了买牛奶！这是真目的。",
+          "Ik eet fruit om gezond te blijven.": "为什么吃水果？为了保持健康！这是真目的。",
+          "Ik lees veel om mijn cijfers te verbeteren.": "为什么多阅读？为了提高分数！这是真目的。"
+        } },
+
+      { id: "d5", group: "doel", type: "choice",
+        promptNl: "⚠️ Context-check! 'Het regende de hele dag, zodat de voetbalwedstrijd niet door kon gaan.' Wat geeft 'zodat' hier aan?",
+        promptZh: "⚠️ 语境辨析！“下了一整天雨，zodat 足球赛无法进行。”这里的 zodat 表示什么？",
+        subNl: "Het regenweer heeft geen 'doel' — kijk goed naar de context!",
+        subZh: "下雨并没有“主观目的”，看上下文判断！",
+        options: ["Gevolg (resultaat)", "Doel", "Middel", "Plaats"],
+        answer: "Gevolg (resultaat)",
+        explainNl: "Regen doet niet iets met een doel! 'zodat' geeft hier het GEVOLG (resultaat) aan.",
+        explainZh: "下雨没有主观目的，这里的 zodat 表示“结果（gevolg）”！",
+        wrongNl: {
+          "Doel": "Een doel is wat iemand wil bereiken. Regen heeft geen plan of doel!",
+          "Middel": "'zodat' is nooit een middel (dat zijn bijv. met / door / daarmee).",
+          "Plaats": "'zodat' geeft nooit een plaats aan."
+        },
+        wrongZh: {
+          "Doel": "目的是人主动想达成的目标，下雨没有计划和目的！",
+          "Middel": "zodat 绝不表示途径/工具。",
+          "Plaats": "zodat 不表示地点。"
+        } },
+
+      { id: "d6", group: "doel", type: "choice",
+        promptNl: "Herschrijf 'Ik eet fruit om gezond te blijven' met 'zodat':",
+        promptZh: "把 'Ik eet fruit om gezond te blijven' 改写成 zodat 句型（练习第4题）：",
+        subNl: "Let op: bij 'zodat' staat het werkwoord achteraan en géén 'te'!",
+        subZh: "注意：zodat 后面要加主语 ik，动词放最后，且去掉 te！",
+        options: [
+          "Ik eet fruit zodat ik gezond blijf.",
+          "Ik eet fruit zodat gezond te blijven.",
+          "Ik eet fruit zodat ik blijf gezond.",
+          "Ik eet fruit zodat om gezond te blijven."
+        ],
+        answer: "Ik eet fruit zodat ik gezond blijf.",
+        explainNl: "Na 'zodat' krijg je een bijzin: onderwerp ('ik') + werkwoord achteraan ('blijf').",
+        explainZh: "zodat 引导从句：主语 ik + 表语 gezond + 动词 blijf 放句尾！",
+        wrongNl: {
+          "Ik eet fruit zodat gezond te blijven.": "Na 'zodat' gebruik je NOOIT 'te + werkwoord', maar een zin met 'ik ... blijf'!",
+          "Ik eet fruit zodat ik blijf gezond.": "In een bijzin (na zodat) gaat het werkwoord 'blijf' naar achteren: '...ik gezond blijf'!",
+          "Ik eet fruit zodat om gezond te blijven.": "'zodat' en 'om' mag je niet allebei tegelijk gebruiken!"
+        },
+        wrongZh: {
+          "Ik eet fruit zodat gezond te blijven.": "zodat 后面不能用 te + 动词，必须写出主语和变位动词！",
+          "Ik eet fruit zodat ik blijf gezond.": "在 zodat 从句中，动词 blijf 必须放到句子最后（ik gezond blijf）！",
+          "Ik eet fruit zodat om gezond te blijven.": "zodat 和 om 不能叠用！"
+        } },
+
+      // --- MIDDEL (途径信号词: met, door middel van, middels, met behulp van, door, daarmee, waarmee) ---
+      { id: "m1", group: "middel", type: "choice",
+        promptNl: "Ik heb deze wiskunde-oefeningen ______ mijn vader gemaakt.",
+        promptZh: "我在爸爸的帮助下完成了这些数学练习。",
+        subNl: "⚠️ Let op: 'mijn vader' is een MENS (persoon)!", subZh: "⚠️ 注意：mijn vader 是“人”！",
+        options: ["met behulp van", "door middel van", "middels", "daarmee"],
+        answer: "met behulp van",
+        explainNl: "Alleen 'met behulp van' mag bij een MENS én bij een voorwerp! 'door middel van' kan niet bij een mens.",
+        explainZh: "既能接工具又能接“人”的只能用 met behulp van！door middel van 不能接人。",
+        wrongNl: {
+          "door middel van": "❌ 'door middel van' mag alleen bij een ding/middel (bijv. gebaren), NOOIT bij een mens!",
+          "middels": "❌ 'middels' (= door middel van) gebruik je ook alleen bij een ding/brief, niet bij een persoon!",
+          "daarmee": "'daarmee' vervangt een middel en kun je niet vóór 'mijn vader' zetten."
+        },
+        wrongZh: {
+          "door middel van": "❌ door middel van 只能接事物/方式，绝对不能接人！",
+          "middels": "❌ middels 同样只能接事物（如信件），不能接人！",
+          "daarmee": "daarmee 已经包含“用那个”，后面不能再接 mijn vader。"
+        } },
+
+      { id: "m2", group: "middel", type: "choice",
+        promptNl: "______ deze oefeningen te maken, kun je de grammatica goed leren.",
+        promptZh: "通过做这些练习，你可以学好语法。（练习第6题）",
+        subNl: "Kijk naar het woord 'te' vóór 'maken'!", subZh: "注意 maken 前面有 te！",
+        options: ["Door", "Met", "Door middel van", "Middels"],
+        answer: "Door",
+        explainNl: "Voor 'te + werkwoord' (te maken) kan ALLEEN 'Door' staan!",
+        explainZh: "后面出现 te + 动词（te maken）时，只能用 Door！",
+        wrongNl: {
+          "Met": "Na 'Met' komt een zelfstandig naamwoord (met de fiets), geen '... te maken'!",
+          "Door middel van": "Na 'Door middel van' komt een zelfstandig naamwoord, geen '... te maken'!",
+          "Middels": "Na 'Middels' komt een zelfstandig naamwoord (middels deze brief), geen '... te maken'!"
+        },
+        wrongZh: {
+          "Met": "Met 后面接名词，不能接 te + 动词！",
+          "Door middel van": "Door middel van 后面只能接名词，不能接 te + 动词！",
+          "Middels": "Middels 后面也只能接名词，不能接 te + 动词！"
+        } },
+
+      { id: "m3", group: "middel", type: "choice",
+        promptNl: "Welke zin is CORRECT? (Oefening 5)",
+        promptZh: "哪句话是正确的？（课本练习第5题）",
+        subNl: "Let op het verschil tussen 'met behulp van' en 'daarmee'!", subZh: "注意 met behulp van 和 daarmee 的区别！",
+        options: [
+          "Hij heeft veel nieuwe woorden geleerd met behulp van dit woordenboek.",
+          "Hij heeft veel nieuwe woorden geleerd daarmee dit woordenboek."
+        ],
+        answer: "Hij heeft veel nieuwe woorden geleerd met behulp van dit woordenboek.",
+        explainNl: "A is goed! 'daarmee' betekent zelf al 'met dat middel', dus daar zet je nooit nog 'dit woordenboek' achter!",
+        explainZh: "A 正确！daarmee 自身已经表示“用那个”，后面绝不能再加 dit woordenboek！",
+        wrongNl: {
+          "Hij heeft veel nieuwe woorden geleerd daarmee dit woordenboek.": "❌ Fout! 'daarmee' = met dat. Je kunt niet zeggen 'met dat dit woordenboek' — het middel mag er niet nog een keer achter!"
+        },
+        wrongZh: {
+          "Hij heeft veel nieuwe woorden geleerd daarmee dit woordenboek.": "❌ 错！daarmee 本身就等于 met dat（用那个），后面不能再重复写 dit woordenboek！"
+        } },
+
+      { id: "m4", group: "middel", type: "choice",
+        promptNl: "Deze oefeningen zijn heel belangrijk. Je kunt ______ de grammatica goed leren.",
+        promptZh: "这些练习很重要。你可以用它们把语法学好。（练习第7题）",
+        subNl: "Het middel ('deze oefeningen') is al genoemd in de eerste zin!", subZh: "工具（deze oefeningen）在第一句已经说过了！",
+        options: ["daarmee", "waarmee", "met", "door middel van"],
+        answer: "daarmee",
+        explainNl: "'daarmee' = met deze oefeningen! Omdat het middel al genoemd is, gebruik je 'daarmee'.",
+        explainZh: "daarmee = met deze oefeningen（用这些练习），指代前面已提到的工具。",
+        wrongNl: {
+          "waarmee": "'waarmee' gebruik je in een bijzin/vraag ('een vak waarmee...'), niet in een gewone nieuwe hoofdzin.",
+          "met": "'met' kan hier niet los staan zonder naamwoord erachter.",
+          "door middel van": "Na 'door middel van' moet nog een naamwoord komen!"
+        },
+        wrongZh: {
+          "waarmee": "waarmee 用于从句或疑问句（如 een vak waarmee...），不用于这里的新主句。",
+          "met": "met 后面必须接名词，不能单独放这里。",
+          "door middel van": "door middel van 后面也必须接名词，不能单独放这里。"
+        } },
+
+      { id: "m5", group: "middel", type: "choice",
+        promptNl: "Begrijpend Lezen is een vak ______ ik moeite heb.",
+        promptZh: "阅读理解是一门我学起来有点吃力的科目。",
+        subNl: "Verwijs terug naar 'een vak' in een bijzin (= met dat vak):", subZh: "在定语从句中指代前面的 een vak：",
+        options: ["waarmee", "daarmee", "met", "door"],
+        answer: "waarmee",
+        explainNl: "In een bijzin (met werkwoord 'heb' achteraan) gebruik je 'waarmee' (= met dat vak)!",
+        explainZh: "引导从句（动词 heb 在句尾）指代前面的事物，用 waarmee！",
+        wrongNl: {
+          "daarmee": "'daarmee' verbindt geen bijzin terug naar 'een vak'; in deze bijzin staat 'heb' achteraan → 'waarmee'!",
+          "met": "Los 'met' werkt hier niet zonder 'dat/welk'.",
+          "door": "'door' past niet bij 'moeite hebben met'."
+        },
+        wrongZh: {
+          "daarmee": "daarmee 不引导从句回指 een vak；从句里动词 heb 在末尾，要用 waarmee！",
+          "met": "单独的 met 不能连接从句。",
+          "door": "固定搭配是 moeite hebben met，不能用 door。"
+        } },
+
+      { id: "m6", group: "middel", type: "choice",
+        promptNl: "⚠️ Instinker! In welke zin is 'door' GÉÉN signaalwoord van middel?",
+        promptZh: "⚠️ 陷阱题！下面哪句话里的 door 不是途径/方法信号词？",
+        subNl: "Let op: 'door' kan ook passief (被...) of plaats (穿过) betekenen!", subZh: "注意：door 还可能表示被动（被……）或空间穿过！",
+        options: [
+          "Hij rijdt door de tunnel.",
+          "Door de operatie kan hij weer lopen.",
+          "Je leert een taal door veel te oefenen.",
+          "Door hard te werken haal je een 9."
+        ],
+        answer: "Hij rijdt door de tunnel.",
+        explainNl: "'Hij rijdt door de tunnel' geeft aan dat hij ergens in gaat en aan de andere kant uitkomt (plaats/richting, géén middel)!",
+        explainZh: "“开车穿过隧道”表示空间穿过，不是途径/方法信号词！（被动句如 Hij werd door Piet geslagen 也不是）。",
+        wrongNl: {
+          "Door de operatie kan hij weer lopen.": "Hoe kan hij weer lopen? → Door de operatie! (Wel een middel!)",
+          "Je leert een taal door veel te oefenen.": "Hoe leer je een taal? → Door veel te oefenen! (Wel een middel!)",
+          "Door hard te werken haal je een 9.": "Hoe haal je een 9? → Door hard te werken! (Wel een middel!)"
+        },
+        wrongZh: {
+          "Door de operatie kan hij weer lopen.": "他靠什么重新走路？靠手术！这是途径。",
+          "Je leert een taal door veel te oefenen.": "怎么学语言？通过多练习！这是途径。",
+          "Door hard te werken haal je een 9.": "怎么拿 9 分？通过努力！这是途径。"
+        } },
+
+      { id: "m7", group: "middel", type: "choice",
+        promptNl: "Herschrijf 'In deze brief informeren we u...' met een formeel signaalwoord van middel (Oefening 8):",
+        promptZh: "把 'In deze brief informeren we u...' 改写成正式的途径信号词开头（练习第8题）：",
+        subNl: "Kies de goede schrijftaal-optie:", subZh: "选出正确的正式书面语表达：",
+        options: [
+          "Middels deze brief informeren we u...",
+          "Daarmee deze brief informeren we u...",
+          "Om deze brief te informeren we u...",
+          "Met behulp van u informeren deze brief..."
+        ],
+        answer: "Middels deze brief informeren we u...",
+        explainNl: "'Middels deze brief...', 'Door middel van deze brief...' en 'Met deze brief...' zijn allemaal goed!",
+        explainZh: "Middels deze brief... / Door middel van deze brief... / Met deze brief... 都可以！",
+        wrongNl: {
+          "Daarmee deze brief informeren we u...": "'daarmee' kan niet vóór 'deze brief' staan!",
+          "Om deze brief te informeren we u...": "'om ... te' is een doel en de zin klopt grammaticaal niet.",
+          "Met behulp van u informeren deze brief...": "De brief is het middel, niet 'u'!"
+        },
+        wrongZh: {
+          "Daarmee deze brief informeren we u...": "daarmee 后面不能再接 deze brief！",
+          "Om deze brief te informeren we u...": "om ... te 表示目的且语法不通。",
+          "Met behulp van u informeren deze brief...": "工具是信（deze brief），不是您（u），主语也错了。"
+        } },
+
+      { id: "m8", group: "middel", type: "fill",
+        promptNl: "Dove mensen communiceren ______ middel van gebaren.",
+        promptZh: "聋哑人通过手势进行交流。（填 1 个词）",
+        subNl: "Vul het ontbrekende woord in (1 woord):", subZh: "填入空缺的 1 个词：",
+        answer: "door",
+        explainNl: "Vaste woordgroep: 'door middel van' + zelfstandig naamwoord ('gebaren').",
+        explainZh: "固定词组：door middel van + 名词。",
+        commonNl: {
+          "met": "Bij 'met' gebruik je geen 'middel van' — het is 'met gebaren' OF 'door middel van gebaren'!",
+          "middels": "'middels' gebruik je zonder 'middel van' (gewoon: 'middels gebaren')."
+        },
+        commonZh: {
+          "met": "不能写 met middel van！要么直接写 met gebaren，要么写 door middel van gebaren。",
+          "middels": "middels 后面不加 middel van，这里固定搭配是 door middel van！"
+        } }
+    ];
+
+    // 词块拼句（练习 1、2、3D、4 实战）
+    const NL_BUILDS = [
+      { id: "nlb_1",
+        promptNl: "Ik ga vroeg naar bed. Ik ben morgen niet meer zo moe. (Gebruik 'zodat'!)",
+        promptZh: "用 zodat 合并：我早点睡觉。明天我就没那么累了。（练习第1题）",
+        target: ["Ik", "ga", "vroeg", "naar", "bed,", "zodat", "ik", "morgen", "niet", "meer", "zo", "moe", "ben."],
+        distractors: ["om", "te"],
+        trapNl: { "om": "Je moet 'zodat' gebruiken (met een bijzin), niet 'om'!", "te": "Na 'zodat' komt NOOIT 'te'!" },
+        trapZh: { "om": "题目要求用 zodat 连接从句，不用 om！", "te": "zodat 后面绝对不加 te！" },
+        explainNl: "Na 'zodat' staat het werkwoord 'ben' helemaal achteraan in de zin!",
+        explainZh: "zodat 引导从句，动词 ben 必须放到句子最后！" },
+      { id: "nlb_2",
+        promptNl: "Waarvoor gebruik je het mes? (Antwoord met 'om ... te ...'!)",
+        promptZh: "用 om ... te ... 回答：你用刀做什么？（练习第2题）",
+        target: ["Ik", "gebruik", "het", "mes", "om", "de", "worst", "te", "snijden."],
+        distractors: ["zodat", "snijdt"],
+        trapNl: { "zodat": "Je moet antwoorden met 'om ... te ...'!", "snijdt": "Na 'te' komt het hele werkwoord: 'snijden', niet 'snijdt'!" },
+        trapZh: { "zodat": "这题要用 om ... te ... 结构回答！", "snijdt": "te 后面必须用动词原形 snijden，不能用变位 snijdt！" },
+        explainNl: "Ik gebruik het mes om de worst te snijden. (na 'te' = hele werkwoord).",
+        explainZh: "te 后面接动词原形 snijden！" },
+      { id: "nlb_3",
+        promptNl: "Ik eet fruit. (Doel: gezond blijven — gebruik 'om ... te ...'!)",
+        promptZh: "用 om ... te ... 造句：我吃水果为了保持健康。（练习第3D题）",
+        target: ["Ik", "eet", "fruit", "om", "gezond", "te", "blijven."],
+        distractors: ["zodat", "blijf"],
+        trapNl: { "zodat": "Hier oefenen we 'om ... te ...'!", "blijf": "Na 'te' komt het hele werkwoord: 'blijven'!" },
+        trapZh: { "zodat": "这里用 om ... te ... 结构！", "blijf": "te 后面要用动词原形 blijven！" },
+        explainNl: "Ik eet fruit om gezond te blijven.",
+        explainZh: "om gezond te blijven（为了保持健康）。" },
+      { id: "nlb_4",
+        promptNl: "Herschrijf met 'zodat': Ik eet fruit ... (gezond blijven) (Oefening 4)",
+        promptZh: "用 zodat 改写上一句：我吃水果以便保持健康。（练习第4题）",
+        target: ["Ik", "eet", "fruit", "zodat", "ik", "gezond", "blijf."],
+        distractors: ["te", "blijven"],
+        trapNl: { "te": "Na 'zodat' staat NOOIT 'te'!", "blijven": "Bij 'ik' in de bijzin hoort de ik-vorm 'blijf', niet 'blijven'!" },
+        trapZh: { "te": "zodat 后面绝不能加 te！", "blijven": "主语是 ik，从句动词要变成 blijf！" },
+        explainNl: "Ik eet fruit zodat ik gezond blijf. ('blijf' achteraan!).",
+        explainZh: "zodat ik gezond blijf（注意动词 blijf 放句尾）。" },
+      { id: "nlb_5",
+        promptNl: "Ik maak het pakketje open ... (een schaar)",
+        promptZh: "我用剪刀打开包裹。",
+        target: ["Ik", "maak", "het", "pakketje", "open", "met", "een", "schaar."],
+        distractors: ["daarmee", "te"],
+        trapNl: { "daarmee": "'daarmee' kan niet vóór 'een schaar' staan!", "te": "Na 'met een schaar' komt geen 'te'!" },
+        trapZh: { "daarmee": "daarmee 后面不能再接 een schaar！", "te": "met 接名词不需要 te！" },
+        explainNl: "Na 'met' komt gewoon een zelfstandig naamwoord: met een schaar.",
+        explainZh: "met 后面直接接名词 een schaar。" }
+    ];
+
+    // =====================================================
+    // 2. 8 关闯关路线
+    // =====================================================
+    const SECTIONS = [
+      { id: 1, cls: "sec1", titleNl: "Deel 1 · 🎯 Signaalwoorden van DOEL", titleZh: "第一篇章 · 🎯 目的信号词（Doel）",
+        subNl: "om ... te, opdat, zodat + instinkers (~12 min)", subZh: "先看讲解，再练目的表达与陷阱辨析" },
+      { id: 2, cls: "sec2", titleNl: "Deel 2 · 🛠️ Signaalwoorden van MIDDEL", titleZh: "第二篇章 · 🛠️ 途径/工具信号词（Middel）",
+        subNl: "met, door middel van, met behulp van, door, daarmee (~14 min)", subZh: "彻底分清 5 种工具词 + 被动/穿越陷阱" },
+      { id: 3, cls: "sec3", titleNl: "Deel 3 · 🏆 Mix, Fouten-EHBO & Eindtoets", titleZh: "第三篇章 · 🏆 错题清零 & 综合模拟考",
+        subNl: "Alle opdrachten door elkaar + cijfer 1–10 (~10 min)", subZh: "错题急救 + 真题模拟评分" }
+    ];
+
+    const LEVELS = [
+      { id: 1, sec: 1, icon: "🎯", offset: 0, kind: "normal",
+        titleNl: "Level 1 · Doel: Uitleg & Basis", titleZh: "第 1 关 · 目的信号词基础",
+        subNl: "om...te, zodat & opdat", subZh: "课前秘籍 + 基础辨析" },
+      { id: 2, sec: 1, icon: "🧩", offset: -40, kind: "normal",
+        titleNl: "Level 2 · Doel: Zinnen bouwen", titleZh: "第 2 关 · 目的句型拼句实战",
+        subNl: "Oefening 1 t/m 4 (om...te ↔ zodat)", subZh: "讲义第 1–4 题词块拼句" },
+      { id: 3, sec: 1, icon: "⚠️", offset: 14, kind: "boss",
+        titleNl: "Level 3 · Doel: Instinker-Boss", titleZh: "第 3 关 · 目的陷阱 Boss",
+        subNl: "Vaste constructies & zodat = gevolg", subZh: "固定搭配与“结果”语境辨析" },
+
+      { id: 4, sec: 2, icon: "🛠️", offset: 42, kind: "normal",
+        titleNl: "Level 4 · Middel: Uitleg & Gebruik", titleZh: "第 4 关 · 途径信号词核心规则",
+        subNl: "met, door middel van, met behulp van & door", subZh: "课前秘籍 + 接人/接动词规则" },
+      { id: 5, sec: 2, icon: "🔗", offset: -36, kind: "boss",
+        titleNl: "Level 5 · Middel: Daarmee & Door-trap", titleZh: "第 5 关 · daarmee 与 door 陷阱突破",
+        subNl: "Oefening 5 t/m 8 + passief/plaats trap", subZh: "讲义第 5–8 题 + 易错陷阱" },
+
+      { id: 6, sec: 3, icon: "🔀", offset: 18, kind: "normal",
+        titleNl: "Level 6 · Doel & Middel Mix", titleZh: "第 6 关 · 目的与途径混合大乱斗",
+        subNl: "Haal jij ze niet door elkaar?", subZh: "综合辨析，不混淆" },
+      { id: 7, sec: 3, icon: "🩹", offset: -30, kind: "normal",
+        titleNl: "Level 7 · Fouten-EHBO", titleZh: "第 7 关 · 个人错题清零",
+        subNl: "Oefen al je fouten weg", subZh: "清零前 6 关所有错题" },
+      { id: 8, sec: 3, icon: "🏆", offset: 0, kind: "exam",
+        titleNl: "Level 8 · Eindtoets (14 vragen)", titleZh: "第 8 关 · 综合模拟考（出 Cijfer）",
+        subNl: "Cijfer 1–10", subZh: "全真模拟，交卷打分" }
+    ];
+
+    // =====================================================
+    // 3. 状态 & Supabase 云端同步
+    // =====================================================
+    const STORAGE_KEY = "ernst_nl_doel_middel_v1";
+    const PROFILE_KEY = "ernst_nl_profile_id";
+    const SUPABASE_URL = "https://ejemztgsopsrzyhvrppo.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqZW16dGdzb3Bzcnp5aHZycHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2MTcxODcsImV4cCI6MjExMTE5MzE4N30.8JA6psNYdWTi3td3xizOsEchFg7vZEKRHeXqFDcqTKQ";
+
+    let state = {
+      lang: "nl", xp: 0, streak: 0, unlockedLevel: 1, completedLevels: {},
+      mistakes: {}, parentMode: false, speechOn: true, sfxOn: true, bestCijfer: null, updatedAt: 0
+    };
+    let cloudStatus = "syncing", pushTimer = null;
+
+    function getProfileId() { try { return localStorage.getItem(PROFILE_KEY) || "ernst-nl-doel-middel"; } catch (e) { return "ernst-nl-doel-middel"; } }
+    function healUnlockedLevel() {
+      let u = 1;
+      while (state.completedLevels[u] && u < LEVELS.length) u++;
+      if (u > (state.unlockedLevel || 1)) state.unlockedLevel = u;
+      if (state.unlockedLevel > LEVELS.length) state.unlockedLevel = LEVELS.length;
+    }
+    function updateCloudBadge() {
+      const btn = document.getElementById("btn-cloud");
+      if (!btn) return;
+      if (cloudStatus === "synced") { btn.textContent = t("☁️ Opgeslagen", "☁️ 已云端同步"); btn.classList.add("on"); }
+      else if (cloudStatus === "syncing") { btn.textContent = t("☁️ Bezig...", "☁️ 同步中..."); btn.classList.remove("on"); }
+      else { btn.textContent = t("☁️ Lokaal", "☁️ 仅本机"); btn.classList.remove("on"); }
+    }
+    async function syncCloudPull() {
+      if (typeof fetch !== "function") return;
+      cloudStatus = "syncing"; updateCloudBadge();
+      const pid = encodeURIComponent(getProfileId());
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?profile_id=eq.${pid}&select=data,updated_at`, {
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const rows = await res.json();
+        if (rows && rows.length && rows[0].data) {
+          const cd = rows[0].data, cts = cd.updatedAt || Date.parse(rows[0].updated_at) || 0;
+          if (cts > (state.updatedAt || 0) || (state.xp === 0 && (cd.xp || 0) > 0)) {
+            state = { ...state, ...cd, updatedAt: cts }; healUnlockedLevel();
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+            cloudStatus = "synced"; renderMap(); return;
+          }
+        }
+        if (state.xp > 0 || Object.keys(state.completedLevels).length > 0) await syncCloudPush(true);
+        else { cloudStatus = "synced"; updateCloudBadge(); }
+      } catch (e) { cloudStatus = "offline"; updateCloudBadge(); }
+    }
+    async function syncCloudPush(immediate) {
+      if (typeof fetch !== "function") return;
+      if (!immediate) { clearTimeout(pushTimer); pushTimer = setTimeout(() => syncCloudPush(true), 600); return; }
+      cloudStatus = "syncing"; updateCloudBadge();
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/ernst_progress?on_conflict=profile_id`, {
+          method: "POST",
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates" },
+          body: JSON.stringify({ profile_id: getProfileId(), data: state, updated_at: new Date().toISOString() })
+        });
+        cloudStatus = res.ok ? "synced" : "offline";
+      } catch (e) { cloudStatus = "offline"; }
+      updateCloudBadge();
+    }
+    function openCloudSettings() {
+      const cur = getProfileId();
+      const next = prompt(t(`Huidige Cloud-code: ${cur}\nTyp een nieuwe code of klik OK om te synchroniseren:`, `当前同步码：${cur}\n输入新同步码，或直接点确定立即同步：`), cur);
+      if (next === null) return;
+      const clean = next.trim();
+      if (clean && clean !== cur) {
+        try { localStorage.setItem(PROFILE_KEY, clean); } catch (e) {}
+        state.xp = 0; state.streak = 0; state.unlockedLevel = 1; state.completedLevels = {}; state.mistakes = {}; state.bestCijfer = null; state.updatedAt = 0;
+      }
+      syncCloudPull();
+    }
+
+    function loadState() {
+      try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) { state = { ...state, ...JSON.parse(raw) }; healUnlockedLevel(); } } catch (e) {}
+    }
+    function saveState(imm) { state.updatedAt = Date.now(); try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} syncCloudPush(!!imm); }
+    function t(nl, zh) { return state.lang === "nl" ? nl : (state.lang === "zh" ? zh : `${nl} / ${zh}`); }
+    function tBlock(nl, zh) { return state.lang === "nl" ? escapeHtml(nl) : (state.lang === "zh" ? escapeHtml(zh) : `${escapeHtml(nl)}<span class="bilingual-zh">${escapeHtml(zh)}</span>`); }
+    function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function shuffle(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function normalizeAns(s) { return (s || "").trim().replace(/[’`]/g, "'").replace(/\s+/g, " ").toLowerCase(); }
+
+    let audioCtx = null;
+    function playTone(type) {
+      if (!state.sfxOn) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const notes = type === "win" ? [523, 659, 784, 1046] : (type === "ok" ? [523, 659] : [220, 175]);
+        notes.forEach((freq, i) => {
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.connect(g); g.connect(audioCtx.destination);
+          o.type = type === "err" ? "sawtooth" : "triangle";
+          o.frequency.setValueAtTime(freq, now + i * 0.08);
+          g.gain.setValueAtTime(0.12, now + i * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.18);
+          o.start(now + i * 0.08); o.stop(now + i * 0.08 + 0.18);
+        });
+      } catch (e) {}
+    }
+    function speakNl(text) {
+      if (!state.speechOn || !("speechSynthesis" in window)) return;
+      try { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = "nl-NL"; u.rate = 0.94; window.speechSynthesis.speak(u); } catch (e) {}
+    }
+
+    function setLang(l) { state.lang = l; saveState(); renderMap(); if (lesson && lesson.active) renderCurrentStep(); }
+    function toggleSpeech() { state.speechOn = !state.speechOn; saveState(); renderMap(); }
+    function toggleSfx() { state.sfxOn = !state.sfxOn; saveState(); renderMap(); }
+    function toggleParentMode() { state.parentMode = !state.parentMode; saveState(); renderMap(); }
+    function resetProgress() {
+      if (!confirm(t("Alle voortgang opnieuw starten?", "确定重置所有进度吗？"))) return;
+      state.xp = 0; state.streak = 0; state.unlockedLevel = 1; state.completedLevels = {}; state.mistakes = {}; state.bestCijfer = null;
+      saveState(true); renderMap();
+    }
+
+    // =====================================================
+    // 4. 地图渲染
+    // =====================================================
+    function renderMap() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "nl";
+      document.getElementById("brand-txt").textContent = t("Nederlands · Doel & Middel", "荷兰语 · 目的与途径信号词");
+      document.getElementById("stat-xp").textContent = state.xp;
+      document.getElementById("stat-streak").textContent = state.streak;
+
+      ["nl", "both", "zh"].forEach(l => document.getElementById(`lang-${l}`).classList.toggle("active", state.lang === l));
+      const sp = document.getElementById("btn-speech"); sp.textContent = state.speechOn ? "🔊" : "🔇"; sp.classList.toggle("on", state.speechOn);
+      const sf = document.getElementById("btn-sfx"); sf.textContent = state.sfxOn ? "🎵" : "🔕"; sf.classList.toggle("on", state.sfxOn);
+      document.getElementById("btn-guide-map").textContent = t("📘 Uitleg", "📘 秘籍");
+      document.getElementById("btn-guide-lesson").textContent = t("📘 Uitleg", "📘 秘籍");
+      updateCloudBadge();
+
+      const mCount = Object.keys(state.mistakes).length;
+      document.getElementById("map-sections").innerHTML = SECTIONS.map(sec => {
+        const secLevels = LEVELS.filter(l => l.sec === sec.id);
+        const secDone = secLevels.filter(l => state.completedLevels[l.id]).length;
+        const nodesHtml = secLevels.map((lv, idx) => {
+          const isDone = !!state.completedLevels[lv.id];
+          const isUnlocked = state.parentMode || lv.id <= state.unlockedLevel || !!state.completedLevels[lv.id - 1];
+          const isCurrent = !isDone && lv.id === state.unlockedLevel;
+          const cls = isDone ? "done" : (isUnlocked ? `current ${lv.kind}` : "locked");
+          const title = state.lang === "zh" ? lv.titleZh : (state.lang === "nl" ? lv.titleNl : `${lv.titleNl} · ${lv.titleZh}`);
+          let sub = state.lang === "zh" ? lv.subZh : lv.subNl;
+          if (lv.id === 7 && mCount > 0) sub = t(`${mCount} fouten klaar om weg te werken!`, `当前有 ${mCount} 道待清零错题`);
+          if (lv.id === 8 && state.bestCijfer) sub = `${sub} · 🏆 ${state.bestCijfer}/10`;
+          const conn = idx > 0 ? `<div class="path-connector ${state.completedLevels[secLevels[idx-1].id] ? "done" : ""}"></div>` : "";
+          return `
+            ${conn}
+            <div class="path-step" style="transform: translateX(${lv.offset}px);">
+              <div class="node-row">
+                ${isCurrent ? `<div class="robot-buddy">🤖</div>` : ""}
+                <button class="node-btn ${cls}" ${isUnlocked ? "" : "disabled"} onclick="startLevel(${lv.id})">
+                  ${isCurrent ? `<div class="start-bubble">START!</div>` : ""}
+                  ${isUnlocked ? lv.icon : "🔒"}
+                  ${isDone ? `<span class="node-check">✓</span>` : ""}
+                </button>
+              </div>
+              <div class="node-label">
+                <div class="node-title">${escapeHtml(title)}</div>
+                <div class="node-sub">${escapeHtml(sub)}</div>
+              </div>
+            </div>`;
+        }).join("");
+        return `
+          <div class="unit-banner ${sec.cls}">
+            <div><h2>${escapeHtml(state.lang === "zh" ? sec.titleZh : sec.titleNl)}</h2><p>${escapeHtml(state.lang === "zh" ? sec.subZh : sec.subNl)}</p></div>
+            <div class="unit-progress-pill">${secDone} / ${secLevels.length}</div>
+          </div>
+          <div class="path-wrap">${nodesHtml}</div>`;
+      }).join("");
+
+      document.getElementById("parent-hint").textContent = state.parentMode
+        ? t("🔑 Ouder-modus AAN: alle 8 levels vrij te kiezen.", "🔑 家长自由模式已开：可点击任意关卡。")
+        : t("🔒 Focus-modus: één level per keer vrijspelen.", "🔒 专注解锁模式：通关自动解锁下一关。");
+      const pmBtn = document.getElementById("btn-parent-mode");
+      pmBtn.textContent = state.parentMode ? t("🔑 Ouder-modus: AAN", "🔑 家长自由选关：开") : t("🔑 Ouder-modus", "🔑 家长自由选关");
+      pmBtn.classList.toggle("on", state.parentMode);
+      document.getElementById("btn-reset").textContent = t("🔄 Reset", "🔄 重置进度");
+    }
+
+    // =====================================================
+    // 5. 关卡生成
+    // =====================================================
+    let lesson = null;
+    function getQ(id) { return QUESTIONS.find(q => q.id === id); }
+    function getSB(id) { return NL_BUILDS.find(s => s.id === id); }
+
+    function buildLevelSteps(lvId) {
+      const steps = [];
+      if (lvId === 1) {
+        steps.push({ kind: "teach_doel", tagNl: "Uitleg · Signaalwoorden van DOEL", tagZh: "课前秘籍 · 目的信号词" });
+        ["d1", "d2", "d3", "d6"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Basis", tagZh: "目的基础" }));
+      } else if (lvId === 2) {
+        ["nlb_1", "nlb_2", "nlb_3", "nlb_4"].forEach(id => steps.push({ kind: "sb", sb: getSB(id), tagNl: "Zin bouwen · Oefening 1–4", tagZh: "讲义原题拼句 1–4" }));
+      } else if (lvId === 3) {
+        ["d4", "d5", "d6", "d1", "d2"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Instinkers", tagZh: "目的陷阱辨析" }));
+      } else if (lvId === 4) {
+        steps.push({ kind: "teach_middel", tagNl: "Uitleg · Signaalwoorden van MIDDEL", tagZh: "课前秘籍 · 途径信号词" });
+        ["m1", "m2", "m8", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Basis", tagZh: "途径基础" }));
+        steps.push({ kind: "sb", sb: getSB("nlb_5"), tagNl: "Zin bouwen · Met", tagZh: "词块拼句" });
+      } else if (lvId === 5) {
+        ["m3", "m4", "m5", "m6", "m7", "m1", "m2"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Instinkers", tagZh: "途径易错陷阱" }));
+      } else if (lvId === 6) {
+        shuffle(QUESTIONS).slice(0, 10).forEach(q => steps.push({ kind: "q", q, tagNl: "Doel & Middel Mix", tagZh: "目的与途径混合" }));
+      } else if (lvId === 7) {
+        const mEntries = shuffle(Object.values(state.mistakes));
+        if (mEntries.length > 0) {
+          mEntries.forEach(m => {
+            if (m.kind === "q") { const q = getQ(m.id); if (q) steps.push({ kind: "q", q, tagNl: "Fouten-EHBO", tagZh: "错题清零" }); }
+            else if (m.kind === "sb") { const sb = getSB(m.id); if (sb) steps.push({ kind: "sb", sb, tagNl: "Fouten-EHBO · Zin", tagZh: "错题拼句" }); }
+          });
+        } else {
+          ["d4", "d5", "m1", "m6", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Topper-Check", tagZh: "考前保底高危题" }));
+        }
+      } else if (lvId === 8) {
+        shuffle(QUESTIONS).slice(0, 11).forEach(q => steps.push({ kind: "q", q, tagNl: "Eindtoets · Vragen", tagZh: "模拟考 · 选择与填空" }));
+        shuffle(NL_BUILDS).slice(0, 3).forEach(sb => steps.push({ kind: "sb", sb, tagNl: "Eindtoets · Zinnen", tagZh: "模拟考 · 句子改写" }));
+      }
+      return steps;
+    }
+
+    function startLevel(lvId) {
+      const steps = buildLevelSteps(lvId);
+      lesson = {
+        active: true, lvId, isExam: lvId === 8, queue: steps, totalBase: steps.length,
+        doneCount: 0, firstTryRight: 0, examErrors: [], selected: null, sbPicked: [],
+        checked: false, lastOk: false, lastFbTitle: "", lastFbDetail: ""
+      };
+      document.getElementById("map-shell").classList.add("hidden");
+      document.getElementById("lesson-shell").classList.add("active");
+      renderCurrentStep();
+    }
+    function exitLesson() {
+      lesson = null;
+      document.getElementById("lesson-shell").classList.remove("active");
+      document.getElementById("map-shell").classList.remove("hidden");
+      renderMap();
+    }
+
+    function renderCurrentStep() {
+      if (!lesson) return;
+      if (lesson.queue.length === 0) { renderVictoryScreen(); return; }
+      const step = lesson.queue[0];
+      const pct = Math.min(100, Math.round((lesson.doneCount / (lesson.doneCount + lesson.queue.length)) * 100));
+      document.getElementById("duo-bar-fill").style.width = `${pct}%`;
+      document.getElementById("lesson-counter").textContent = `${lesson.doneCount + 1} / ${lesson.doneCount + lesson.queue.length}`;
+
+      const body = document.getElementById("lesson-body");
+      const badgeHtml = `<div class="step-badge ${step.isRetry ? "retry" : ""}">${step.isRetry ? `🔁 ${t("Oefen nog een keer", "错题再练一次")}` : `✨ ${t(step.tagNl, step.tagZh)}`}</div>`;
+
+      if (step.kind === "teach_doel") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🎯 ${tBlock("Signaalwoorden van DOEL (Waarom doe je iets?)", "课前秘籍：目的信号词（为什么要做某事？）")}</h2>
+          <div class="teach-card">
+            <ul>
+              <li><span class="pill pill-doel">om ... te + hele werkwoord</span> — ${tBlock("Ik ga naar de supermarkt om melk te kopen.", "我去超市为了买牛奶（te 后接动词原形）。")}
+                <br><span class="pill pill-warn">⚠️ Let op!</span> ${tBlock("Soms is het een vaste constructie (géén doel!): 'Ik vind het leuk om piano te spelen', 'Ik heb zin om...', 'Het is te warm om...'", "有时是固定搭配而非目的：Ik vind het leuk om... / Ik heb zin om... / Het is te warm om...")}</li>
+              <li><span class="pill pill-doel">opdat / zodat + bijzin</span> — ${tBlock("Werkwoorden achteraan! 'opdat' = formele schrijftaal, 'zodat' = spreektaal (géén 'te'!).", "后面接完整从句，动词全部放句尾！opdat 是书面语，zodat 口语常用（绝不加 te）。")}
+                <br><span class="pill pill-warn">⚠️ Context!</span> ${tBlock("'zodat' kan ook GEVOLG (resultaat) zijn: 'Het regende, zodat de wedstrijd niet doorging.'", "zodat 也可表示“结果”（如：下雨，结果比赛取消），一定要看上下文！")}</li>
+            </ul>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_middel") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🛠️ ${tBlock("Signaalwoorden van MIDDEL (Waarmee / Hoe doe je iets?)", "课前秘籍：途径/工具信号词（用什么工具或方法？）")}</h2>
+          <div class="teach-card">
+            <table class="mini-table">
+              <tr><th>Signaalwoord</th><th>${t("Wat komt erachter?", "后面接什么？")}</th><th>${t("Let op!", "易错提醒")}</th></tr>
+              <tr><td><strong>met</strong></td><td>${t("naamwoord (met de fiets)", "名词")}</td><td>${t("Meest gebruikt (spreek/schrijf)", "最常用")}</td></tr>
+              <tr><td><strong>door middel van / middels</strong></td><td>${t("naamwoord (gebaren / brief)", "名词")}</td><td><strong style="color:#b91c1c;">${t("NIET bij een mens!", "不能接人！")}</strong></td></tr>
+              <tr><td><strong>met behulp van</strong></td><td>${t("naamwoord OF mens!", "名词 或 人！")}</td><td>${t("Mag wel bij 'mijn vader'!", "唯一可以接“人”的词组")}</td></tr>
+              <tr><td><strong>door</strong></td><td>${t("naamwoord OF 'te + werkwoord'", "名词 或 te + 动词")}</td><td><strong style="color:#b91c1c;">${t("Passief/tunnel = géén middel!", "被动句/穿过隧道不是途径！")}</strong></td></tr>
+              <tr><td><strong>daarmee / waarmee</strong></td><td>${t("(= met dat / met wat)", "指代前文工具")}</td><td><strong style="color:#b91c1c;">${t("Middel NIET herhalen!", "后面不能再加该工具名词！")}</strong></td></tr>
+            </table>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "sb") {
+        const sb = step.sb;
+        if (!step._bank) step._bank = shuffle([...sb.target, ...sb.distractors]);
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🧩 ${tBlock("Bouw de goede zin:", "点击词块，拼出正确的荷兰语句子：")}</h2>
+          <p class="q-sub"><strong>${tBlock(sb.promptNl, sb.promptZh)}</strong></p>
+          <div class="sentence-slot ${lesson.sbPicked.length ? "has-words" : ""}">
+            ${lesson.sbPicked.length === 0
+              ? `<span style="color:#94a3b8; font-weight:700; font-size:0.9rem;">${t("Klik hieronder op de woorden in de goede volgorde (let op: er zitten instinkers bij!)", "按顺序点击下方词块拼句（小心里面混了干扰词！）")}</span>`
+              : lesson.sbPicked.map((bi, pos) => `<button class="wb-chip placed" ${lesson.checked ? "disabled" : ""} onclick="unpickWord(${pos})">${escapeHtml(step._bank[bi])}</button>`).join("")}
+          </div>
+          <div class="word-bank">
+            ${step._bank.map((w, bi) => `<button class="wb-chip ${lesson.sbPicked.includes(bi) ? "used" : ""}" ${lesson.checked ? "disabled" : ""} onclick="pickWord(${bi})">${escapeHtml(w)}</button>`).join("")}
+          </div>`;
+        renderFooter();
+      } else if (step.kind === "q") {
+        const q = step.q;
+        const promptHtml = q.promptNl === q.promptZh ? escapeHtml(q.promptNl) : tBlock(q.promptNl, q.promptZh);
+        if (q.type === "choice") {
+          if (!step._opts) step._opts = shuffle(q.options);
+          body.innerHTML = `
+            ${badgeHtml}
+            <h2 class="q-title">${promptHtml} <button class="icon-btn" onclick="speakNl(${JSON.stringify(q.promptNl).replace(/"/g, '&quot;')})">🔊</button></h2>
+            <p class="q-sub">${tBlock(q.subNl, q.subZh)}</p>
+            <div class="choice-grid ${step._opts.some(x => x.length > 26) ? "single-col" : ""}">
+              ${step._opts.map((o, i) => {
+                let cls = "";
+                if (lesson.checked) { if (o === q.answer) cls = "correct"; else if (lesson.selected === o) cls = "wrong"; }
+                else if (lesson.selected === o) cls = "selected";
+                return `<button class="choice-tile ${cls}" ${lesson.checked ? "disabled" : ""} onclick="selectChoice(${JSON.stringify(o).replace(/"/g, '&quot;')})"><span class="tile-num">${i + 1}</span><span>${escapeHtml(o)}</span></button>`;
+              }).join("")}
+            </div>`;
+        } else {
+          body.innerHTML = `
+            ${badgeHtml}
+            <h2 class="q-title">${promptHtml}</h2>
+            <p class="q-sub">${tBlock(q.subNl, q.subZh)}</p>
+            <input type="text" class="spell-input" id="duo-spell-input" autocomplete="off" spellcheck="false"
+              value="${escapeHtml(lesson.selected || "")}" ${lesson.checked ? "disabled" : ""}
+              placeholder="${t("Typ 1 Nederlands woord...", "输入 1 个荷兰语词...")}" />`;
+          setTimeout(() => {
+            const inp = document.getElementById("duo-spell-input");
+            if (inp && !lesson.checked) {
+              inp.focus();
+              inp.addEventListener("input", e => { lesson.selected = e.target.value; const b = document.getElementById("btn-check-step"); if (b) b.disabled = !lesson.selected.trim(); });
+            }
+          }, 0);
+        }
+        renderFooter();
+      }
+    }
+
+    function selectChoice(val) { if (lesson.checked) return; lesson.selected = val; renderCurrentStep(); }
+    function pickWord(bi) { if (lesson.checked || lesson.sbPicked.includes(bi)) return; lesson.sbPicked.push(bi); renderCurrentStep(); }
+    function unpickWord(pos) { if (lesson.checked) return; lesson.sbPicked.splice(pos, 1); renderCurrentStep(); }
+
+    function renderFooter() {
+      const footer = document.getElementById("lesson-footer"), inner = document.getElementById("footer-inner"), step = lesson.queue[0];
+      if (step.kind.startsWith("teach_")) {
+        footer.className = "lesson-footer";
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${t("Uitleg gelezen? Start de oefeningen!", "看完秘籍了吗？开始闯关！")}</div></div>
+          <button class="duo-btn orange" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始闯关 →")}</button>`;
+        return;
+      }
+      if (!lesson.checked) {
+        footer.className = "lesson-footer";
+        const canCheck = step.kind === "sb" ? lesson.sbPicked.length > 0 : (lesson.selected !== null && String(lesson.selected).trim().length > 0);
+        inner.innerHTML = `<div class="fb-text"></div><button class="duo-btn" id="btn-check-step" ${canCheck ? "" : "disabled"} onclick="checkCurrentStep()">${t("CONTROLEER", "检查答案")}</button>`;
+      } else {
+        footer.className = `lesson-footer ${lesson.lastOk ? "ok" : "err"}`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">${lesson.lastOk ? "✅" : "❌"} ${lesson.lastFbTitle}</div><div class="fb-detail">${lesson.lastFbDetail}</div></div>
+          <button class="duo-btn ${lesson.lastOk ? "" : "red"}" onclick="nextStep()">${t("GA DOOR", "下一题")} →</button>`;
+      }
+    }
+
+    function checkCurrentStep() {
+      if (!lesson || lesson.checked) return;
+      const step = lesson.queue[0];
+      lesson.checked = true;
+      let ok = false, fbTitle = "", fbDetail = "";
+
+      if (step.kind === "sb") {
+        const sb = step.sb, picked = lesson.sbPicked.map(bi => step._bank[bi]), built = picked.join(" "), expected = sb.target.join(" ");
+        ok = built === expected; speakNl(expected);
+        if (ok) {
+          fbTitle = t("Perfecte zin!", "拼句完美！");
+          fbDetail = `<div class="fb-why">💡 ${tBlock(sb.explainNl, sb.explainZh)}</div>`;
+          handleRecord(true, "sb", sb.id, step);
+        } else {
+          fbTitle = t(`Goede zin: ${expected}`, `正确句子：${expected}`);
+          const traps = picked.filter(w => sb.trapNl && sb.trapNl[w]);
+          const trapMsg = traps.length
+            ? traps.map(tw => `<div class="fb-why">❌ <strong>${escapeHtml(tw)}</strong>: ${tBlock(sb.trapNl[tw], sb.trapZh[tw])}</div>`).join("")
+            : `<div class="fb-why">⚠️ ${tBlock("Let goed op de woordvolgorde (werkwoord achteraan bij zodat!).", "注意词序（zodat 从句动词要放句尾！）。")}</div>`;
+          fbDetail = `${trapMsg}<div style="margin-top:5px;">💡 ${tBlock(sb.explainNl, sb.explainZh)}</div>`;
+          handleRecord(false, "sb", sb.id, step, `${expected} (${sb.explainNl})`);
+        }
+      } else if (step.kind === "q") {
+        const q = step.q;
+        ok = normalizeAns(lesson.selected) === normalizeAns(q.answer);
+        if (ok) {
+          fbTitle = t("Helemaal goed!", "完全正确！");
+          fbDetail = `<div class="fb-why">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
+          handleRecord(true, "q", q.id, step);
+        } else {
+          fbTitle = t(`Goede antwoord: ${q.answer}`, `正确答案：${q.answer}`);
+          let whyHtml = "";
+          if (q.type === "choice" && q.wrongNl && q.wrongNl[lesson.selected]) {
+            whyHtml = `<div class="fb-why">❌ <strong>${escapeHtml(lesson.selected)}</strong>: ${tBlock(q.wrongNl[lesson.selected], q.wrongZh[lesson.selected])}</div>`;
+          } else if (q.type === "fill" && q.commonNl && q.commonNl[normalizeAns(lesson.selected)]) {
+            whyHtml = `<div class="fb-why">❌ <strong>${escapeHtml(lesson.selected)}</strong>: ${tBlock(q.commonNl[normalizeAns(lesson.selected)], q.commonZh[normalizeAns(lesson.selected)])}</div>`;
+          }
+          fbDetail = `${whyHtml}<div style="margin-top:5px;">💡 ${tBlock(q.explainNl, q.explainZh)}</div>`;
+          handleRecord(false, "q", q.id, step, `${q.promptNl} → ${q.answer}`);
+        }
+      }
+      lesson.lastOk = ok; lesson.lastFbTitle = fbTitle; lesson.lastFbDetail = fbDetail;
+      renderCurrentStep();
+    }
+
+    function handleRecord(ok, kind, id, step, summary) {
+      if (ok) {
+        state.xp += 10; state.streak += 1; delete state.mistakes[`${kind}:${id}`];
+        if (!step.isRetry) lesson.firstTryRight++;
+        playTone("ok");
+      } else {
+        state.streak = 0; state.mistakes[`${kind}:${id}`] = { kind, id }; playTone("err");
+        if (lesson.isExam) lesson.examErrors.push(summary);
+        else lesson.queue.push({ ...step, isRetry: true });
+      }
+      saveState();
+    }
+
+    function nextStep() {
+      if (!lesson) return;
+      lesson.queue.shift(); lesson.doneCount++; lesson.selected = null; lesson.sbPicked = []; lesson.checked = false;
+      renderCurrentStep();
+    }
+
+    function renderVictoryScreen() {
+      playTone("win");
+      const lvId = lesson.lvId;
+      state.completedLevels[lvId] = true;
+      const prev = state.unlockedLevel;
+      if (lvId >= state.unlockedLevel && lvId < LEVELS.length) state.unlockedLevel = lvId + 1;
+      healUnlockedLevel();
+      const unlockedNew = state.unlockedLevel > prev;
+      state.xp += 30;
+      document.getElementById("duo-bar-fill").style.width = "100%";
+      document.getElementById("lesson-counter").textContent = "✓";
+      const body = document.getElementById("lesson-body"), footer = document.getElementById("lesson-footer"), inner = document.getElementById("footer-inner");
+      footer.className = "lesson-footer ok";
+
+      if (lesson.isExam) {
+        const cijfer = (1 + (lesson.firstTryRight / lesson.totalBase) * 9).toFixed(1);
+        if (!state.bestCijfer || parseFloat(cijfer) > parseFloat(state.bestCijfer)) state.bestCijfer = cijfer;
+        saveState(true);
+        body.innerHTML = `<div class="victory-box"><h2 class="q-title">🏆 ${t("Eindtoets klaar!", "模拟考完成！")}</h2>
+          <div class="cijfer-circle">${cijfer}<span>/ 10 Cijfer</span></div>
+          <p class="q-sub"><strong>${lesson.firstTryRight} / ${lesson.totalBase}</strong> ${t("goed", "题答对")}</p>
+          ${lesson.examErrors.length ? `<div class="review-list">${lesson.examErrors.map(e => `<div class="review-item">❌ ${escapeHtml(e)}</div>`).join("")}</div>` : `<div style="color:#166534; font-weight:900;">✨ 10!</div>`}</div>`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">🎉 +30 XP</div></div><button class="duo-btn" onclick="exitLesson()">${t("TERUG NAAR KAART", "返回地图")}</button>`;
+      } else {
+        saveState(true);
+        const nextLv = LEVELS.find(x => x.id === lvId + 1);
+        body.innerHTML = `<div class="victory-box"><div style="font-size:4rem;">🏆✨</div>
+          <h2 class="q-title">${t(`Level ${lvId} gehaald, Ernst!`, `第 ${lvId} 关通关！`)}</h2>
+          <p class="q-sub">+30 XP · 🔥 ${state.streak}</p>
+          ${unlockedNew && nextLv ? `<div style="display:inline-block; background:var(--gold-soft); border:2px solid var(--gold); border-radius:16px; padding:12px 18px; font-weight:900; color:#854d0e;">🔓 ${t(`Ontgrendeld: ${nextLv.icon} ${nextLv.titleNl}`, `已解锁：${nextLv.icon} ${nextLv.titleZh}`)}</div>` : ""}</div>`;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-title">🌟 +30 XP</div></div>
+          <div style="display:flex; gap:10px;"><button class="duo-btn outline" onclick="exitLesson()">${t("KAART", "回地图")}</button>
+          ${nextLv ? `<button class="duo-btn orange" onclick="startLevel(${nextLv.id})">LEVEL ${nextLv.id} →</button>` : ""}</div>`;
+      }
+    }
+
+    function openGuide() {
+      document.getElementById("guide-modal-title").textContent = t("📘 Nederlands Spiekbriefje: Doel & Middel", "📘 荷兰语秘籍：目的与途径信号词");
+      document.getElementById("btn-guide-close").textContent = t("SLUITEN", "关闭并继续");
+      document.getElementById("guide-modal-body").innerHTML = `
+        <div class="guide-sec"><h3>🎯 1. Signaalwoorden van DOEL (目的)</h3>
+          <p style="font-size:0.88rem;">• <strong>om ... te + hele werkwoord</strong>: Ik ga naar de supermarkt om melk te kopen. (⚠️ Niet bij vaste constructies zoals 'Ik vind het leuk om...')</p>
+          <p style="font-size:0.88rem;">• <strong>opdat / zodat + bijzin</strong> (werkwoorden achteraan, géén 'te'!): opdat = schrijftaal, zodat = spreektaal. (⚠️ 'zodat' kan ook GEVOLG zijn!)</p>
+        </div>
+        <div class="guide-sec" style="margin-bottom:0;"><h3>🛠️ 2. Signaalwoorden van MIDDEL (途径/工具)</h3>
+          <p style="font-size:0.88rem;">• <strong>met</strong> (+ naamwoord) · <strong>door middel van / middels</strong> (+ naamwoord, ❌ géén mens!)</p>
+          <p style="font-size:0.88rem;">• <strong>met behulp van</strong> (+ naamwoord OF mens!) · <strong>door</strong> (+ naamwoord OF 'te + werkwoord'; ❌ passief/tunnel = géén middel!)</p>
+          <p style="font-size:0.88rem;">• <strong>daarmee / waarmee</strong> (= met dat / met wat — middel niet herhalen!)</p>
+        </div>`;
+      document.getElementById("guide-modal").classList.add("open");
+    }
+    function closeGuide() { document.getElementById("guide-modal").classList.remove("open"); }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") { closeGuide(); return; }
+      if (document.getElementById("guide-modal").classList.contains("open") || !lesson || !lesson.active || e.key !== "Enter") return;
+      const step = lesson.queue[0]; if (!step) return;
+      if (step.kind.startsWith("teach_")) { nextStep(); return; }
+      if (!lesson.checked) {
+        const ready = step.kind === "sb" ? lesson.sbPicked.length > 0 : (lesson.selected !== null && String(lesson.selected).trim().length > 0);
+        if (ready) checkCurrentStep();
+      } else nextStep();
+    });
+
+    loadState(); renderMap(); syncCloudPull();
+  </script>
+</body>
+</html>
