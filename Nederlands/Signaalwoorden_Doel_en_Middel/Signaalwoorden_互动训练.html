@@ -601,10 +601,263 @@
         commonZh: {
           "met": "不能写 met middel van！要么直接写 met gebaren，要么写 door middel van gebaren。",
           "middels": "middels 后面不加 middel van，这里固定搭配是 door middel van！"
+        } },
+
+      // --- 补充 DOEL 题库 (d7–d12) ---
+      { id: "d7", group: "doel", type: "choice",
+        promptNl: "Ik volg deze cursus ______ mijn Nederlandse taalvaardigheid ______ verbeteren.",
+        promptZh: "我上这门课是为了提高我的荷兰语水平。",
+        subNl: "Kies de goede constructie:", subZh: "选择表示目的的结构：",
+        options: ["om ... te", "door ... te", "zodat ... te", "met ... te"],
+        answer: "om ... te",
+        explainNl: "Waarom volg je deze cursus? Om mijn Nederlands te verbeteren → doel = om ... te!",
+        explainZh: "表示“为了……”，用 om ... te + 动词原形！",
+        wrongNl: {
+          "door ... te": "'door ... te' geeft het MIDDEL aan (hoe?), niet het DOEL (waarom?).",
+          "zodat ... te": "Na 'zodat' komt een hele bijzin (zonder 'te').",
+          "met ... te": "Na 'met' komt een zelfstandig naamwoord, geen 'te'."
+        },
+        wrongZh: {
+          "door ... te": "door ... te 表示途径（怎么做到），不是目的（为什么）。",
+          "zodat ... te": "zodat 后面接从句，绝不加 te。",
+          "met ... te": "met 后面只能接名词，不接 te。"
+        } },
+      { id: "d8", group: "doel", type: "choice",
+        promptNl: "⚠️ Instinker! 'Ik heb zin om naar buiten te gaan.' Geeft 'om ... te' hier een doel aan?",
+        promptZh: "⚠️ 陷阱题！“我想去外面。”这里的 om ... te 表示目的吗？",
+        subNl: "Kijk uit voor vaste constructies!", subZh: "小心固定搭配陷阱！",
+        options: ["Nee, het is een vaste constructie", "Ja, het is een doel", "Ja, het is een middel", "Ja, het is een gevolg"],
+        answer: "Nee, het is een vaste constructie",
+        explainNl: "'Ik heb zin om...' betekent gewoon 'ik wil graag...', het is een vaste constructie en géén doel!",
+        explainZh: "Ik heb zin om... 是固定搭配（想要做某事），不表示目的！",
+        wrongNl: {
+          "Ja, het is een doel": "Je doet niet iets anders met als doel om naar buiten te gaan — 'zin hebben om' is een vaste constructie!",
+          "Ja, het is een middel": "'om ... te' is nooit een middel.",
+          "Ja, het is een gevolg": "'om ... te' geeft nooit een gevolg aan."
+        },
+        wrongZh: {
+          "Ja, het is een doel": "zin hebben om... 是固定搭配，不是为了达到某个目的而做另一件事！",
+          "Ja, het is een middel": "om ... te 绝不表示途径。",
+          "Ja, het is een gevolg": "om ... te 不表示结果。"
+        } },
+      { id: "d9", group: "doel", type: "choice",
+        promptNl: "⚠️ Instinker! 'Het is te warm om naar buiten te gaan.' Wat is 'om ... te' hier?",
+        promptZh: "⚠️ 陷阱题！“天气太热了没法出去。”这里的 om ... te 是什么？",
+        subNl: "Zelfde truc: vraag 'Waarom?'", subZh: "用“为什么？”测试一下：",
+        options: ["Een vaste constructie (géén doel)", "Een signaalwoord van doel", "Een signaalwoord van middel", "Een reden"],
+        answer: "Een vaste constructie (géén doel)",
+        explainNl: "'te [bijvoeglijk naamwoord] om ... te' (te warm om...) is een vaste constructie, géén doel!",
+        explainZh: "te ... om ... te（太……以至于不能……）是固定搭配，不是目的！",
+        wrongNl: {
+          "Een signaalwoord van doel": "Het weer heeft geen doel om naar buiten te gaan! Het is een vaste constructie.",
+          "Een signaalwoord van middel": "'om ... te' is geen middel.",
+          "Een reden": "Een reden gebruikt 'omdat' of 'want'."
+        },
+        wrongZh: {
+          "Een signaalwoord van doel": "天气太热不是一个“目的”，而是固定结构。",
+          "Een signaalwoord van middel": "om ... te 不是途径信号词。",
+          "Een reden": "原因信号词是 omdat 或 want。"
+        } },
+      { id: "d10", group: "doel", type: "choice",
+        promptNl: "Hij fietste heel hard, zodat hij precies op tijd aankwam. Wat geeft 'zodat' hier aan?",
+        promptZh: "他骑车骑得飞快，zodat 他正好准时到达。这里 zodat 表示什么？",
+        subNl: "Hij fietst hard MET HET DOEL om op tijd te komen — of is het gevolg?",
+        subZh: "注意区分：这是他主观努力达成的目的还是单纯结果？",
+        options: ["Doel (of resultaat van zijn plan)", "Middel", "Tegenstelling", "Voorbeeld"],
+        answer: "Doel (of resultaat van zijn plan)",
+        explainNl: "Hij deed expres iets (hard fietsen) zodat hij op tijd aankwam → dat is zijn doel!",
+        explainZh: "他刻意骑快车就是为了准时到达 → 这是目的！",
+        wrongNl: {
+          "Middel": "'zodat' is nooit een middel.",
+          "Tegenstelling": "Tegenstelling gebruikt bijv. 'maar' of 'hoewel'.",
+          "Voorbeeld": "Voorbeeld gebruikt 'bijvoorbeeld' of 'zoals'."
+        },
+        wrongZh: {
+          "Middel": "zodat 不是途径信号词。",
+          "Tegenstelling": "转折信号词是 maar / hoewel。",
+          "Voorbeeld": "举例信号词是 bijvoorbeeld / zoals。"
+        } },
+      { id: "d11", group: "doel", type: "choice",
+        promptNl: "De brug was kapot, zodat alle auto's moesten omrijden. Wat geeft 'zodat' hier aan?",
+        promptZh: "桥坏了，zodat 所有汽车都必须绕行。这里的 zodat 表示什么？",
+        subNl: "Heeft een kapotte brug een plan/doel?", subZh: "坏掉的桥有“主观目的”吗？",
+        options: ["Gevolg (resultaat)", "Doel", "Middel", "Oorzaak"],
+        answer: "Gevolg (resultaat)",
+        explainNl: "Een kapotte brug wil niets bereiken! Dat auto's moeten omrijden is het GEVOLG.",
+        explainZh: "桥坏了没有主观目的，绕行是它带来的“结果（gevolg）”！",
+        wrongNl: {
+          "Doel": "Niemand maakt een brug kapot met het doel dat auto's omrijden — dit is een gevolg!",
+          "Middel": "'zodat' is geen middel.",
+          "Oorzaak": "Het gevolg staat ná 'zodat', niet de oorzaak."
+        },
+        wrongZh: {
+          "Doel": "桥坏了不是为了让大家绕路而计划的目的，而是客观结果！",
+          "Middel": "zodat 不是途径。",
+          "Oorzaak": "zodat 后面引出的是结果，不是原因。"
+        } },
+      { id: "d12", group: "doel", type: "fill",
+        promptNl: "We herdenken de oorlog, ______ we de geschiedenis niet vergeten. (formele schrijftaal)",
+        promptZh: "我们纪念战争，以免忘记历史。（填正式书面语，1 个词）",
+        subNl: "Vul het formele woord uit het boek in (1 woord):", subZh: "填入讲义里的正式书面语（1 词）：",
+        answer: "opdat",
+        explainNl: "'opdat' is de formele schrijftaal voor 'zodat' (doel).",
+        explainZh: "opdat 是表示目的时的正式书面语（相当于 zodat）。",
+        commonNl: {
+          "zodat": "'zodat' is ook goed Nederlands, maar hier vragen we speciaal om de formele schrijftaal: 'opdat'!",
+          "om": "Bij 'om' moet je '... te vergeten' gebruiken zonder 'we'."
+        },
+        commonZh: {
+          "zodat": "zodat 语法上也对，但题目要求填正式书面语（formele schrijftaal）：opdat！",
+          "om": "om 后面不能接主语 we。"
+        } },
+
+      // --- 补充 MIDDEL 题库 (m9–m16) ---
+      { id: "m9", group: "middel", type: "choice",
+        promptNl: "Ik ga ______ de fiets naar school.",
+        promptZh: "我骑自行车去上学。",
+        subNl: "Meest gebruikte signaalwoord van middel:", subZh: "最常用的途径/工具信号词：",
+        options: ["met", "door middel", "daarmee", "om"],
+        answer: "met",
+        explainNl: "'met' + zelfstandig naamwoord ('de fiets') is het meest gebruikte signaalwoord van middel!",
+        explainZh: "met + 名词（de fiets）是最常用的工具/方式表达！",
+        wrongNl: {
+          "door middel": "Zonder 'van' klopt 'door middel' niet! Het is 'door middel VAN'.",
+          "daarmee": "'daarmee' mag niet vóór 'de fiets' staan.",
+          "om": "'om' hoort bij een doel, niet bij een vervoermiddel."
+        },
+        wrongZh: {
+          "door middel": "缺少 van！固定搭配是 door middel VAN。",
+          "daarmee": "daarmee 后面不能再接 de fiets。",
+          "om": "om 表示目的，不表示交通工具。"
+        } },
+      { id: "m10", group: "middel", type: "choice",
+        promptNl: "⚠️ Instinker! 'Hij werd door Piet geslagen.' Is 'door' hier een signaalwoord van middel?",
+        promptZh: "⚠️ 陷阱题！“他被 Piet 打了。”这里的 door 是途径信号词吗？",
+        subNl: "Kijk naar 'werd ... geslagen'!", subZh: "注意 werd ... geslagen 是被动语态！",
+        options: ["Nee, dit is een passieve zin (被...)", "Ja, Piet is een middel", "Ja, net als 'door te oefenen'", "Ja, het is een doel"],
+        answer: "Nee, dit is een passieve zin (被...)",
+        explainNl: "'door' in een passieve zin (hij werd door Piet geslagen) wijst de dader aan, géén middel!",
+        explainZh: "被动句里的 door 引出施动者（被谁打），不是途径信号词！",
+        wrongNl: {
+          "Ja, Piet is een middel": "Piet is een persoon in een passieve zin, géén middel!",
+          "Ja, net als 'door te oefenen'": "Bij 'door te oefenen' zeg je hoe je iets leert; 'werd door Piet geslagen' is passief.",
+          "Ja, het is een doel": "'door' geeft nooit een doel aan."
+        },
+        wrongZh: {
+          "Ja, Piet is een middel": "这里 Piet 是被动句的施动者，不是工具/途径！",
+          "Ja, net als 'door te oefenen'": "door te oefenen 才是方法途径，这里是被动句。",
+          "Ja, het is een doel": "door 不表示目的。"
+        } },
+      { id: "m11", group: "middel", type: "choice",
+        promptNl: "Je kunt het beste een taal leren ______ veel ______ oefenen.",
+        promptZh: "学一门语言最好的方法是通过多加练习。",
+        subNl: "Kies de goede combinatie (middel + werkwoord):", subZh: "选择表示“通过做某事”的固定结构：",
+        options: ["door ... te", "om ... te", "met ... te", "middels ... te"],
+        answer: "door ... te",
+        explainNl: "'door ... te + hele werkwoord' = het middel waarmee je een taal leert!",
+        explainZh: "door ... te + 动词原形表示“通过做某事（途径）”！",
+        wrongNl: {
+          "om ... te": "'om ... te' geeft een DOEL aan (waarom?), niet het MIDDEL (hoe?).",
+          "met ... te": "Na 'met' komt nooit 'te + werkwoord', alleen een naamwoord.",
+          "middels ... te": "Na 'middels' komt alleen een naamwoord, nooit 'te + werkwoord'."
+        },
+        wrongZh: {
+          "om ... te": "om ... te 表示目的（为什么），不是方法途径（怎么做）。",
+          "met ... te": "met 后面只能接名词，不能接 te + 动词。",
+          "middels ... te": "middels 后面也只能接名词，不能接 te + 动词。"
+        } },
+      { id: "m12", group: "middel", type: "choice",
+        promptNl: "______ deze kaart nodig ik u uit voor mijn verjaardagsfeest. (formele schrijftaal)",
+        promptZh: "谨以此卡邀请您参加我的生日派对。（正式书面语）",
+        subNl: "Welk formeel woord betekent 'met' / 'door middel van'?", subZh: "哪个正式书面语等于 met / door middel van？",
+        options: ["Middels", "Met behulp", "Daarmee", "Opdat"],
+        answer: "Middels",
+        explainNl: "'Middels' is de formele schrijftaal voor 'met' of 'door middel van'!",
+        explainZh: "Middels 是正式书面语，意思是“通过/以（此卡）”。",
+        wrongNl: {
+          "Met behulp": "Zonder 'van' klopt het niet (het is 'met behulp VAN').",
+          "Daarmee": "'daarmee' kan niet vóór 'deze kaart' staan!",
+          "Opdat": "'opdat' is een signaalwoord van DOEL, geen middel."
+        },
+        wrongZh: {
+          "Met behulp": "缺少 van！固定搭配是 met behulp van。",
+          "Daarmee": "daarmee 后面不能再接 deze kaart。",
+          "Opdat": "opdat 是目的信号词，不是途径信号词。"
+        } },
+      { id: "m13", group: "middel", type: "choice",
+        promptNl: "Dit is een pen, ______ kun je schrijven.",
+        promptZh: "这是一支笔，你可以用它写字。",
+        subNl: "De pen is al genoemd — vervang 'met die pen' door 1 woord:", subZh: "用 1 个词代替 met die pen：",
+        options: ["daarmee", "waarmee", "door", "met"],
+        answer: "daarmee",
+        explainNl: "'daarmee' = met dat (= met die pen)! Het middel is al genoemd.",
+        explainZh: "daarmee = met dat（用那支笔）。",
+        wrongNl: {
+          "waarmee": "'waarmee' gebruik je in een bijzin (met werkwoord achteraan) of een vraag, niet in 'kun je schrijven'.",
+          "door": "'door kun je schrijven' is geen goed Nederlands.",
+          "met": "'met' kan niet los zonder naamwoord."
+        },
+        wrongZh: {
+          "waarmee": "waarmee 用于从句（动词放句尾）或问句，这里主句动词 kun 在前，要用 daarmee。",
+          "door": "door 不能这样单独使用。",
+          "met": "met 后面必须接名词。"
+        } },
+      { id: "m14", group: "middel", type: "choice",
+        promptNl: "______ maak je dat pakketje open? — Met een schaar!",
+        promptZh: "你用什么把那个包裹打开？——用剪刀！",
+        subNl: "Vraagwoord voor een middel (= met wat?):", subZh: "询问工具的疑问词（= met wat?）：",
+        options: ["Waarmee", "Daarmee", "Waardoor", "Waarvoor"],
+        answer: "Waarmee",
+        explainNl: "'Waarmee' = met wat? (met welk middel / voorwerp).",
+        explainZh: "Waarmee = met wat（用什么工具）？",
+        wrongNl: {
+          "Daarmee": "'Daarmee' gebruik je in het antwoord, niet als vraagwoord!",
+          "Waardoor": "'Waardoor' vraagt naar de OORZAAK (hoe komt het?), niet naar een schaar.",
+          "Waarvoor": "'Waarvoor' vraagt naar het DOEL (om te snijden), niet naar het voorwerp."
+        },
+        wrongZh: {
+          "Daarmee": "Daarmee 是回答词（用那个），不是疑问词！",
+          "Waardoor": "Waardoor 问的是原因（为什么会这样），不是问工具。",
+          "Waarvoor": "Waarvoor 问的是目的（用来做什么），不是问用什么工具。"
+        } },
+      { id: "m15", group: "middel", type: "choice",
+        promptNl: "Je mag deze toets maken ______ een woordenboek.",
+        promptZh: "你可以借助字典来做这次测验。",
+        subNl: "Kies het goede signaalwoord van middel:", subZh: "选择正确的途径信号词：",
+        options: ["met behulp van", "daarmee", "opdat", "om"],
+        answer: "met behulp van",
+        explainNl: "'met behulp van een woordenboek' = met de hulp van een woordenboek.",
+        explainZh: "met behulp van een woordenboek（借助字典的帮助）。",
+        wrongNl: {
+          "daarmee": "'daarmee' mag nooit vóór 'een woordenboek' staan!",
+          "opdat": "'opdat' is een signaalwoord van DOEL.",
+          "om": "'om' geeft een DOEL aan."
+        },
+        wrongZh: {
+          "daarmee": "daarmee 后面不能再接 een woordenboek！",
+          "opdat": "opdat 是目的信号词。",
+          "om": "om 表示目的。"
+        } },
+      { id: "m16", group: "middel", type: "fill",
+        promptNl: "Hij is geslaagd ______ heel hard te studeren. (1 woord)",
+        promptZh: "他通过非常努力学习通过了考试。（填 1 个词）",
+        subNl: "Let op 'te studeren' aan het eind! (1 woord):", subZh: "注意后面有 te studeren（填 1 词）：",
+        answer: "door",
+        explainNl: "Voor '... te studeren' (middel) kun je alleen 'door' gebruiken!",
+        explainZh: "看到 ... te + 动词表示途径时，只能填 door！",
+        commonNl: {
+          "met": "Na 'met' komt een naamwoord, nooit '... te studeren'!",
+          "middels": "Na 'middels' komt een naamwoord, nooit '... te studeren'!",
+          "om": "Let op: hij slaagde DOOR hard te studeren (hoe? = middel), niet 'om te studeren'!"
+        },
+        commonZh: {
+          "met": "met 后面只能接名词，不能接 te studeren！",
+          "middels": "middels 后面只能接名词，不能接 te studeren！",
+          "om": "意思是通过努力学习而及格（途径），不是为了学习而及格！"
         } }
     ];
 
-    // 词块拼句（练习 1、2、3D、4 实战）
+    // 词块拼句（8 题：讲义 1–4 + 书面语/途径拼句）
     const NL_BUILDS = [
       { id: "nlb_1",
         promptNl: "Ik ga vroeg naar bed. Ik ben morgen niet meer zo moe. (Gebruik 'zodat'!)",
@@ -650,7 +903,34 @@
         trapNl: { "daarmee": "'daarmee' kan niet vóór 'een schaar' staan!", "te": "Na 'met een schaar' komt geen 'te'!" },
         trapZh: { "daarmee": "daarmee 后面不能再接 een schaar！", "te": "met 接名词不需要 te！" },
         explainNl: "Na 'met' komt gewoon een zelfstandig naamwoord: met een schaar.",
-        explainZh: "met 后面直接接名词 een schaar。" }
+        explainZh: "met 后面直接接名词 een schaar。" },
+      { id: "nlb_6",
+        promptNl: "Ik ga naar de winkel ... (een nieuw spel kopen — gebruik 'om ... te') (Oefening 3B)",
+        promptZh: "用 om ... te 造句：我去商店买新电脑游戏。（练习第3B题）",
+        target: ["Ik", "ga", "naar", "de", "winkel", "om", "een", "nieuw", "spel", "te", "kopen."],
+        distractors: ["zodat", "koopt"],
+        trapNl: { "zodat": "Gebruik 'om ... te ...'!", "koopt": "Na 'te' komt het hele werkwoord: 'kopen'!" },
+        trapZh: { "zodat": "这里用 om ... te！", "koopt": "te 后面用动词原形 kopen！" },
+        explainNl: "Ik ga naar de winkel om een nieuw spel te kopen.",
+        explainZh: "om een nieuw spel te kopen。" },
+      { id: "nlb_7",
+        promptNl: "Je leert de taal ... (veel oefenen — gebruik 'door ... te')",
+        promptZh: "用 door ... te 拼句：你通过多练习来学语言。",
+        target: ["Je", "leert", "de", "taal", "door", "veel", "te", "oefenen."],
+        distractors: ["om", "met"],
+        trapNl: { "om": "'om ... te' is een doel; hoe leer je de taal? Dat is een MIDDEL → 'door'!", "met": "Na 'met' komt geen '... te oefenen'!" },
+        trapZh: { "om": "这是学习的方法途径，要用 door ... te，不是 om！", "met": "met 后面不能接 te oefenen！" },
+        explainNl: "door veel te oefenen = middel waarmee je de taal leert!",
+        explainZh: "door veel te oefenen（通过多练习）。" },
+      { id: "nlb_8",
+        promptNl: "Ik heb dit gemaakt ... (mijn vader — gebruik 'met behulp van')",
+        promptZh: "我借助爸爸的帮助完成了这个。",
+        target: ["Ik", "heb", "dit", "gemaakt", "met", "behulp", "van", "mijn", "vader."],
+        distractors: ["door", "middels"],
+        trapNl: { "door": "Bij hulp van een persoon gebruik je 'met behulp van'!", "middels": "'middels' mag NOOIT bij een mens!" },
+        trapZh: { "door": "借助某人的帮助固定用 met behulp van！", "middels": "middels 绝对不能接人！" },
+        explainNl: "Alleen 'met behulp van' mag bij een mens (mijn vader)!",
+        explainZh: "只有 met behulp van 可以接人！" }
     ];
 
     // =====================================================
@@ -690,7 +970,7 @@
         titleNl: "Level 7 · Fouten-EHBO", titleZh: "第 7 关 · 个人错题清零",
         subNl: "Oefen al je fouten weg", subZh: "清零前 6 关所有错题" },
       { id: 8, sec: 3, icon: "🏆", offset: 0, kind: "exam",
-        titleNl: "Level 8 · Eindtoets (14 vragen)", titleZh: "第 8 关 · 综合模拟考（出 Cijfer）",
+        titleNl: "Level 8 · Eindtoets (18 vragen)", titleZh: "第 8 关 · 18 题综合模拟考（出 Cijfer）",
         subNl: "Cijfer 1–10", subZh: "全真模拟，交卷打分" }
     ];
 
@@ -888,19 +1168,19 @@
       const steps = [];
       if (lvId === 1) {
         steps.push({ kind: "teach_doel", tagNl: "Uitleg · Signaalwoorden van DOEL", tagZh: "课前秘籍 · 目的信号词" });
-        ["d1", "d2", "d3", "d6"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Basis", tagZh: "目的基础" }));
+        ["d1", "d2", "d3", "d6", "d7", "d12"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Basis", tagZh: "目的基础" }));
       } else if (lvId === 2) {
-        ["nlb_1", "nlb_2", "nlb_3", "nlb_4"].forEach(id => steps.push({ kind: "sb", sb: getSB(id), tagNl: "Zin bouwen · Oefening 1–4", tagZh: "讲义原题拼句 1–4" }));
+        ["nlb_1", "nlb_2", "nlb_3", "nlb_4", "nlb_6"].forEach(id => steps.push({ kind: "sb", sb: getSB(id), tagNl: "Zin bouwen · Oefening 1–4", tagZh: "讲义原题拼句 1–4" }));
       } else if (lvId === 3) {
-        ["d4", "d5", "d6", "d1", "d2"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Instinkers", tagZh: "目的陷阱辨析" }));
+        ["d4", "d5", "d8", "d9", "d10", "d11"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Doel Instinkers", tagZh: "目的陷阱辨析" }));
       } else if (lvId === 4) {
         steps.push({ kind: "teach_middel", tagNl: "Uitleg · Signaalwoorden van MIDDEL", tagZh: "课前秘籍 · 途径信号词" });
-        ["m1", "m2", "m8", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Basis", tagZh: "途径基础" }));
-        steps.push({ kind: "sb", sb: getSB("nlb_5"), tagNl: "Zin bouwen · Met", tagZh: "词块拼句" });
+        ["m1", "m2", "m8", "m9", "m11", "m12", "m15"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Basis", tagZh: "途径基础" }));
+        ["nlb_5", "nlb_7", "nlb_8"].forEach(id => steps.push({ kind: "sb", sb: getSB(id), tagNl: "Zin bouwen · Middel", tagZh: "途径词块拼句" }));
       } else if (lvId === 5) {
-        ["m3", "m4", "m5", "m6", "m7", "m1", "m2"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Instinkers", tagZh: "途径易错陷阱" }));
+        ["m3", "m4", "m5", "m6", "m7", "m10", "m13", "m14", "m16"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Instinkers", tagZh: "途径易错陷阱" }));
       } else if (lvId === 6) {
-        shuffle(QUESTIONS).slice(0, 10).forEach(q => steps.push({ kind: "q", q, tagNl: "Doel & Middel Mix", tagZh: "目的与途径混合" }));
+        shuffle(QUESTIONS).slice(0, 12).forEach(q => steps.push({ kind: "q", q, tagNl: "Doel & Middel Mix", tagZh: "目的与途径混合" }));
       } else if (lvId === 7) {
         const mEntries = shuffle(Object.values(state.mistakes));
         if (mEntries.length > 0) {
@@ -909,11 +1189,11 @@
             else if (m.kind === "sb") { const sb = getSB(m.id); if (sb) steps.push({ kind: "sb", sb, tagNl: "Fouten-EHBO · Zin", tagZh: "错题拼句" }); }
           });
         } else {
-          ["d4", "d5", "m1", "m6", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Topper-Check", tagZh: "考前保底高危题" }));
+          ["d4", "d5", "d8", "m1", "m6", "m10", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Topper-Check", tagZh: "考前保底高危题" }));
         }
       } else if (lvId === 8) {
-        shuffle(QUESTIONS).slice(0, 11).forEach(q => steps.push({ kind: "q", q, tagNl: "Eindtoets · Vragen", tagZh: "模拟考 · 选择与填空" }));
-        shuffle(NL_BUILDS).slice(0, 3).forEach(sb => steps.push({ kind: "sb", sb, tagNl: "Eindtoets · Zinnen", tagZh: "模拟考 · 句子改写" }));
+        shuffle(QUESTIONS).slice(0, 14).forEach(q => steps.push({ kind: "q", q, tagNl: "Eindtoets · Vragen", tagZh: "模拟考 · 选择与填空" }));
+        shuffle(NL_BUILDS).slice(0, 4).forEach(sb => steps.push({ kind: "sb", sb, tagNl: "Eindtoets · Zinnen", tagZh: "模拟考 · 句子改写" }));
       }
       return steps;
     }

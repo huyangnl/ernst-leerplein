@@ -677,7 +677,206 @@
           "9 kg": "如果整袋重 15 kg 才算 15÷5×3=9；但这里 15 kg 只是 3/5！",
           "20 kg": "5 × 5 = 25 kg，不是 20 kg！",
           "45 kg": "忘了先除以分子 3！"
-        } }
+        } },
+
+      // --- 补充每类题库至 6–7 题 (共 52 题) ---
+      // Cat 1 extra (v5–v7)
+      { id: "v5", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 3/9 zo ver mogelijk.", promptZh: "把分数 3/9 约分到最简：",
+        subNl: "Deel boven en onder door 3!", subZh: "分子分母同时除以 3！",
+        options: ["1/3", "1/9", "3/3", "1/2"], answer: "1/3",
+        explainNl: "3÷3 = 1 en 9÷3 = 3 → 1/3!", explainZh: "3÷3 = 1，9÷3 = 3 → 1/3！",
+        wrongNl: { "1/9": "Je vergat de onderkant (9) door 3 te delen!", "3/3": "3/3 is een hele (1), veel te groot!", "1/2": "1/2 = 4,5/9, niet 3/9." },
+        wrongZh: { "1/9": "忘了把分母 9 除以 3！", "3/3": "3/3 等于 1，不对！", "1/2": "1/2 不等于 3/9。" } },
+      { id: "v6", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 8/12 zo ver mogelijk.", promptZh: "把分数 8/12 约分到最简：",
+        subNl: "Deel door 4 (of 2x door 2)!", subZh: "同时除以 4（或连除两次 2）！",
+        options: ["2/3", "4/6", "1/3", "3/4"], answer: "2/3",
+        explainNl: "8÷4 = 2 en 12÷4 = 3 → 2/3!", explainZh: "8÷4 = 2，12÷4 = 3 → 2/3！",
+        wrongNl: { "4/6": "⚠️ Nog niet ver genoeg! 4/6 kun je nog een keer door 2 delen → 2/3!", "1/3": "1/3 = 4/12, maar we hebben 8/12!", "3/4": "3/4 = 9/12, niet 8/12." },
+        wrongZh: { "4/6": "⚠️ 还没约到最简！4/6 还能继续同时除以 2 变成 2/3！", "1/3": "1/3 是 4/12，不是 8/12！", "3/4": "3/4 是 9/12。" } },
+      { id: "v7", cat: 1, type: "choice",
+        promptNl: "Vereenvoudig de breuk 5/15 zo ver mogelijk.", promptZh: "把分数 5/15 约分到最简：",
+        subNl: "Deel boven en onder door 5!", subZh: "同时除以 5！",
+        options: ["1/3", "1/5", "3/5", "1/15"], answer: "1/3",
+        explainNl: "5÷5 = 1 en 15÷5 = 3 → 1/3!", explainZh: "5÷5 = 1，15÷5 = 3 → 1/3！",
+        wrongNl: { "1/5": "15 ÷ 5 = 3, geen 5!", "3/5": "3/5 = 9/15, niet 5/15!", "1/15": "Vergeet niet 15 ook door 5 te delen!" },
+        wrongZh: { "1/5": "15 ÷ 5 等于 3，不是 5！", "3/5": "3/5 是 9/15。", "1/15": "分母 15 也要除以 5！" } },
+
+      // Cat 2 extra (h5–h6)
+      { id: "h5", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 11/3.", promptZh: "把假分数 11/3 化成带分数：",
+        subNl: "Hoeveel keer past 3 in 11?", subZh: "11 里面有几个 3？",
+        options: ["3 2/3", "3 1/3", "2 5/3", "4 1/3"], answer: "3 2/3",
+        explainNl: "3 × 3 = 9 (3 helen), 11 - 9 = 2/3 over → 3 2/3!", explainZh: "11 ÷ 3 = 3 余 2 → 3 2/3！",
+        wrongNl: { "3 1/3": "11 - 9 = 2, geen 1!", "2 5/3": "5/3 is nog groter dan 1 hele (3/3)!", "4 1/3": "4 helen = 12/3, dat is meer dan 11/3." },
+        wrongZh: { "3 1/3": "11 减 9 余 2，不是 1！", "2 5/3": "5/3 还能再提出 1 个整块！", "4 1/3": "4 个整块要 12/3，不够。" } },
+      { id: "h6", cat: 2, type: "choice",
+        promptNl: "Haal de helen uit de breuk 17/6.", promptZh: "把假分数 17/6 化成带分数：",
+        subNl: "1 hele = 6/6, 2 helen = 12/6...", subZh: "17 里面有几个 6？",
+        options: ["2 5/6", "2 3/6", "3 1/6", "1 11/6"], answer: "2 5/6",
+        explainNl: "2 × 6 = 12 (2 helen), 17 - 12 = 5/6 over → 2 5/6!", explainZh: "17 ÷ 6 = 2 余 5 → 2 5/6！",
+        wrongNl: { "2 3/6": "17 - 12 = 5, geen 3!", "3 1/6": "3 helen = 18/6, dat is te veel!", "1 11/6": "11/6 is nog groter dan 1 hele!" },
+        wrongZh: { "2 3/6": "17 减 12 余 5，不是 3！", "3 1/6": "3 个整块要 18/6，太大了！", "1 11/6": "11/6 还能再提出 1 个整块！" } },
+
+      // Cat 3 extra (s4–s6)
+      { id: "s4", cat: 3, type: "choice",
+        promptNl: "Schrijf 2 3/4 als één breuk.", promptZh: "把带分数 2 3/4 化成假分数：",
+        subNl: "Truc: (hele × noemer) + teller!", subZh: "口诀：(2 × 4) + 3 = ?",
+        options: ["11/4", "8/4", "9/4", "23/4"], answer: "11/4",
+        explainNl: "(2 × 4 + 3)/4 = 11/4!", explainZh: "(2 × 4 + 3)/4 = 11/4！",
+        wrongNl: { "23/4": "⚠️ Plak 2 en 3 niet aan elkaar als 23! Doe (2 × 4) + 3 = 11!", "8/4": "8/4 = 2 helen, vergeet + 3/4 niet!", "9/4": "2 × 4 + 3 = 11, geen 9!" },
+        wrongZh: { "23/4": "⚠️ 不能把 2 和 3 拼成 23！要算 (2×4)+3 = 11！", "8/4": "8/4 只是 2，忘了加 3/4！", "9/4": "8 + 3 = 11，不是 9！" } },
+      { id: "s5", cat: 3, type: "choice",
+        promptNl: "Schrijf 1 4/5 als één breuk.", promptZh: "把带分数 1 4/5 化成假分数：",
+        subNl: "1 hele = 5/5...", subZh: "(1 × 5) + 4 = ?",
+        options: ["9/5", "5/5", "14/5", "8/5"], answer: "9/5",
+        explainNl: "(1 × 5 + 4)/5 = 9/5!", explainZh: "(1 × 5 + 4)/5 = 9/5！",
+        wrongNl: { "14/5": "⚠️ Plak 1 en 4 niet aan elkaar als 14!", "5/5": "Vergeet + 4/5 niet!", "8/5": "5 + 4 = 9, geen 8!" },
+        wrongZh: { "14/5": "⚠️ 不能把 1 和 4 拼成 14！", "5/5": "忘了加 4/5！", "8/5": "5 + 4 = 9！" } },
+      { id: "s6", cat: 3, type: "choice",
+        promptNl: "Schrijf 3 2/3 als één breuk.", promptZh: "把带分数 3 2/3 化成假分数：",
+        subNl: "3 helen = 9/3...", subZh: "(3 × 3) + 2 = ?",
+        options: ["11/3", "9/3", "8/3", "32/3"], answer: "11/3",
+        explainNl: "(3 × 3 + 2)/3 = 11/3!", explainZh: "(3 × 3 + 2)/3 = 11/3！",
+        wrongNl: { "32/3": "⚠️ Plak 3 en 2 niet aan elkaar als 32!", "9/3": "9/3 = 3 helen, vergeet + 2/3 niet!", "8/3": "3 × 3 + 2 = 11, geen 8!" },
+        wrongZh: { "32/3": "⚠️ 不能把 3 和 2 拼成 32！", "9/3": "9/3 只是 3，忘了加 2/3！", "8/3": "3 × 3 = 9，9 + 2 = 11！" } },
+
+      // Cat 4 extra (g4–g6)
+      { id: "g4", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 1/2 en 3/8 gelijknamig.", promptZh: "把 1/2 和 3/8 通分：",
+        subNl: "Van /2 naar /8 is ×4:", subZh: "2 变成 8 乘以 4：",
+        options: ["4/8 en 3/8", "2/8 en 3/8", "1/8 en 3/8", "4/8 en 6/8"], answer: "4/8 en 3/8",
+        explainNl: "1×4 = 4 en 2×4 = 8 → 4/8 en 3/8!", explainZh: "1/2 上下同乘 4 → 4/8 和 3/8！",
+        wrongNl: { "2/8 en 3/8": "2 × 4 = 8, dus doe de teller ook ×4 (niet ×2)!", "1/8 en 3/8": "Vergeet niet de teller 1 ook ×4 te doen!", "4/8 en 6/8": "3/8 hoeft niet te veranderen!" },
+        wrongZh: { "2/8 en 3/8": "2 变 8 乘了 4，分子 1 也要乘 4！", "1/8 en 3/8": "忘了把分子 1 乘以 4！", "4/8 en 6/8": "3/8 不用变！" } },
+      { id: "g5", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 2/3 en 1/6 gelijknamig.", promptZh: "把 2/3 和 1/6 通分：",
+        subNl: "Van /3 naar /6 is ×2:", subZh: "3 变成 6 乘以 2：",
+        options: ["4/6 en 1/6", "2/6 en 1/6", "3/6 en 1/6", "4/6 en 2/6"], answer: "4/6 en 1/6",
+        explainNl: "2×2 = 4 en 3×2 = 6 → 4/6 en 1/6!", explainZh: "2/3 上下同乘 2 → 4/6 和 1/6！",
+        wrongNl: { "2/6 en 1/6": "Vergeet niet 2 × 2 = 4 te doen!", "3/6 en 1/6": "2 × 2 = 4, geen 3!", "4/6 en 2/6": "1/6 blijft gewoon 1/6!" },
+        wrongZh: { "2/6 en 1/6": "分子 2 也要乘以 2！", "3/6 en 1/6": "2 × 2 = 4，不是 3！", "4/6 en 2/6": "1/6 不用变！" } },
+      { id: "g6", cat: 4, type: "choice",
+        promptNl: "Maak de breuken 1/4 en 5/12 gelijknamig.", promptZh: "把 1/4 和 5/12 通分：",
+        subNl: "Van /4 naar /12 is ×3:", subZh: "4 变成 12 乘以 3：",
+        options: ["3/12 en 5/12", "1/12 en 5/12", "4/12 en 5/12", "3/12 en 10/12"], answer: "3/12 en 5/12",
+        explainNl: "1×3 = 3 en 4×3 = 12 → 3/12 en 5/12!", explainZh: "1/4 上下同乘 3 → 3/12 和 5/12！",
+        wrongNl: { "1/12 en 5/12": "Vergeet de teller (1 × 3 = 3) niet!", "4/12 en 5/12": "1 × 3 = 3, geen 4!", "3/12 en 10/12": "5/12 blijft gewoon 5/12!" },
+        wrongZh: { "1/12 en 5/12": "分子 1 忘了乘 3！", "4/12 en 5/12": "1 × 3 = 3，不是 4！", "3/12 en 10/12": "5/12 不用变！" } },
+
+      // Cat 5 extra (o4–o6)
+      { id: "o4", cat: 5, type: "choice",
+        promptNl: "Reken uit: 2/7 + 3/7 =", promptZh: "计算：2/7 + 3/7 =",
+        subNl: "Gelijknamige breuken:", subZh: "同分母相加：",
+        options: ["5/7", "5/14", "1/7", "6/7"], answer: "5/7",
+        explainNl: "2 + 3 = 5, noemer blijft 7 → 5/7!", explainZh: "2 + 3 = 5，分母 7 不变 → 5/7！",
+        wrongNl: { "5/14": "⚠️ Noemers tel je NOOIT op!", "1/7": "Het is plus (+), geen min (-)!", "6/7": "2 + 3 = 5, geen 6!" },
+        wrongZh: { "5/14": "⚠️ 分母绝对不能相加！", "1/7": "是加法不是减法！", "6/7": "2 + 3 = 5！" } },
+      { id: "o5", cat: 5, type: "choice",
+        promptNl: "Reken uit: 5/6 - 4/6 =", promptZh: "计算：5/6 - 4/6 =",
+        subNl: "Gelijknamige breuken:", subZh: "同分母相减：",
+        options: ["1/6", "9/6", "2/6", "1/12"], answer: "1/6",
+        explainNl: "5 - 4 = 1 → 1/6!", explainZh: "5 - 4 = 1 → 1/6！",
+        wrongNl: { "9/6": "Het is aftrekken (-), geen optellen (+)!", "2/6": "5 - 4 = 1, geen 2!", "1/12": "De noemer blijft altijd 6!" },
+        wrongZh: { "9/6": "是减法不是加法！", "2/6": "5 - 4 = 1！", "1/12": "分母不变（6）！" } },
+      { id: "o6", cat: 5, type: "choice",
+        promptNl: "Reken uit: 3/10 + 4/10 =", promptZh: "计算：3/10 + 4/10 =",
+        subNl: "Gelijknamige breuken:", subZh: "同分母相加：",
+        options: ["7/10", "7/20", "1/10", "6/10"], answer: "7/10",
+        explainNl: "3 + 4 = 7 → 7/10!", explainZh: "3 + 4 = 7 → 7/10！",
+        wrongNl: { "7/20": "⚠️ Noemers tel je nooit op!", "1/10": "Het is plus (+), geen min (-)!", "6/10": "3 + 4 = 7!" },
+        wrongZh: { "7/20": "⚠️ 分母不能相加！", "1/10": "是加法不是减法！", "6/10": "3 + 4 = 7！" } },
+
+      // Cat 6 extra (u4–u7)
+      { id: "u4", cat: 6, type: "choice",
+        promptNl: "Reken uit: 1/2 - 1/6 =", promptZh: "计算：1/2 - 1/6 =",
+        subNl: "Maak eerst /6: 1/2 = 3/6...", subZh: "先通分：1/2 = 3/6",
+        options: ["2/6", "1/4", "4/6", "1/6"], answer: "2/6",
+        explainNl: "3/6 - 1/6 = 2/6 (vereenvoudigd: 1/3)!", explainZh: "3/6 - 1/6 = 2/6（= 1/3）！",
+        wrongNl: { "1/4": "Je mag geen 6 - 2 = 4 doen bij de noemers!", "4/6": "Het is min (-), geen plus (+)!", "1/6": "3/6 - 1/6 = 2/6!" },
+        wrongZh: { "1/4": "分母不能直接相减！", "4/6": "这是减法，不是加法！", "1/6": "3 - 1 = 2！" } },
+      { id: "u5", cat: 6, type: "choice",
+        promptNl: "Reken uit: 1/4 + 3/8 =", promptZh: "计算：1/4 + 3/8 =",
+        subNl: "Maak eerst /8: 1/4 = 2/8...", subZh: "先通分：1/4 = 2/8",
+        options: ["5/8", "4/12", "4/8", "6/8"], answer: "5/8",
+        explainNl: "1/4 = 2/8. Dan: 2/8 + 3/8 = 5/8!", explainZh: "2/8 + 3/8 = 5/8！",
+        wrongNl: { "4/12": "⚠️ Trap! 1+3=4 en 4+8=12 mag nooit! Maak eerst /8!", "4/8": "1/4 = 2/8 (niet 1/8)!", "6/8": "2 + 3 = 5, geen 6!" },
+        wrongZh: { "4/12": "⚠️ 陷阱！不能直接 1+3 和 4+8！", "4/8": "1/4 等于 2/8，不是 1/8！", "6/8": "2 + 3 = 5！" } },
+      { id: "u6", cat: 6, type: "choice",
+        promptNl: "Reken uit: 2/3 - 1/6 =", promptZh: "计算：2/3 - 1/6 =",
+        subNl: "Maak eerst /6: 2/3 = 4/6...", subZh: "先通分：2/3 = 4/6",
+        options: ["3/6", "1/3", "1/6", "5/6"], answer: "3/6",
+        explainNl: "2/3 = 4/6. Dan: 4/6 - 1/6 = 3/6 (= 1/2)!", explainZh: "4/6 - 1/6 = 3/6！",
+        wrongNl: { "1/3": "Je mag niet 2-1=1 en 6-3=3 doen — 2/3 - 1/6 = 3/6 (= 1/2)!", "1/6": "2/3 = 4/6, dus 4/6 - 1/6 = 3/6!", "5/6": "Het is min (-), geen plus (+)!" },
+        wrongZh: { "1/3": "不能分母直接相减！4/6 - 1/6 = 3/6（= 1/2）！", "1/6": "2/3 是 4/6，4 - 1 = 3！", "5/6": "是减法不是加法！" } },
+      { id: "u7", cat: 6, type: "choice",
+        promptNl: "Reken uit: 1/3 + 2/9 =", promptZh: "计算：1/3 + 2/9 =",
+        subNl: "Maak eerst /9: 1/3 = 3/9...", subZh: "先通分：1/3 = 3/9",
+        options: ["5/9", "3/12", "4/9", "3/9"], answer: "5/9",
+        explainNl: "1/3 = 3/9. Dan: 3/9 + 2/9 = 5/9!", explainZh: "3/9 + 2/9 = 5/9！",
+        wrongNl: { "3/12": "⚠️ Noemers tel je nooit bij elkaar op!", "4/9": "3 + 2 = 5, geen 4!", "3/9": "Vergeet + 2/9 niet!" },
+        wrongZh: { "3/12": "⚠️ 分母不能相加！", "4/9": "3 + 2 = 5！", "3/9": "忘了加 2/9！" } },
+
+      // Cat 7 extra (k4–k7)
+      { id: "k4", cat: 7, type: "choice",
+        promptNl: "Een pizza heeft 18 stukjes. Hoeveel is 2/3 deel daarvan?", promptZh: "18 块披萨中的 2/3 是多少块？",
+        subNl: "Stap 1: 18 ÷ 3. Stap 2: × 2!", subZh: "先除以 3，再乘以 2！",
+        options: ["12", "6", "9", "15"], answer: "12",
+        explainNl: "18 ÷ 3 = 6 (= 1/3). En 6 × 2 = 12 stukjes!", explainZh: "18 ÷ 3 = 6，6 × 2 = 12！",
+        wrongNl: { "6": "6 is alleen 1/3 deel — vergeet × 2 niet!", "9": "9 is de helft (1/2), niet 2/3!", "15": "6 × 2 = 12, geen 15." },
+        wrongZh: { "6": "6 只是 1/3，忘了乘以 2！", "9": "9 是一半（1/2）！", "15": "6 × 2 = 12！" } },
+      { id: "k5", cat: 7, type: "choice",
+        promptNl: "Een touw is 30 meter lang. Hoeveel is 3/5 deel?", promptZh: "一根绳子长 30 米，它的 3/5 是多少米？",
+        subNl: "30 ÷ 5 × 3:", subZh: "先除以 5，再乘以 3：",
+        options: ["18 m", "6 m", "12 m", "24 m"], answer: "18 m",
+        explainNl: "30 ÷ 5 = 6 m (= 1/5). En 6 × 3 = 18 m!", explainZh: "30 ÷ 5 = 6 m，6 × 3 = 18 m！",
+        wrongNl: { "6 m": "6 m is pas 1/5 deel!", "12 m": "12 m is 2/5 deel!", "24 m": "24 m is 4/5 deel!" },
+        wrongZh: { "6 m": "6 m 只是 1/5！", "12 m": "12 m 是 2/5！", "24 m": "24 m 是 4/5！" } },
+      { id: "k6", cat: 7, type: "choice",
+        promptNl: "Ernst spaart € 32,-. Hij geeft 3/8 deel uit. Hoeveel euro geeft hij uit?", promptZh: "Ernst 有 €32，他花掉了其中的 3/8。花了多少钱？",
+        subNl: "32 ÷ 8 × 3:", subZh: "先除以 8，再乘以 3：",
+        options: ["€ 12,-", "€ 4,-", "€ 8,-", "€ 16,-"], answer: "€ 12,-",
+        explainNl: "32 ÷ 8 = 4 (= 1/8). En 4 × 3 = € 12,-!", explainZh: "32 ÷ 8 = 4，4 × 3 = €12！",
+        wrongNl: { "€ 4,-": "€ 4 is pas 1/8 deel!", "€ 8,-": "€ 8 is 2/8 deel!", "€ 16,-": "€ 16 is 4/8 (de helft)!" },
+        wrongZh: { "€ 4,-": "€4 只是 1/8！", "€ 8,-": "€8 是 2/8！", "€ 16,-": "€16 是 4/8（一半）！" } },
+      { id: "k7", cat: 7, type: "choice",
+        promptNl: "In een mand zitten 45 appels. 4/5 deel is rood. Hoeveel rode appels zijn er?", promptZh: "篮子里有 45 个苹果，4/5 是红苹果。有多少个红苹果？",
+        subNl: "45 ÷ 5 × 4:", subZh: "先除以 5，再乘以 4：",
+        options: ["36", "9", "27", "18"], answer: "36",
+        explainNl: "45 ÷ 5 = 9 (= 1/5). En 9 × 4 = 36 rode appels!", explainZh: "45 ÷ 5 = 9，9 × 4 = 36 个！",
+        wrongNl: { "9": "9 is pas 1/5 deel!", "27": "27 is 3/5 deel!", "18": "18 is 2/5 deel!" },
+        wrongZh: { "9": "9 只是 1/5！", "27": "27 是 3/5！", "18": "18 是 2/5！" } },
+
+      // Cat 8 extra (p4–p7)
+      { id: "p4", cat: 8, type: "choice",
+        promptNl: "2/5 deel van een zak snoep is 10 snoepjes. Hoeveel zitten er in de hele zak?", promptZh: "一袋糖的 2/5 是 10 颗。整袋有多少颗？",
+        subNl: "Eerst ÷ teller (10 ÷ 2 = 5), dan × noemer (× 5)!", subZh: "先除以分子 2，再乘以分母 5！",
+        options: ["25", "4", "20", "50"], answer: "25",
+        explainNl: "10 ÷ 2 = 5 (= 1/5 deel). Hele zak (5/5) = 5 × 5 = 25!", explainZh: "1 份 = 10 ÷ 2 = 5 颗，全部 5 份 = 25 颗！",
+        wrongNl: { "4": "4 is 2/5 van 10, maar 10 is maar 2/5 van de hele zak!", "20": "5 × 5 = 25, geen 20!", "50": "Je vergat eerst door 2 te delen!" },
+        wrongZh: { "4": "10 不是总数，只是 2/5！", "20": "5 × 5 = 25，不是 20！", "50": "忘了先除以分子 2！" } },
+      { id: "p5", cat: 8, type: "choice",
+        promptNl: "3/4 deel van een film duurt 24 minuten. Hoe lang duurt de hele film?", promptZh: "一部电影的 3/4 长 24 分钟。整部电影多长？",
+        subNl: "24 ÷ 3 × 4:", subZh: "先除以分子 3，再乘以分母 4：",
+        options: ["32 min", "18 min", "8 min", "96 min"], answer: "32 min",
+        explainNl: "24 ÷ 3 = 8 min (= 1/4). Hele film (4/4) = 8 × 4 = 32 min!", explainZh: "1 份 = 24 ÷ 3 = 8 分钟，全部 4 份 = 32 分钟！",
+        wrongNl: { "18 min": "18 min is 3/4 van 24, maar 24 is maar 3/4!", "8 min": "8 min is pas 1/4 film — vergeet × 4 niet!", "96 min": "Je vergat eerst door 3 te delen!" },
+        wrongZh: { "18 min": "24 不是全片时长，只是 3/4！", "8 min": "8 分钟只是 1/4，忘了乘以 4！", "96 min": "忘了先除以分子 3！" } },
+      { id: "p6", cat: 8, type: "choice",
+        promptNl: "3/8 deel van een plank is 12 cm. Hoe lang is de hele plank?", promptZh: "一块木板的 3/8 是 12 cm。整块木板多长？",
+        subNl: "12 ÷ 3 × 8:", subZh: "先除以分子 3，再乘以分母 8：",
+        options: ["32 cm", "4 cm", "24 cm", "96 cm"], answer: "32 cm",
+        explainNl: "12 ÷ 3 = 4 cm (= 1/8). Hele plank (8/8) = 4 × 8 = 32 cm!", explainZh: "1 份 = 12 ÷ 3 = 4 cm，全部 8 份 = 32 cm！",
+        wrongNl: { "4 cm": "4 cm is pas 1/8 deel!", "24 cm": "4 × 8 = 32 cm, geen 24!", "96 cm": "Je vergat eerst door 3 te delen!" },
+        wrongZh: { "4 cm": "4 cm 只是 1/8！", "24 cm": "4 × 8 = 32 cm！", "96 cm": "忘了先除以分子 3！" } },
+      { id: "p7", cat: 8, type: "choice",
+        promptNl: "4/5 deel van een emmer is 20 liter. Hoeveel liter past er in de hele emmer?", promptZh: "一个水桶的 4/5 是 20 升。整桶能装多少升？",
+        subNl: "20 ÷ 4 × 5:", subZh: "先除以分子 4，再乘以分母 5：",
+        options: ["25 liter", "16 liter", "5 liter", "100 liter"], answer: "25 liter",
+        explainNl: "20 ÷ 4 = 5 liter (= 1/5). Hele emmer (5/5) = 5 × 5 = 25 liter!", explainZh: "1 份 = 20 ÷ 4 = 5 升，全部 5 份 = 25 升！",
+        wrongNl: { "16 liter": "16 liter is 4/5 van 20, maar 20 is maar 4/5 deel!", "5 liter": "5 liter is pas 1/5 deel!", "100 liter": "Je vergat eerst door 4 te delen!" },
+        wrongZh: { "16 liter": "20 不是整桶，只是 4/5！", "5 liter": "5 升只是 1/5！", "100 liter": "忘了先除以分子 4！" } }
     ];
 
     // =====================================================
@@ -717,7 +916,7 @@
         titleNl: "Level 7 · Fouten-EHBO", titleZh: "第 7 关 · 个人错题清零",
         subNl: "Werk al je fouten weg", subZh: "清零前 6 关所有错题" },
       { id: 8, sec: 3, icon: "🏆", offset: 0, kind: "exam",
-        titleNl: "Level 8 · Breuken Eindtoets (16 vragen)", titleZh: "第 8 关 · 16 题终极模拟考（出 Cijfer）",
+        titleNl: "Level 8 · Breuken Eindtoets (20 vragen)", titleZh: "第 8 关 · 20 题终极模拟考（出 Cijfer）",
         subNl: "Cijfer 1–10", subZh: "覆盖全 8 类题型，交卷打分" }
     ];
 
@@ -930,7 +1129,7 @@
         steps.push({ kind: "teach_optel", tagNl: "Uitleg · Gelijknamig & Optellen", tagZh: "课前秘籍 · 通分与同分母加减" });
         [...byCat(4), ...byCat(5)].forEach(q => steps.push({ kind: "q", q, tagNl: "4 & 5. Gelijknamig & Optellen", tagZh: "4 & 5. 通分与加减" }));
       } else if (lvId === 5) {
-        [...byCat(6), ...shuffle(byCat(4)).slice(0, 2)].forEach(q => steps.push({ kind: "q", q, tagNl: "6. Ongelijknamige breuken", tagZh: "6. 异分母加减" }));
+        [...byCat(6), ...shuffle(byCat(4)).slice(0, 3)].forEach(q => steps.push({ kind: "q", q, tagNl: "6. Ongelijknamige breuken", tagZh: "6. 异分母加减" }));
       } else if (lvId === 6) {
         steps.push({ kind: "teach_keer", tagNl: "Uitleg · Deel van heel vs Heel zoeken!", tagZh: "课前秘籍 · 分清“求部分”和“求整体”" });
         [...byCat(7), ...byCat(8)].forEach(q => steps.push({ kind: "q", q, tagNl: "7 & 8. Breuk keer getal", tagZh: "7 & 8. 分数应用题" }));
@@ -942,11 +1141,12 @@
             if (q) steps.push({ kind: "q", q, tagNl: "Fouten-EHBO", tagZh: "错题清零" });
           });
         } else {
-          ["v3", "s1", "u1", "k2", "p2", "p3"].forEach(id => steps.push({ kind: "q", q: MATH_QUESTIONS.find(x => x.id === id), tagNl: "Topper-Check", tagZh: "考前保底" }));
+          ["v3", "v6", "s1", "s4", "u1", "u5", "k2", "p2", "p3"].forEach(id => steps.push({ kind: "q", q: MATH_QUESTIONS.find(x => x.id === id), tagNl: "Topper-Check", tagZh: "考前保底" }));
         }
       } else if (lvId === 8) {
         for (let c = 1; c <= 8; c++) {
-          shuffle(byCat(c)).slice(0, 2).forEach(q => steps.push({ kind: "q", q, tagNl: `Eindtoets · Onderdeel ${c}`, tagZh: `模拟考 · 第 ${c} 类` }));
+          const take = (c === 1 || c === 6 || c === 7 || c === 8) ? 3 : 2;
+          shuffle(byCat(c)).slice(0, take).forEach(q => steps.push({ kind: "q", q, tagNl: `Eindtoets · Onderdeel ${c}`, tagZh: `模拟考 · 第 ${c} 类` }));
         }
       }
       return steps;
