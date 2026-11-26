@@ -191,6 +191,16 @@
     .wb-chip.placed { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
     .wb-chip.used { opacity: 0.22; pointer-events: none; }
 
+    /* Match pairs */
+    .match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+    .match-col { display: flex; flex-direction: column; gap: 10px; }
+    .match-tile {
+      border: 2px solid var(--border); border-bottom-width: 5px; background: #fff; border-radius: 14px;
+      padding: 13px 12px; font-size: 0.96rem; font-weight: 800; text-align: center; cursor: pointer; transition: all 0.12s;
+    }
+    .match-tile.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .match-tile.matched { border-color: var(--green); background: var(--green-soft); color: #2b7000; opacity: 0.42; pointer-events: none; }
+
     .spell-input {
       width: 100%; padding: 15px 18px; font-size: 1.2rem; font-weight: 800;
       border: 2px solid #cbd5e1; border-bottom-width: 5px; border-radius: 16px; outline: none;
@@ -854,7 +864,211 @@
           "met": "met 后面只能接名词，不能接 te studeren！",
           "middels": "middels 后面只能接名词，不能接 te studeren！",
           "om": "意思是通过努力学习而及格（途径），不是为了学习而及格！"
+        } },
+
+      // --- 拓展：阅读理解词汇 & 荷兰语语法 (g1–g10) ---
+      { id: "g1", group: "extra", type: "choice",
+        promptNl: "📖 Woordenschat: Wat betekent 'taalvaardigheid'?",
+        promptZh: "📖 阅读词汇：'taalvaardigheid' 是什么意思？",
+        subNl: "Uit de tekst: 'Ik volg deze cursus om mijn Nederlandse taalvaardigheid te verbeteren.'",
+        subZh: "出自例句：我上这门课是为了提高我的荷兰语 taalvaardigheid。",
+        options: ["Hoe goed je een taal kunt lezen, schrijven en spreken", "Een soort woordenboek", "Een schoolfeest", "Een fout in een zin"],
+        answer: "Hoe goed je een taal kunt lezen, schrijven en spreken",
+        explainNl: "'taal' + 'vaardigheid' (= hoe goed je iets kunt) → taalvaardigheid = 语言能力！",
+        explainZh: "taal（语言）+ vaardigheid（能力/技能）= 语言能力！",
+        wrongNl: {
+          "Een soort woordenboek": "Een woordenboek is een boek; taalvaardigheid is wat jij zelf kunt!",
+          "Een schoolfeest": "Het woord gaat over 'taal' (Nederlands), niet over een feest.",
+          "Een fout in een zin": "'vaardigheid' betekent juist dat je iets goed kunt, geen fout!"
+        },
+        wrongZh: {
+          "Een soort woordenboek": "woordenboek 才是字典，taalvaardigheid 指的是你掌握语言的能力！",
+          "Een schoolfeest": "这个词由 taal（语言）组成，和派对无关。",
+          "Een fout in een zin": "vaardigheid 是“熟练度/技能”，不是错误。"
+        } },
+      { id: "g2", group: "extra", type: "choice",
+        promptNl: "📖 Woordenschat: 'We herdenken elk jaar op 4 mei de oorlog.' Wat betekent 'herdenken'?",
+        promptZh: "📖 阅读词汇：每年 5 月 4 日人们 'herdenken' 战争。'herdenken' 是什么意思？",
+        subNl: "Tip: denk aan 'opnieuw denken aan iets belangrijks uit de geschiedenis':",
+        subZh: "提示：由 her-（再次）+ denken（想）组成：",
+        options: ["Samen stilstaan bij en denken aan iets belangrijks", "Helemaal vergeten", "Een feestje vieren", "Hardop voorlezen"],
+        answer: "Samen stilstaan bij en denken aan iets belangrijks",
+        explainNl: "'herdenken' = 纪念、缅怀（op 4 mei in Nederland om de oorlog niet te vergeten）。",
+        explainZh: "herdenken = 纪念、缅怀（荷兰 5 月 4 日阵亡将士纪念日）。",
+        wrongNl: {
+          "Helemaal vergeten": "Het tegenovergestelde! In de zin staat juist 'opdat we de geschiedenis NIET vergeten'.",
+          "Een feestje vieren": "Op 4 mei herdenk je serieus (op 5 mei vier je pas Bevrijdingsdag).",
+          "Hardop voorlezen": "'herdenken' gaat over denken/herinneren, niet over lezen."
+        },
+        wrongZh: {
+          "Helemaal vergeten": "恰恰相反！句子里说“以免忘记历史”，herdenken 是铭记和纪念。",
+          "Een feestje vieren": "5 月 4 日是庄重缅怀（5 月 5 日才是解放日庆祝）。",
+          "Hardop voorlezen": "意思是想念和纪念，不是朗读。"
+        } },
+      { id: "g3", group: "extra", type: "choice",
+        promptNl: "📖 Woordenschat: 'In deze brief informeren we u over de maatregelen.' Wat is 'informeren'?",
+        promptZh: "📖 阅读词汇：'informeren' 是什么意思？",
+        subNl: "Denk aan het woord 'informatie'!", subZh: "联想名词 informatie（信息）：",
+        options: ["Informatie geven / iets laten weten", "Iets verbieden", "Iets kopen in de winkel", "Iemand uitnodigen voor een feest"],
+        answer: "Informatie geven / iets laten weten",
+        explainNl: "'informeren' = 通知、告知（iemand informatie geven）。",
+        explainZh: "informeren = 通知、告知（提供信息）。",
+        wrongNl: {
+          "Iets verbieden": "'verbieden' betekent dat iets niet mag; informeren is alleen iets vertellen/uitleggen.",
+          "Iets kopen in de winkel": "Dat is 'kopen', niet informeren.",
+          "Iemand uitnodigen voor een feest": "Dat is 'uitnodigen', niet informeren."
+        },
+        wrongZh: {
+          "Iets verbieden": "verbieden 才是禁止；informeren 是告知信息。",
+          "Iets kopen in de winkel": "买东西是 kopen。",
+          "Iemand uitnodigen voor een feest": "邀请是 uitnodigen。"
+        } },
+      { id: "g4", group: "extra", type: "choice",
+        promptNl: "🔧 Grammatica (Scheidbaar werkwoord): 'Middels deze kaart ______ ik u ______ voor mijn feest.' (uitnodigen)",
+        promptZh: "🔧 语法（可分动词）：用 uitnodigen（邀请）补全：我以此卡邀请您参加派对。",
+        subNl: "⚠️ 'uitnodigen' is een scheidbaar werkwoord (可分动词)!", subZh: "⚠️ uitnodigen 是可分动词！前缀 uit 在主句中要分到后面：",
+        options: ["nodig ... uit", "uitnodig ... -", "nodig uit ... -", "uitnodigen ... -"],
+        answer: "nodig ... uit",
+        explainNl: "In een hoofdzin splitst een scheidbaar werkwoord: 'nodig' komt vooraan (bij ik) en 'uit' gaat naar achteren → nodig ik u uit!",
+        explainZh: "主句中可分动词要拆开：变位动词 nodig 放第 2 位，前缀 uit 放到后面 → nodig ik u uit！",
+        wrongNl: {
+          "uitnodig ... -": "In een gewone hoofdzin mag 'uitnodig' niet aan elkaar blijven! 'uit' moet naar achteren.",
+          "nodig uit ... -": "Het onderwerp 'ik' en 'u' komen tussen 'nodig' en 'uit': nodig ik u uit.",
+          "uitnodigen ... -": "'uitnodigen' is het hele werkwoord; bij 'ik' gebruik je 'nodig ... uit'."
+        },
+        wrongZh: {
+          "uitnodig ... -": "在主句里 uitnodigen 必须拆开，不能连在一起写成 uitnodig！",
+          "nodig uit ... -": "主语 ik 和宾语 u 要夹在 nodig 和 uit 中间！",
+          "uitnodigen ... -": "uitnodigen 是动词原形，主语 ik 必须变位并拆开成 nodig ... uit。"
+        } },
+      { id: "g5", group: "extra", type: "choice",
+        promptNl: "🔧 Grammatica (Inversie / 主谓倒装): 'Door deze oefeningen te maken, ______ de grammatica goed leren.'",
+        promptZh: "🔧 语法（主谓倒装）：当条件/途径短语放在句首时，后面怎么接？",
+        subNl: "⚠️ De zin begint NIET met het onderwerp, maar met 'Door deze oefeningen te maken,'!",
+        subZh: "⚠️ 荷兰语 V2 规则：动词永远在第 2 位！前面已经有了一整块状语，紧接着必须是动词：",
+        options: ["kun je", "je kunt", "je kan", "kunt je"],
+        answer: "kun je",
+        explainNl: "V2-regel! Omdat 'Door deze oefeningen te maken' op plek 1 staat, komt het werkwoord 'kun' op plek 2, vóór 'je' (inversie)!",
+        explainZh: "荷兰语 V2 原则：句首放了途径状语（第 1 位），第 2 位必须是动词 kun，所以主语 je 倒装到后面（kun je）！",
+        wrongNl: {
+          "je kunt": "Dan staat het werkwoord op plek 3! Na een bijzin/bepaling vooraan moet het werkwoord direct komen: kun je!",
+          "je kan": "Zelfde fout: na de komma komt eerst het werkwoord (inversie)!",
+          "kunt je": "Als 'je' achter 'kun' staat (inversie), vervalt de -t! Dus 'kun je', nooit 'kunt je'!"
+        },
+        wrongZh: {
+          "je kunt": "如果写 je kunt，动词就掉到第 3 位了！逗号后面必须立刻接动词（kun je）！",
+          "je kan": "同样语序错了，必须先动词后主语！",
+          "kunt je": "记住：当 je 倒装在动词后面时，动词去掉 -t！所以是 kun je，不能写 kunt je！"
+        } },
+      { id: "g6", group: "extra", type: "choice",
+        promptNl: "🔧 Grammatica (de / het): Welk lidwoord hoort bij 'pakketje' (en alle verkleinwoorden op -je)?",
+        promptZh: "🔧 语法（de / het 冠词）：'pakketje'（小包裹，以及所有 -je 结尾的小词）用哪个冠词？",
+        subNl: "Uit de tekst: 'Ik maak ___ pakketje open met een schaar.'", subZh: "出自讲义：我用剪刀打开那个小包裹。",
+        options: ["het (dit pakketje)", "de (deze pakketje)", "allebei mag", "geen lidwoord"],
+        answer: "het (dit pakketje)",
+        explainNl: "Gouden regel: ALLE verkleinwoorden op -je (pakketje, kaartje, kopje) zijn altijd 'het'-woorden (het / dit)!",
+        explainZh: "黄金规律：所有以 -je 结尾的小词（pakketje, kaartje）100% 都是 het 词（用 het / dit）！",
+        wrongNl: {
+          "de (deze pakketje)": "Verkleinwoorden op -je zijn NOOIT 'de', altijd 'het'!",
+          "allebei mag": "Nee, in het Nederlands hoort bij elk enkelvoudig woord één vast lidwoord — bij -je altijd 'het'.",
+          "geen lidwoord": "Enkelvoudige telbare woorden hebben wel een lidwoord (het/een)."
+        },
+        wrongZh: {
+          "de (deze pakketje)": "以 -je 结尾的小词绝不用 de，永远用 het！",
+          "allebei mag": "荷兰语单数名词冠词是固定的，-je 结尾小词一律用 het。",
+          "geen lidwoord": "可数单数名词前面需要冠词。"
+        } },
+      { id: "g7", group: "extra", type: "choice",
+        promptNl: "🔧 Grammatica (deze / dit): '______ oefeningen zijn heel belangrijk.'",
+        promptZh: "🔧 语法（指示代词）：'oefeningen'（练习，复数）前面用 deze 还是 dit？",
+        subNl: "Kijk naar de -en aan het eind: oefening-en = meervoud (复数)!", subZh: "注意词尾 -en 表示复数：",
+        options: ["Deze", "Dit", "Het", "Dat"],
+        answer: "Deze",
+        explainNl: "Gouden regel: ALLE meervoudswoorden (de oefeningen, de activiteiten) krijgen altijd 'de / deze / die'!",
+        explainZh: "黄金规律：所有复数名词（无论单数是不是 het 词）一律用 de / deze！",
+        wrongNl: {
+          "Dit": "'Dit' is alleen voor enkelvoudige 'het'-woorden (dit woordenboek), NOOIT voor meervoud!",
+          "Het": "'Het' is alleen enkelvoud, nooit bij 'oefeningen' (meervoud).",
+          "Dat": "'Dat' is ook alleen voor enkelvoudige 'het'-woorden."
+        },
+        wrongZh: {
+          "Dit": "Dit 只用于单数 het 词（如 dit woordenboek），绝不用于复数！",
+          "Het": "Het 只用于单数，不用于复数 oefeningen。",
+          "Dat": "Dat 也只用于单数 het 词。"
+        } },
+      { id: "g8", group: "extra", type: "choice",
+        promptNl: "🔧 Grammatica (Bijzin-volgorde): Welke zin heeft de goede woordvolgorde na 'zodat'?",
+        promptZh: "🔧 语法（从句语序）：哪句话在 zodat 后面的动词位置是对的？",
+        subNl: "In een bijzin (na zodat/omdat) gaan ALLE werkwoorden naar achteren!", subZh: "在 zodat / omdat 引导的从句中，所有动词必须放句尾！",
+        options: [
+          "..., zodat de groep elkaar beter leert kennen.",
+          "..., zodat de groep leert elkaar beter kennen.",
+          "..., zodat leert de groep elkaar beter kennen.",
+          "..., zodat elkaar beter de groep leert kennen."
+        ],
+        answer: "..., zodat de groep elkaar beter leert kennen.",
+        explainNl: "In de bijzin staan alle werkwoorden ('leert kennen') helemaal achteraan!",
+        explainZh: "从句里所有动词（leert kennen）都要放到句子最后！",
+        wrongNl: {
+          "..., zodat de groep leert elkaar beter kennen.": "'leert' staat hier nog in het midden! In een bijzin moet 'leert' naar achteren bij 'kennen'.",
+          "..., zodat leert de groep elkaar beter kennen.": "Na 'zodat' komt eerst het onderwerp ('de groep'), niet het werkwoord!",
+          "..., zodat elkaar beter de groep leert kennen.": "Het onderwerp ('de groep') komt direct na 'zodat', vóór 'elkaar beter'."
+        },
+        wrongZh: {
+          "..., zodat de groep leert elkaar beter kennen.": "这是主句语序！在 zodat 从句里 leert 必须放到后面和 kennen 挨在一起。",
+          "..., zodat leert de groep elkaar beter kennen.": "zodat 后面先接主语 de groep，不能先放动词。",
+          "..., zodat elkaar beter de groep leert kennen.": "主语 de groep 要紧跟在 zodat 后面。"
+        } },
+      { id: "g9", group: "extra", type: "choice",
+        promptNl: "📚 Begrijpend Lezen (Signaalwoorden-mix): Welk signaalwoord geeft een TEGENSTELLING (转折) aan?",
+        promptZh: "📚 阅读理解拓展：哪组信号词表示“转折（Tegenstelling）”？",
+        subNl: "Herken alle belangrijke soorten signaalwoorden voor je leesles:",
+        subZh: "把阅读理解课最常考的信号词分类分清：",
+        options: ["maar / hoewel", "om ... te / opdat", "met / door middel van", "omdat / want"],
+        answer: "maar / hoewel",
+        explainNl: "'maar / hoewel' = tegenstelling (转折); 'om...te / opdat' = doel; 'met / door middel van' = middel; 'omdat / want' = reden.",
+        explainZh: "maar / hoewel 表转折；om...te / opdat 表目的；met / door middel van 表途径；omdat / want 表原因。",
+        wrongNl: {
+          "om ... te / opdat": "Dat zijn signaalwoorden van DOEL (目的)!",
+          "met / door middel van": "Dat zijn signaalwoorden van MIDDEL (途径)!",
+          "omdat / want": "Dat zijn signaalwoorden van REDEN / OORZAAK (原因)!"
+        },
+        wrongZh: {
+          "om ... te / opdat": "这组是目的信号词！",
+          "met / door middel van": "这组是途径/工具信号词！",
+          "omdat / want": "这组是原因信号词！"
+        } },
+      { id: "g10", group: "extra", type: "choice",
+        promptNl: "📚 Begrijpend Lezen: 'We gaan niet naar buiten, WANT het regent.' Wat voor signaalwoord is 'want'?",
+        promptZh: "📚 阅读理解拓展：“我们不去外面，因为下雨了。”这里的 want 是什么信号词？",
+        subNl: "Kies het goede soort signaalwoord:", subZh: "选择正确的信号词类别：",
+        options: ["Reden / Oorzaak (原因)", "Doel (目的)", "Middel (途径)", "Gevolg (结果)"],
+        answer: "Reden / Oorzaak (原因)",
+        explainNl: "'want' en 'omdat' geven een REDEN / OORZAAK aan (waarom gebeurt iets?).",
+        explainZh: "want 和 omdat 都表示“原因（Reden / Oorzaak）”。",
+        wrongNl: {
+          "Doel (目的)": "Doel gebruikt 'om ... te / zodat / opdat', niet 'want'.",
+          "Middel (途径)": "Middel gebruikt 'met / door / met behulp van'.",
+          "Gevolg (结果)": "Gevolg gebruikt bijv. 'daarom / dus' (of soms 'zodat'), maar 'want' geeft juist de reden/oorzaak!"
+        },
+        wrongZh: {
+          "Doel (目的)": "目的用 om ... te / zodat / opdat，不用 want。",
+          "Middel (途径)": "途径用 met / door / met behulp van。",
+          "Gevolg (结果)": "结果常用 daarom / dus，而 want 后面引出的是原因！"
         } }
+    ];
+
+    const TEXT_VOCAB = [
+      { id: "tv1", nl: "de taalvaardigheid", zh: "语言能力", tipNl: "taal + vaardigheid", tipZh: "语言+能力" },
+      { id: "tv2", nl: "herdenken", zh: "纪念、缅怀", tipNl: "op 4 mei de oorlog herdenken", tipZh: "5月4日纪念" },
+      { id: "tv3", nl: "de geschiedenis", zh: "历史", tipNl: "niet vergeten", tipZh: "历史" },
+      { id: "tv4", nl: "communiceren", zh: "交流、沟通", tipNl: "door middel van gebaren", tipZh: "沟通交流" },
+      { id: "tv5", nl: "de gebaren", zh: "手势", tipNl: "met je handen praten", tipZh: "手势" },
+      { id: "tv6", nl: "uitnodigen", zh: "邀请（可分动词）", tipNl: "ik nodig u uit", tipZh: "邀请" },
+      { id: "tv7", nl: "informeren", zh: "通知、告知", tipNl: "informatie geven", tipZh: "告知" },
+      { id: "tv8", nl: "de maatregelen", zh: "措施", tipNl: "regels / afspraken", tipZh: "措施" },
+      { id: "tv9", nl: "het resultaat / gevolg", zh: "结果、后果", tipNl: "wat er gebeurt", tipZh: "结果" },
+      { id: "tv10", nl: "moeite hebben met", zh: "对……感到吃力", tipNl: "iets moeilijk vinden", tipZh: "有困难" }
     ];
 
     // 词块拼句（8 题：讲义 1–4 + 书面语/途径拼句）
@@ -934,15 +1148,17 @@
     ];
 
     // =====================================================
-    // 2. 8 关闯关路线
+    // 2. 10 关闯关路线（Doel + Middel + 阅读词汇与语法拓展 + 模拟考）
     // =====================================================
     const SECTIONS = [
       { id: 1, cls: "sec1", titleNl: "Deel 1 · 🎯 Signaalwoorden van DOEL", titleZh: "第一篇章 · 🎯 目的信号词（Doel）",
         subNl: "om ... te, opdat, zodat + instinkers (~12 min)", subZh: "先看讲解，再练目的表达与陷阱辨析" },
       { id: 2, cls: "sec2", titleNl: "Deel 2 · 🛠️ Signaalwoorden van MIDDEL", titleZh: "第二篇章 · 🛠️ 途径/工具信号词（Middel）",
         subNl: "met, door middel van, met behulp van, door, daarmee (~14 min)", subZh: "彻底分清 5 种工具词 + 被动/穿越陷阱" },
-      { id: 3, cls: "sec3", titleNl: "Deel 3 · 🏆 Mix, Fouten-EHBO & Eindtoets", titleZh: "第三篇章 · 🏆 错题清零 & 综合模拟考",
-        subNl: "Alle opdrachten door elkaar + cijfer 1–10 (~10 min)", subZh: "错题急救 + 真题模拟评分" }
+      { id: 3, cls: "sec3", titleNl: "Deel 3 · 📚 Begrijpend Lezen: Woorden & Grammatica", titleZh: "第三篇章 · 📚 阅读班拓展：词汇 & 核心语法",
+        subNl: "Tekstwoorden, scheidbare werkwoorden, inversie & de/het (~12 min)", subZh: "文本高级词汇 + 可分动词/倒装/de-het/信号词全家桶" },
+      { id: 4, cls: "sec1", titleNl: "Deel 4 · 🏆 Mix, Fouten-EHBO & Eindtoets", titleZh: "第四篇章 · 🏆 综合混合 & 模拟考",
+        subNl: "Alles door elkaar + cijfer 1–10 (~12 min)", subZh: "错题急救 + 20 题全真模拟" }
     ];
 
     const LEVELS = [
@@ -963,14 +1179,21 @@
         titleNl: "Level 5 · Middel: Daarmee & Door-trap", titleZh: "第 5 关 · daarmee 与 door 陷阱突破",
         subNl: "Oefening 5 t/m 8 + passief/plaats trap", subZh: "讲义第 5–8 题 + 易错陷阱" },
 
-      { id: 6, sec: 3, icon: "🔀", offset: 18, kind: "normal",
-        titleNl: "Level 6 · Doel & Middel Mix", titleZh: "第 6 关 · 目的与途径混合大乱斗",
-        subNl: "Haal jij ze niet door elkaar?", subZh: "综合辨析，不混淆" },
-      { id: 7, sec: 3, icon: "🩹", offset: -30, kind: "normal",
-        titleNl: "Level 7 · Fouten-EHBO", titleZh: "第 7 关 · 个人错题清零",
-        subNl: "Oefen al je fouten weg", subZh: "清零前 6 关所有错题" },
-      { id: 8, sec: 3, icon: "🏆", offset: 0, kind: "exam",
-        titleNl: "Level 8 · Eindtoets (18 vragen)", titleZh: "第 8 关 · 18 题综合模拟考（出 Cijfer）",
+      { id: 6, sec: 3, icon: "📖", offset: 18, kind: "normal",
+        titleNl: "Level 6 · Tekstwoorden & Betekenis", titleZh: "第 6 关 · 阅读理解核心词汇",
+        subNl: "taalvaardigheid, herdenken, informeren, maatregelen", subZh: "连连看配对 + 语境词义辨析" },
+      { id: 7, sec: 3, icon: "🔧", offset: -36, kind: "boss",
+        titleNl: "Level 7 · Grammatica Extra", titleZh: "第 7 关 · 荷兰语语法进阶",
+        subNl: "Uitnodigen (scheidbaar), inversie, de/het & bijzin", subZh: "可分动词 + V2倒装 + de/het + 从句语序" },
+
+      { id: 8, sec: 4, icon: "🔀", offset: 22, kind: "normal",
+        titleNl: "Level 8 · Grote Mix", titleZh: "第 8 关 · 全内容混合大乱斗",
+        subNl: "Doel, Middel, Woorden & Grammatica", subZh: "综合辨析，融会贯通" },
+      { id: 9, sec: 4, icon: "🩹", offset: -30, kind: "normal",
+        titleNl: "Level 9 · Fouten-EHBO", titleZh: "第 9 关 · 个人错题清零",
+        subNl: "Oefen al je fouten weg", subZh: "清零前 8 关所有错题" },
+      { id: 10, sec: 4, icon: "🏆", offset: 0, kind: "exam",
+        titleNl: "Level 10 · Eindtoets (20 vragen)", titleZh: "第 10 关 · 20 题综合模拟考（出 Cijfer）",
         subNl: "Cijfer 1–10", subZh: "全真模拟，交卷打分" }
     ];
 
@@ -1120,8 +1343,8 @@
           const cls = isDone ? "done" : (isUnlocked ? `current ${lv.kind}` : "locked");
           const title = state.lang === "zh" ? lv.titleZh : (state.lang === "nl" ? lv.titleNl : `${lv.titleNl} · ${lv.titleZh}`);
           let sub = state.lang === "zh" ? lv.subZh : lv.subNl;
-          if (lv.id === 7 && mCount > 0) sub = t(`${mCount} fouten klaar om weg te werken!`, `当前有 ${mCount} 道待清零错题`);
-          if (lv.id === 8 && state.bestCijfer) sub = `${sub} · 🏆 ${state.bestCijfer}/10`;
+          if (lv.id === 9 && mCount > 0) sub = t(`${mCount} fouten klaar om weg te werken!`, `当前有 ${mCount} 道待清零错题`);
+          if (lv.id === 10 && state.bestCijfer) sub = `${sub} · 🏆 ${state.bestCijfer}/10`;
           const conn = idx > 0 ? `<div class="path-connector ${state.completedLevels[secLevels[idx-1].id] ? "done" : ""}"></div>` : "";
           return `
             ${conn}
@@ -1149,7 +1372,7 @@
       }).join("");
 
       document.getElementById("parent-hint").textContent = state.parentMode
-        ? t("🔑 Ouder-modus AAN: alle 8 levels vrij te kiezen.", "🔑 家长自由模式已开：可点击任意关卡。")
+        ? t("🔑 Ouder-modus AAN: alle 10 levels vrij te kiezen.", "🔑 家长自由模式已开：可点击任意关卡。")
         : t("🔒 Focus-modus: één level per keer vrijspelen.", "🔒 专注解锁模式：通关自动解锁下一关。");
       const pmBtn = document.getElementById("btn-parent-mode");
       pmBtn.textContent = state.parentMode ? t("🔑 Ouder-modus: AAN", "🔑 家长自由选关：开") : t("🔑 Ouder-modus", "🔑 家长自由选关");
@@ -1180,8 +1403,15 @@
       } else if (lvId === 5) {
         ["m3", "m4", "m5", "m6", "m7", "m10", "m13", "m14", "m16"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Middel Instinkers", tagZh: "途径易错陷阱" }));
       } else if (lvId === 6) {
-        shuffle(QUESTIONS).slice(0, 12).forEach(q => steps.push({ kind: "q", q, tagNl: "Doel & Middel Mix", tagZh: "目的与途径混合" }));
+        steps.push({ kind: "match", words: TEXT_VOCAB.slice(0, 5), tagNl: "Tekstwoorden Koppelen 1/2", tagZh: "阅读核心词连连看 1/2" });
+        steps.push({ kind: "match", words: TEXT_VOCAB.slice(5, 10), tagNl: "Tekstwoorden Koppelen 2/2", tagZh: "阅读核心词连连看 2/2" });
+        ["g1", "g2", "g3", "g9", "g10"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Woordenschat & Begrijpend Lezen", tagZh: "词义与阅读信号词" }));
       } else if (lvId === 7) {
+        steps.push({ kind: "teach_gram", tagNl: "Uitleg · Grammatica uit de tekst", tagZh: "课前秘籍 · 荷兰语核心语法拓展" });
+        ["g4", "g5", "g6", "g7", "g8"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Grammatica Extra", tagZh: "语法专项突破" }));
+      } else if (lvId === 8) {
+        shuffle(QUESTIONS).slice(0, 14).forEach(q => steps.push({ kind: "q", q, tagNl: "Grote Mix", tagZh: "全内容大乱斗" }));
+      } else if (lvId === 9) {
         const mEntries = shuffle(Object.values(state.mistakes));
         if (mEntries.length > 0) {
           mEntries.forEach(m => {
@@ -1189,10 +1419,10 @@
             else if (m.kind === "sb") { const sb = getSB(m.id); if (sb) steps.push({ kind: "sb", sb, tagNl: "Fouten-EHBO · Zin", tagZh: "错题拼句" }); }
           });
         } else {
-          ["d4", "d5", "d8", "m1", "m6", "m10", "m3"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Topper-Check", tagZh: "考前保底高危题" }));
+          ["d4", "d5", "d8", "m1", "m6", "g4", "g5", "g6"].forEach(id => steps.push({ kind: "q", q: getQ(id), tagNl: "Topper-Check", tagZh: "考前保底高危题" }));
         }
-      } else if (lvId === 8) {
-        shuffle(QUESTIONS).slice(0, 14).forEach(q => steps.push({ kind: "q", q, tagNl: "Eindtoets · Vragen", tagZh: "模拟考 · 选择与填空" }));
+      } else if (lvId === 10) {
+        shuffle(QUESTIONS).slice(0, 16).forEach(q => steps.push({ kind: "q", q, tagNl: "Eindtoets · Vragen", tagZh: "模拟考 · 选择与填空" }));
         shuffle(NL_BUILDS).slice(0, 4).forEach(sb => steps.push({ kind: "sb", sb, tagNl: "Eindtoets · Zinnen", tagZh: "模拟考 · 句子改写" }));
       }
       return steps;
@@ -1201,9 +1431,9 @@
     function startLevel(lvId) {
       const steps = buildLevelSteps(lvId);
       lesson = {
-        active: true, lvId, isExam: lvId === 8, queue: steps, totalBase: steps.length,
+        active: true, lvId, isExam: lvId === 10, queue: steps, totalBase: steps.length,
         doneCount: 0, firstTryRight: 0, examErrors: [], selected: null, sbPicked: [],
-        checked: false, lastOk: false, lastFbTitle: "", lastFbDetail: ""
+        checked: false, lastOk: false, lastFbTitle: "", lastFbDetail: "", matchState: null
       };
       document.getElementById("map-shell").classList.add("hidden");
       document.getElementById("lesson-shell").classList.add("active");
@@ -1255,6 +1485,37 @@
             </table>
           </div>`;
         lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "teach_gram") {
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">🔧 ${tBlock("4 Slimme Grammatica-trucs uit de tekst!", "课前秘籍：从阅读材料提炼的 4 个荷兰语核心语法")}</h2>
+          <div class="teach-card">
+            <ul>
+              <li><strong>1. ✂️ ${t("Scheidbare werkwoorden (可分动词)", "可分动词")}</strong>: uitnodigen → <em>Middels deze kaart <strong>nodig</strong> ik u <strong>uit</strong>.</em> (${tBlock("Het voorvoegsel 'uit' gaat naar achteren!", "前缀 uit 拆到后面！")})</li>
+              <li><strong>2. 🔀 ${t("V2-regel & Inversie (主谓倒装)", "V2 原则与倒装")}</strong>: <em>Door deze oefeningen te maken, <strong>kun je</strong>...</em> (${tBlock("Staat iets anders vooraan, dan komt het werkwoord direct op plek 2, en bij 'je' erachter vervalt de -t!", "句首有状语时动词立刻放第 2 位，je 在后时去掉 -t → kun je！")})</li>
+              <li><strong>3. 🏷️ ${t("de / het & deze / dit", "冠词与指示代词")}</strong>: ${tBlock("ALLE verkleinwoorden op -je (het/dit pakketje) = het! ALLE meervouden (de/deze oefeningen) = de!", "所有 -je 小词永远是 het/dit；所有复数名词永远是 de/deze！")}</li>
+              <li><strong>4. 🔚 ${t("Bijzin-volgorde (从句动词放句尾)", "从句语序")}</strong>: ${tBlock("Na zodat / opdat / omdat / waarmee gaan ALLE werkwoorden naar achteren!", "zodat / opdat / omdat / waarmee 引导的从句，所有动词放句尾！")}</li>
+            </ul>
+          </div>`;
+        lesson.checked = true; lesson.lastOk = true; renderFooter();
+      } else if (step.kind === "match") {
+        if (!lesson.matchState || lesson.matchState.stepRef !== step) {
+          lesson.matchState = { stepRef: step, left: shuffle(step.words), right: shuffle(step.words), selL: null, selR: null, matched: {}, lastTip: "" };
+        }
+        const ms = lesson.matchState;
+        body.innerHTML = `
+          ${badgeHtml}
+          <h2 class="q-title">📖 ${tBlock("Koppel de Nederlandse tekstwoorden aan de betekenis!", "把阅读材料里的高频词和意思配对！")}</h2>
+          <p class="q-sub">${ms.lastTip ? `💡 ${ms.lastTip}` : tBlock("Klik links en dan het goede paar rechts.", "先点左边荷兰语词，再点右边对应解释。")}</p>
+          <div class="match-cols">
+            <div class="match-col">
+              ${ms.left.map(w => `<button class="match-tile ${ms.matched[w.id] ? "matched" : (ms.selL === w.id ? "selected" : "")}" onclick="pickMatch('L','${w.id}')">${escapeHtml(w.nl)}</button>`).join("")}
+            </div>
+            <div class="match-col">
+              ${ms.right.map(w => `<button class="match-tile ${ms.matched[w.id] ? "matched" : (ms.selR === w.id ? "selected" : "")}" onclick="pickMatch('R','${w.id}')">${escapeHtml(state.lang === "nl" ? w.tipNl : w.zh)}</button>`).join("")}
+            </div>
+          </div>`;
+        renderFooter();
       } else if (step.kind === "sb") {
         const sb = step.sb;
         if (!step._bank) step._bank = shuffle([...sb.target, ...sb.distractors]);
@@ -1311,6 +1572,24 @@
     function selectChoice(val) { if (lesson.checked) return; lesson.selected = val; renderCurrentStep(); }
     function pickWord(bi) { if (lesson.checked || lesson.sbPicked.includes(bi)) return; lesson.sbPicked.push(bi); renderCurrentStep(); }
     function unpickWord(pos) { if (lesson.checked) return; lesson.sbPicked.splice(pos, 1); renderCurrentStep(); }
+    function pickMatch(side, id) {
+      const ms = lesson.matchState; if (!ms || ms.matched[id]) return;
+      if (side === "L") { ms.selL = id; const w = TEXT_VOCAB.find(x => x.id === id); if (w) speakNl(w.nl); }
+      else ms.selR = id;
+      if (ms.selL && ms.selR) {
+        if (ms.selL === ms.selR) {
+          const w = TEXT_VOCAB.find(x => x.id === ms.selL);
+          ms.matched[ms.selL] = true; ms.selL = null; ms.selR = null; state.xp += 2; playTone("ok");
+          ms.lastTip = w ? `✅ ${w.nl} = ${w.zh} (${w.tipNl})` : "✅"; saveState();
+          if (Object.keys(ms.matched).length === ms.left.length) {
+            lesson.checked = true; lesson.lastOk = true; lesson.lastFbTitle = t("Alle paren gevonden! 🎉", "全部配对成功！🎉"); lesson.lastFbDetail = "";
+          }
+        } else {
+          playTone("err"); ms.selL = null; ms.selR = null; ms.lastTip = t("Niet het juiste paar, probeer nog eens!", "不是一对，再试试！");
+        }
+      }
+      renderCurrentStep();
+    }
 
     function renderFooter() {
       const footer = document.getElementById("lesson-footer"), inner = document.getElementById("footer-inner"), step = lesson.queue[0];
@@ -1318,6 +1597,12 @@
         footer.className = "lesson-footer";
         inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🚀 ${t("Uitleg gelezen? Start de oefeningen!", "看完秘籍了吗？开始闯关！")}</div></div>
           <button class="duo-btn orange" onclick="nextStep()">${t("IK SNAP HET! START →", "懂了！开始闯关 →")}</button>`;
+        return;
+      }
+      if (step.kind === "match" && !lesson.checked) {
+        footer.className = "lesson-footer";
+        const leftCnt = lesson.matchState.left.length - Object.keys(lesson.matchState.matched).length;
+        inner.innerHTML = `<div class="fb-text"><div class="fb-detail">🧩 ${t(`Nog ${leftCnt} paren te koppelen...`, `还剩 ${leftCnt} 组待配对...`)}</div></div>`;
         return;
       }
       if (!lesson.checked) {
@@ -1439,10 +1724,15 @@
           <p style="font-size:0.88rem;">• <strong>om ... te + hele werkwoord</strong>: Ik ga naar de supermarkt om melk te kopen. (⚠️ Niet bij vaste constructies zoals 'Ik vind het leuk om...')</p>
           <p style="font-size:0.88rem;">• <strong>opdat / zodat + bijzin</strong> (werkwoorden achteraan, géén 'te'!): opdat = schrijftaal, zodat = spreektaal. (⚠️ 'zodat' kan ook GEVOLG zijn!)</p>
         </div>
-        <div class="guide-sec" style="margin-bottom:0;"><h3>🛠️ 2. Signaalwoorden van MIDDEL (途径/工具)</h3>
+        <div class="guide-sec"><h3>🛠️ 2. Signaalwoorden van MIDDEL (途径/工具)</h3>
           <p style="font-size:0.88rem;">• <strong>met</strong> (+ naamwoord) · <strong>door middel van / middels</strong> (+ naamwoord, ❌ géén mens!)</p>
           <p style="font-size:0.88rem;">• <strong>met behulp van</strong> (+ naamwoord OF mens!) · <strong>door</strong> (+ naamwoord OF 'te + werkwoord'; ❌ passief/tunnel = géén middel!)</p>
           <p style="font-size:0.88rem;">• <strong>daarmee / waarmee</strong> (= met dat / met wat — middel niet herhalen!)</p>
+        </div>
+        <div class="guide-sec" style="margin-bottom:0;"><h3>🔧 3. Begrijpend Lezen: Woorden &amp; Grammatica Extra</h3>
+          <p style="font-size:0.88rem;">• <strong>Scheidbaar werkwoord</strong>: uitnodigen → Ik <strong>nodig</strong> u <strong>uit</strong>.</p>
+          <p style="font-size:0.88rem;">• <strong>Inversie (V2)</strong>: Door te oefenen, <strong>kun je</strong>... (bij 'je' achter het werkwoord vervalt de -t!).</p>
+          <p style="font-size:0.88rem;">• <strong>de / het &amp; deze / dit</strong>: Alle <strong>-je</strong> woorden = <strong>het / dit</strong> (dit pakketje); alle <strong>meervouden</strong> = <strong>de / deze</strong> (deze oefeningen).</p>
         </div>`;
       document.getElementById("guide-modal").classList.add("open");
     }
@@ -1453,6 +1743,7 @@
       if (document.getElementById("guide-modal").classList.contains("open") || !lesson || !lesson.active || e.key !== "Enter") return;
       const step = lesson.queue[0]; if (!step) return;
       if (step.kind.startsWith("teach_")) { nextStep(); return; }
+      if (step.kind === "match") { if (lesson.checked) nextStep(); return; }
       if (!lesson.checked) {
         const ready = step.kind === "sb" ? lesson.sbPicked.length > 0 : (lesson.selected !== null && String(lesson.selected).trim().length > 0);
         if (ready) checkCurrentStep();
